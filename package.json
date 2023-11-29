@@ -1,0 +1,40 @@
+{
+  "name": "trading_bot_client",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vite",
+    "build": "vite build",
+    "preview": "vite preview --port 5050"
+  },
+  "dependencies": {
+    "animate.css": "^4.1.0",
+    "axios": "^0.25.0",
+    "bootstrap": "^4.3.1",
+    "jose": "^4.5.0",
+    "jquery": "^3.4.1",
+    "lodash": "^4.17.15",
+    "mathjs": "^10.1.1",
+    "moment": "^2.24.0",
+    "popper.js": "^1.15.0",
+    "portal-vue": "^2.1.7",
+    "pulltorefreshjs": "^0.1.22",
+    "sockette": "^2.0.6",
+    "toastr": "^2.1.4",
+    "vee-validate": "^3.2.5",
+    "vue": "^2.6.10",
+    "vue-imask": "~6.1.0",
+    "vue-infinite-loading": "^2.4.5",
+    "vue-router": "^3.1.6",
+    "vuex": "^3.0.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-legacy": "^1.6.3",
+    "@vue/runtime-dom": "^3.2.22",
+    "sass": "~1.64.2",
+    "unplugin-vue2-script-setup": "^0.7.1",
+    "vite": "^2.6.14",
+    "vite-plugin-vue2": "^1.9.0",
+    "vue-template-compiler": "^2.6.14"
+  }
+}

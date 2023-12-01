@@ -1,5 +1,5 @@
 <template>
-<div class="container">
+<div class="container my-3 my-lg-4">
   <div class="row align-items-center justify-content-center min-vh-100">
     <div class="login text-center">
       <!-- logo -->

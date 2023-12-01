@@ -55,6 +55,9 @@ export default new Vuex.Store({
     },
     isLoggedIn(state, getters) {
       return state.authToken !== '';
+    },
+    isMobileView(state, getters) {
+      return !state.windowSize.includes('lg');
     }
   },
   
@@ -338,6 +341,6 @@ export default new Vuex.Store({
           wsMessage: message
         });
       });
-    },
+    }
   }
 });

@@ -158,11 +158,49 @@ let routes = [
   },
   {
     path: '/settings',
-    name: 'settings',
     component: () => import('@/views/settings.vue'),
-    meta: {
-      auth: true
-    }
+    children: [
+      {
+        path: '',
+        name: 'settings',
+        component: () => import('@/views/settings-user.vue'),
+        meta: {
+          auth: true
+        }
+      },
+      {
+        path: 'user',
+        name: 'settings_user',
+        component: () => import('@/views/settings-user.vue'),
+        meta: {
+          auth: true
+        }
+      },
+      {
+        path: 'trading-bot',
+        name: 'settings_trading_bot',
+        component: () => import('@/views/settings-trading-bot.vue'),
+        meta: {
+          auth: true
+        }
+      },
+      {
+        path: 'alphainsider',
+        name: 'settings_alphainsider',
+        component: () => import('@/views/settings-alphainsider.vue'),
+        meta: {
+          auth: true
+        }
+      },
+      {
+        path: 'broker',
+        name: 'settings_broker',
+        component: () => import('@/views/settings-broker.vue'),
+        meta: {
+          auth: true
+        }
+      }
+    ]
   },
   {
     path: '/page-not-found',

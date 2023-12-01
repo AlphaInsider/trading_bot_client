@@ -1,5 +1,5 @@
 <template>
-<div class="container">
+<div class="container my-3 my-lg-4">
   <h3>Home</h3>
 </div>
 </template>
@@ -11,8 +11,7 @@ export default {
     return {}
   },
   mounted() {
-    this.getBotInfo();
-    this.getActivity();
+    //this.getBotInfo();
   },
   methods: {
     getBotInfo() {
@@ -30,8 +29,7 @@ export default {
       .catch((error) => {
         toastr.error('Failed to get bot information.');
       });
-    },
-    async getActivity() {}
+    }
   }
 }
 </script>

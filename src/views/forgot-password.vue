@@ -1,5 +1,5 @@
 <template>
-<div class="container">
+<div class="container my-3 my-lg-4">
   <h3>Forgot Password</h3>
 </div>
 </template>

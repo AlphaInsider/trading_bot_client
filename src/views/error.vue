@@ -1,5 +1,5 @@
 <template>
-<div class="container-fluid">
+<div class="container-fluid my-3 my-lg-4">
   <!-- error message -->
   <div class="row justify-content-center py-5 px-3">
     <div class="card col-md-5">

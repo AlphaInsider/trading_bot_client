@@ -4,7 +4,7 @@
   <v-header v-if="!$route.meta.hideNav" :key="$route.path"></v-header>
   
   <!-- content -->
-  <div>
+  <div :class="{'phone-padding-body': $store.getters.isMobileView, 'padding-bottom': $store.getters.isLoggedIn}">
     <div id="pull-to-refresh"></div>
     <router-view :key="$route.path"></router-view>
   </div>
@@ -66,6 +66,28 @@ $theme-colors: (
   --info-rgb: 0,138,255;
   --dark-rgb: 52,73,94;
   --body-rgb: 33,37,41;
+
+  --phone-header-height : 3.75rem;
+  --phone-footer-height : 3.75rem;
+
+  --safe-area-inset-top   : 0px;
+  --safe-area-inset-bottom: 0px;
+  --safe-area-inset-left  : 0px;
+  --safe-area-inset-right : 0px;
+
+  @supports (top: constant(safe-area-inset-top)){
+    --safe-area-inset-top   : constant(safe-area-inset-top);
+    --safe-area-inset-bottom: constant(safe-area-inset-bottom);
+    --safe-area-inset-left  : constant(safe-area-inset-left);
+    --safe-area-inset-right : constant(safe-area-inset-right);
+  }
+
+  @supports (top: env(safe-area-inset-top)){
+    --safe-area-inset-top   : env(safe-area-inset-top);
+    --safe-area-inset-bottom: env(safe-area-inset-bottom);
+    --safe-area-inset-left  : env(safe-area-inset-left);
+    --safe-area-inset-right : env(safe-area-inset-right);
+  }
 }
 $enable-responsive-font-sizes: true;
 @import '../node_modules/bootstrap/scss/bootstrap.scss';
@@ -101,6 +123,26 @@ body {
   
   //background color
   background-color: var(--light);
+
+  //phone padding
+  .phone-padding-top {
+    padding-top: var(--safe-area-inset-top);
+    padding-left: var(--safe-area-inset-left);
+    padding-right: var(--safe-area-inset-right);
+  }
+  .phone-padding-bottom {
+    padding-bottom: var(--safe-area-inset-bottom);
+    padding-left: var(--safe-area-inset-left);
+    padding-right: var(--safe-area-inset-right);
+  }
+  .phone-padding-body {
+    padding-top: calc(var(--phone-header-height) + var(--safe-area-inset-top));
+    padding-left: var(--safe-area-inset-left);
+    padding-right: var(--safe-area-inset-right);
+    &.padding-bottom {
+      padding-bottom: calc(var(--phone-footer-height) + var(--safe-area-inset-bottom));
+    }
+  }
   
   //toastr styling
   #toast-container > div {
@@ -185,6 +227,29 @@ body {
       color: var(--primary);
       opacity: 1 !important;
     }
+  }
+
+  //account tier backgrounds
+  .img-head-standard {
+    box-shadow: inset 0 0 0 100vmax rgba(var(--warning-rgb), 0.9);
+    background-image: url('/img/premium_accounts/1.jpeg');
+    background-size: cover;
+  }
+  .img-head-pro {
+    box-shadow: inset 0 0 0 100vmax rgba(var(--success-rgb), 0.9);
+    background-image: url('/img/premium_accounts/2.jpeg');
+    background-size: cover;
+  }
+  .img-head-premium {
+    box-shadow: inset 0 0 0 100vmax rgba(var(--info-rgb), 0.9);
+    background-image: url('/img/premium_accounts/3.jpeg');
+    background-size: cover;
+  }
+  //key backgrounds
+  .img-head-alphainsider {
+    box-shadow: inset 0 0 0 100vmax rgba(var(--info-rgb), 0.9);
+    background-image: url('/img/premium_accounts/3.jpeg');
+    background-size: cover;
   }
 }
 </style>

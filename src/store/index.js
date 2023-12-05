@@ -16,6 +16,7 @@ export default new Vuex.Store({
     wsSubscriptions: [],
     wsMessage: {},
     authToken: '',
+    strategySubscriptions: [],
     ...JSON.parse(sessionStorage.getItem('store'))
   },
   
@@ -26,9 +27,10 @@ export default new Vuex.Store({
         ...data
       }));
       // Save session storage
-      if(Object.keys(data).some((item) => ['authToken'].includes(item))) {
+      if(Object.keys(data).some((item) => ['authToken', 'strategySubscriptions'].includes(item))) {
         sessionStorage.setItem('store', JSON.stringify({
-          authToken: state.authToken
+          authToken: state.authToken,
+          strategySubscriptions: state.strategySubscriptions
         }));
       }
     },
@@ -40,10 +42,12 @@ export default new Vuex.Store({
         wsChannels: [],
         wsSubscriptions: [],
         wsMessage: {},
-        authToken: ''
+        authToken: '',
+        strategySubscriptions: [],
       }));
       sessionStorage.setItem('store', JSON.stringify({
-        authToken: ''
+        authToken: state.authToken,
+        strategySubscriptions: state.strategySubscriptions
       }));
     }
   },
@@ -55,6 +59,9 @@ export default new Vuex.Store({
     },
     isLoggedIn(state, getters) {
       return state.authToken !== '';
+    },
+    user_id(state, getters) {
+      return getters.authTokenInfo.user_id;
     },
     isMobileView(state, getters) {
       return !state.windowSize.includes('lg');
@@ -188,6 +195,45 @@ export default new Vuex.Store({
     logout({state, commit, getters, dispatch}, params = {}) {
       commit('resetState');
       return ((params.redirectLogin && router.app._route.path !== '/login') ? router.replace('/login') : router.go())
+    },
+
+    //CHECK: getStrategySubscriptions --[strategy_id]--
+    getStrategySubscriptions({state, commit, getters, dispatch}, params = {}) {
+      //if not logged in
+      if(!getters.isLoggedIn) return Promise.resolve();
+
+      //start loading
+      return dispatch('startLoading', {label: ['getStrategySubscriptions']})
+
+      //request getStrategySubscriptions
+      .then(() => {
+        return dispatch('request', {
+          type: 'get',
+          auth: true,
+          url: 'getStrategySubscriptions',
+          query: {
+            strategy_id: params.strategy_id
+          }
+        })
+      })
+
+      //set strategy subscriptions
+      .then((strategySubscriptions) => {
+        commit('saveState', {
+          strategySubscriptions: ((params.strategy_id) ? _.unionBy(strategySubscriptions, state.strategySubscriptions, 'strategy_id') : strategySubscriptions)
+        });
+      })
+
+      //error
+      .catch((error) => {
+        toastr.error('Failed to get strategy subscriptions.');
+        throw error;
+      })
+
+      //finish loading
+      .finally(() => {
+        return dispatch('finishLoading', {label: ['getStrategySubscriptions']});
+      });
     },
     
     //DONE: wsConnect

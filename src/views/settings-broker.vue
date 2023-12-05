@@ -37,7 +37,7 @@
   <div class="card mt-3">
     <!-- title -->
     <div class="card-header d-flex align-items-center bg-white">
-      <h5 class="text-primary mb-0">New Alpaca API Key</h5>
+      <h5 class="text-primary mb-0">Update API Keys</h5>
       <div class="d-flex ml-auto">
         <a href="/" class="btn btn-sm btn-primary">Help</a>
       </div>
@@ -183,13 +183,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.option-select {
-  cursor: pointer;
-  width: 150px;
-  height: 150px;
-  &.active {
-    border: 1px solid var(--primary);
-    box-shadow: 0 0 4px rgba(var(--primary-rgb), 1);
-  }
-}
 </style>

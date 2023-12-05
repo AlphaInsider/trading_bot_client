@@ -149,6 +149,15 @@ let routes = [
     component: () => import('@/views/forgot-password.vue')
   },
   {
+    path: '/setup',
+    name: 'setup',
+    component: () => import('@/views/setup.vue'),
+    meta: {
+      auth: true,
+      hideNav: true
+    }
+  },
+  {
     path: '/',
     name: 'home',
     component: () => import('@/views/home.vue'),
@@ -201,6 +210,16 @@ let routes = [
         }
       }
     ]
+  },
+  {
+    path: '/password-tutorial',
+    name: 'password_tutorial',
+    component: () => import('@/views/tutorial-password.vue')
+  },
+  {
+    path: '/alphainsider-tutorial',
+    name: 'alphainsider_tutorial',
+    component: () => import('@/views/tutorial-alphainsider.vue')
   },
   {
     path: '/page-not-found',

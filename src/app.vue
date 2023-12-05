@@ -5,7 +5,11 @@
   
   <!-- content -->
   <div :class="{'phone-padding-body': $store.getters.isMobileView, 'padding-bottom': $store.getters.isLoggedIn}">
+    <!-- pull to refresh -->
     <div id="pull-to-refresh"></div>
+    <!-- update banner -->
+    <v-app-update-banner></v-app-update-banner>
+    <!-- page view -->
     <router-view :key="$route.path"></router-view>
   </div>
   
@@ -17,9 +21,10 @@
 
 <script>
 import vHeader from '@/components/v-header.vue';
+import vAppUpdateBanner from '@/components/v-app-update-banner.vue';
 
 export default {
-  components: {vHeader},
+  components: {vHeader, vAppUpdateBanner},
   mounted() {
     // init pull to refresh
     PullToRefresh.init({
@@ -206,6 +211,11 @@ body {
   .line-height-sm {
     line-height: 1;
   }
+
+  //strategy calculation background color
+  .bg-calculation {
+    background-color: rgba(var(--warning-rgb), 0.2) !important;
+  }
   
   //filter dropdown styling
   .filter-dropdown {
@@ -226,6 +236,17 @@ body {
     i.active {
       color: var(--primary);
       opacity: 1 !important;
+    }
+  }
+
+  // option box select
+  .option-select {
+    cursor: pointer;
+    width: 150px;
+    height: 150px;
+    &.active {
+      border: 1px solid var(--primary);
+      box-shadow: 0 0 4px rgba(var(--primary-rgb), 1);
     }
   }
 

@@ -58,8 +58,30 @@
       </validation-observer>
     </div>
   </div>
-  
-  <!-- strategy select -->
+
+  <!-- select strategy -->
+  <div class="card mt-3">
+    <!-- title -->
+    <div class="card-header d-flex bg-white">
+      <h5 class="text-primary mb-0">Strategy Select</h5>
+    </div>
+    <div class="card-body">
+      <!-- search strategy -->
+      <v-strategy-search :strategy-type="'stock'" @input="selectedStrategy = $event"></v-strategy-search>
+
+      <!-- strategy view -->
+      <div v-if="selectedStrategy" class="card mt-3">
+        <div class="card-body">
+          <v-strategy :strategy="selectedStrategy"></v-strategy>
+        </div>
+      </div>
+
+      <!-- save changes -->
+      <div class="d-flex justify-content-end mt-3">
+        <button @click="updateStrategy()" type="button" class="btn btn-primary">Save Changes</button>
+      </div>
+    </div>
+  </div>
   
 </div>
 </template>
@@ -68,9 +90,11 @@
 <script>
 
 import vLogo from "@/components/v-logo.vue";
+import vStrategySearch from '@/components/v-strategy-search.vue';
+import vStrategy from '@/components/v-strategy.vue';
 
 export default {
-  components: {vLogo},
+  components: {vLogo, vStrategy, vStrategySearch},
   data() {
     return {
       apiToken: {
@@ -81,12 +105,15 @@ export default {
         created_at: moment().subtract(1, 'month').toISOString(),
         scope: ['test_permission']
       },
-      newAPIKey: undefined
+      newAPIKey: undefined,
+      // strategy
+      selectedStrategy: undefined
     };
   },
   mounted() {},
   methods: {
-    updateKeys() {}
+    updateKeys() {},
+    updateStrategy() {}
   }
 }
 </script>

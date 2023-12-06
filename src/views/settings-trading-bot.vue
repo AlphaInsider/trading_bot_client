@@ -57,29 +57,14 @@
       <!-- bot error handling -->
       <div class="p-1">
         <!-- checkbox -->
-        <div class="d-flex">
+        <div class="d-flex align-items-center">
           <div>
-            <p class="mb-0">Handle Errors</p>
-            <small class="text-muted">The action the trading bot should take when an error occurs.</small>
+            <p class="mb-0">Close On Stop</p>
+            <small class="text-muted">Close all positions when the trading bot stops.</small>
           </div>
-          <div class="d-flex align-items-center ml-auto">
-            <div class="dropdown">
-              <button @click="errorActionDropdown = true" class="btn dropdown-btn pointer text-center py-0 px-2">
-                <span v-if="errorAction === 'stop_close'">Stop and Close Positions</span>
-                <span v-if="errorAction === 'stop'">Stop Trading Bot</span>
-                <i class="fas fa-chevron-down ml-2"></i>
-              </button>
-              <v-dropdown-menu v-if="errorActionDropdown" :stay-open="true" :arrow="true" :arrow-offset="5" @close="errorActionDropdown = false">
-                <button @click="errorAction = 'stop'" class="dropdown-item text-capitalize">
-                  <i class="fal fa-octagon text-muted"></i>
-                  Stop Trading Bot
-                </button>
-                <button @click="errorAction = 'stop_close'" class="dropdown-item text-capitalize">
-                  <i class="fal fa-times-octagon text-muted"></i>
-                  Stop and Close Positions
-                </button>
-              </v-dropdown-menu>
-            </div>
+          <div class="custom-control custom-switch ml-auto">
+            <input @change="updateCloseOnStop()" v-model="closeOnStop" type="checkbox" class="custom-control-input" id="subscription-switch">
+            <label class="custom-control-label pointer" for="subscription-switch"></label>
           </div>
         </div>
       </div>
@@ -100,20 +85,14 @@ export default {
       currentAllocation: 0,
       newAllocation: undefined,
       // general
-      errorActionDropdown: false,
-      errorAction: 'stop'
+      closeOnStop: true
     };
   },
   mounted() {},
   methods: {
-    updateBufferAmount() {
-      
-    },
-    enableCloseOvernight() {
-      
-    },
-    updateCloseTimes() {
-      
+    updateBufferAmount() {},
+    updateCloseOnStop() {
+      this.closeOnStop = !this.closeOnStop;
     }
   }
 }

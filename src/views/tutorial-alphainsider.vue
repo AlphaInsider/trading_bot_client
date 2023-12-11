@@ -3,8 +3,8 @@
   <!-- Title -->
   <div class="overview">
     <div class="container">
-      <div class="instructions-title row justify-content-center px-4">
-        <div class="col-12 col-lg-8">
+      <div class="title row justify-content-center px-4">
+        <div class="col-12">
           <div class="text-center">
             <h1 class="text-white">AlphaInsider API Key Tutorial</h1>
             <h5 class="text-white">Follow these steps to create an AlphaInsider API key for the trading bot.</h5>
@@ -108,7 +108,7 @@
 .overview {
   background-color: #051125;
 }
-.instructions-title {
+.title {
   padding-top: 75px;
   padding-bottom: 75px;
 }

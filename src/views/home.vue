@@ -42,26 +42,7 @@ export default {
       showConfirmStartModal: false
     }
   },
-  mounted() {
-    //this.getBotInfo();
-  },
   methods: {
-    getBotInfo() {
-      //request getBotInfo
-      return this.$store.dispatch('request', {
-        type: 'get',
-        auth: true,
-        url: 'getBotInfo'
-      })
-      //success
-      .then((data) => {
-        
-      })
-      //error
-      .catch((error) => {
-        toastr.error('Failed to get bot information.');
-      });
-    },
     startBot() {
       this.showConfirmStartModal = false;
       this.powerButtonState = 'active';

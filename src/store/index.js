@@ -17,6 +17,7 @@ export default new Vuex.Store({
     wsMessage: {},
     authToken: '',
     strategySubscriptions: [],
+    bot: {},
     ...JSON.parse(sessionStorage.getItem('store'))
   },
   
@@ -27,10 +28,11 @@ export default new Vuex.Store({
         ...data
       }));
       // Save session storage
-      if(Object.keys(data).some((item) => ['authToken', 'strategySubscriptions'].includes(item))) {
+      if(Object.keys(data).some((item) => ['authToken', 'strategySubscriptions', 'bot'].includes(item))) {
         sessionStorage.setItem('store', JSON.stringify({
           authToken: state.authToken,
-          strategySubscriptions: state.strategySubscriptions
+          strategySubscriptions: state.strategySubscriptions,
+          bot: state.bot
         }));
       }
     },
@@ -44,10 +46,12 @@ export default new Vuex.Store({
         wsMessage: {},
         authToken: '',
         strategySubscriptions: [],
+        bot: {}
       }));
       sessionStorage.setItem('store', JSON.stringify({
         authToken: state.authToken,
-        strategySubscriptions: state.strategySubscriptions
+        strategySubscriptions: state.strategySubscriptions,
+        bot: state.bot
       }));
     }
   },
@@ -233,6 +237,42 @@ export default new Vuex.Store({
       //finish loading
       .finally(() => {
         return dispatch('finishLoading', {label: ['getStrategySubscriptions']});
+      });
+    },
+    
+    //CHECK: getBotInfo
+    getBotInfo({state, commit, getters, dispatch}, params = {}) {
+      // if not logged in
+      if(!getters.isLoggedIn) return Promise.resolve();
+
+      //start loading
+      return dispatch('startLoading', {label: ['getBotInfo']})
+
+      // request getBotInfo
+      .then(() => {
+        return dispatch('request', {
+          type: 'get',
+          auth: true,
+          url: 'getBotInfo'
+        });
+      })
+
+      // set bot info
+      .then((bot) => {
+        commit('saveState', {
+          bot
+        });
+      })
+
+      // error
+      .catch((error) => {
+        toastr.error('Failed to get trading bot information.');
+        throw error;
+      })
+
+      // finish loading
+      .finally(() => {
+        return dispatch('finishLoading', {label: ['getBotInfo']});
       });
     },
     

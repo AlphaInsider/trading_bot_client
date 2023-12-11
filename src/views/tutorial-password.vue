@@ -3,8 +3,8 @@
   <!-- Title -->
   <div class="overview">
     <div class="container">
-      <div class="instructions-title row justify-content-center px-4">
-        <div class="col-12 col-lg-8">
+      <div class="title row justify-content-center px-4">
+        <div class="col-12">
           <div class="text-center">
             <h1 class="text-white">Reset Password</h1>
             <h5 class="text-white">Follow these steps to reset your password for the trading bot.</h5>
@@ -68,10 +68,16 @@
               <span class="badge badge-secondary mr-2">Step 2</span> Update password ENV variable
             </div>
             <div class="card-body">
-              <p v-if="host === 'digitalocean'" class="card-text">
+              <p v-if="host === 'heroku'" class="card-text">
+                Click on the app the trading bot is running on. Next, click on the "<span class="font-weight-bold">Settings</span>" tab
+                and under the "<span class="font-weight-bold">Config Vars</span>" section, click on the "<span class="font-weight-bold">Reveal Config Vars</span>" button.
+                Here you will see a list of keys and values. Update the "<span class="font-weight-bold">PASSWORD</span>" key value field with the new password.
+                <br><br>
+                Once complete, changes are automatically saved and your app with be redeployed with the new password.
+              </p>
+              <p v-else-if="host === 'digitalocean'" class="card-text">
                 Click on the app the trading bot is running on. Next, click on the "<span class="font-weight-bold">Settings</span>" tab
                 and click the "<span class="font-weight-bold">Edit</span>" button next to "<span class="font-weight-bold">App-Level Environment Variables</span>".
-                <br><br>
                 Here you will see a list of keys and values. Update the "<span class="font-weight-bold">PASSWORD</span>" key value field with the new password.
                 <br><br>
                 Once complete, click the "<span class="font-weight-bold">Save</span>" button to redeploy application with the new password.
@@ -100,7 +106,7 @@ export default {
 .overview {
   background-color: #051125;
 }
-.instructions-title {
+.title {
   padding-top: 75px;
   padding-bottom: 75px;
 }

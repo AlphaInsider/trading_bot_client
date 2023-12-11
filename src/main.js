@@ -107,14 +107,14 @@ Object.defineProperty(Vue.prototype, '$formatNumber', {
     return ((math.evaluate('a < 0', {a: number})) ? '-' : '') + symbol + left + right;
   }
 });
-Object.defineProperty(Vue.prototype, '$ws', {
+/*Object.defineProperty(Vue.prototype, '$ws', {
   value: new Sockette(wsBaseURL, {
     onopen: (event) => store.dispatch('wsConnect'),
     onmessage: (event) => store.dispatch('wsHandleMessage', {message: event.data}),
     onclose: (event) => store.dispatch('wsDisconnect'),
     onerror: (event) => store.dispatch('wsDisconnect')
   })
-});
+});*/
 //global components
 Vue.component('input-mask', IMaskComponent);
 Vue.component('validation-observer', ValidationObserver);
@@ -194,17 +194,9 @@ let routes = [
         }
       },
       {
-        path: 'alphainsider',
-        name: 'settings_alphainsider',
-        component: () => import('@/views/settings-alphainsider.vue'),
-        meta: {
-          auth: true
-        }
-      },
-      {
-        path: 'broker',
-        name: 'settings_broker',
-        component: () => import('@/views/settings-broker.vue'),
+        path: 'api-keys',
+        name: 'settings_api_keys',
+        component: () => import('@/views/settings-api-keys.vue'),
         meta: {
           auth: true
         }
@@ -212,9 +204,24 @@ let routes = [
     ]
   },
   {
+    path: '/risk-disclaimer',
+    name: 'risk_disclaimer',
+    component: () => import('@/views/risk-disclaimer.vue')
+  },
+  {
+    path: '/privacy-policy',
+    name: 'privacy_policy',
+    component: () => import('@/views/privacy-policy.vue')
+  },
+  {
     path: '/password-tutorial',
     name: 'password_tutorial',
     component: () => import('@/views/tutorial-password.vue')
+  },
+  {
+    path: '/broker-tutorial',
+    name: 'broker_tutorial',
+    component: () => import('@/views/tutorial-broker.vue')
   },
   {
     path: '/alphainsider-tutorial',

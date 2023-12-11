@@ -12,8 +12,7 @@
           <router-link v-if="$route.name === 'settings' && !$store.getters.isMobileView" to="/settings" tag="li" active-class="active" class="list-group-item"><i class="fal fa-user-circle"></i> User</router-link>
           <router-link v-if="$route.name !== 'settings' || $store.getters.isMobileView" to="/settings/user" tag="li" active-class="active" class="list-group-item"><i class="fal fa-user-circle"></i> User</router-link>
           <router-link to="/settings/trading-bot" tag="li" active-class="active" class="list-group-item"><i class="fal fa-robot"></i> Trading Bot</router-link>
-          <router-link to="/settings/alphainsider" tag="li" active-class="active" class="list-group-item"><i class="fal fa-file-invoice-dollar"></i> AlphaInsider</router-link>
-          <router-link to="/settings/broker" tag="li" active-class="active" class="list-group-item"><i class="fal fa-money-check-alt"></i> Broker</router-link>
+          <router-link to="/settings/api-keys" tag="li" active-class="active" class="list-group-item"><i class="fal fa-file-invoice-dollar"></i> API Keys</router-link>
         </ul>
       </div>
 

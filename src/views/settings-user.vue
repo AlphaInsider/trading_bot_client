@@ -30,7 +30,9 @@
           <p class="mb-0">Password Guide</p>
           <small class="text-muted">Follow this guide to change your password.</small>
         </div>
-        <div class="ml-auto"><button class="btn btn-outline-primary">Guide</button></div>
+        <div class="ml-auto">
+          <router-link :to="'/password-tutorial'" class="btn btn-outline-primary">Guide</router-link>
+        </div>
       </div>
     </div>
   </div>

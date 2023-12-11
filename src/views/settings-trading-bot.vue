@@ -3,46 +3,23 @@
   <!-- bot allocation -->
   <div class="card">
     <!-- title -->
-    <div class="d-flex card-header bg-white">
-      <h5 class="text-primary mb-0">Trading Allocation</h5>
+    <div class="card-header d-flex align-items-center bg-white">
+      <h5 class="text-primary mb-0">AlphaInsider API</h5>
+      <div class="d-flex ml-auto">
+        <button @click="showStrategySelectModal=true" type="button" class="btn btn-light btn-sm border ml-auto"><i class="fas fa-pencil-alt"></i> Edit</button>
+      </div>
     </div>
     <!-- body -->
     <div class="card-body">
-      <validation-observer v-slot="event">
-        <form @submit.prevent="event.handleSubmit(() => updateBufferAmount(event))">
-          <!-- current allocation -->
-          <div class="row mb-md-3">
-            <div class="col-12 col-md-4 text-md-right pt-2">
-              <h6 class="m-0">Current allocation</h6>
-            </div>
-            <div class="col-12 col-md-6">
-              <input v-model="currentAllocation" type="text" class="form-control" disabled>
-            </div>
-          </div>
-          
-          <!-- new allocation -->
-          <div class="row mb-3">
-            <div class="col-12 col-md-4 text-md-right pt-2">
-              <h6 class="m-0">New allocation</h6>
-            </div>
-            <div class="col-12 col-md-6">
-              <validation-provider name="Allocation Amount" rules="min_value:25000|required" v-slot="{ errors }">
-                <input v-model="newAllocation" type="number" step="1" :class="{'is-invalid': errors.length}" class="form-control">
-                <div class="invalid-feedback">
-                  {{ errors[0] }}
-                </div>
-              </validation-provider>
-            </div>
-          </div>
-
-          <!-- save changes -->
-          <div class="row mt-3 mt-md-0">
-            <div class="col-12 col-md-6 offset-md-4">
-              <button type="submit" class="btn btn-primary">Save Changes</button>
-            </div>
-          </div>
-        </form>
-      </validation-observer>
+      <div v-if="strategies.length > 0">
+        <div v-for="(strategy, index) in strategies" :key="strategy.strategy_id">
+          <v-strategy :strategy="strategy"></v-strategy>
+          <hr v-if="index !== strategies.length-1">
+        </div>
+      </div>
+      <div v-else class="d-flex-column bg-light rounded text-center py-4 mt-1">
+        <h5 class="my-2">No Strategy Selected</h5>
+      </div>
     </div>
   </div>
 
@@ -70,27 +47,39 @@
       </div>
     </div>
   </div>
+
+  <!-- modals -->
+  <v-modal v-if="showStrategySelectModal" @close="showStrategySelectModal=false">
+    <v-strategy-select @update="($event) => updateStrategy($event)"></v-strategy-select>
+  </v-modal>
 </div>
 </template>
 
 
 <script>
-import VDropdownMenu from "@/components/v-dropdown-menu.vue";
+import vStrategy from "@/components/v-strategy.vue";
+import vAlphainsider from "@/components/v-alphainsider.vue";
+import vStrategySelect from '@/components/v-strategy-select.vue';
+import vModal from '@/components/v-modal.vue';
 
 export default {
-  components: {VDropdownMenu},
+  components: {vAlphainsider, vStrategy, vStrategySelect, vModal},
   data() {
     return {
-      // bot allocation
-      currentAllocation: 0,
-      newAllocation: undefined,
+      // strategy
+      strategies: [],
       // general
-      closeOnStop: true
+      closeOnStop: true,
+      // modal
+      showStrategySelectModal: false
     };
   },
   mounted() {},
   methods: {
-    updateBufferAmount() {},
+    updateStrategy(strategies) {
+      this.showStrategySelectModal = false;
+      this.strategies = strategies;
+    },
     updateCloseOnStop() {
       this.closeOnStop = !this.closeOnStop;
     }

@@ -1,7 +1,6 @@
 <template>
 <div class="container my-3 my-lg-4">
   <!-- control panel -->
-  <h3 class="text-primary mb-0">Control Panel </h3>
   <div class="control-panel d-flex justify-content-center mt-2">
     <!-- power button -->
     <div class="d-flex flex-column align-items-center">
@@ -16,26 +15,31 @@
   
   <!-- activity list -->
   <h3 class="text-primary mt-3 mb-0">Recent Activity</h3>
-  <div v-for="activity in activities" :key="activity.activity_id" class="row mt-2">
-    <div class="col-12">
+  <div v-for="activity in activities" :key="activity.activity_id" class="row">
+    <div class="col-12 mt-2">
       <v-activity :activity="activity"></v-activity>
     </div>
   </div>
+  
+  <v-confirm-start-modal v-if="showConfirmStartModal" @close="showConfirmStartModal = false" @confirmed="startBot()"></v-confirm-start-modal>
 </div>
 </template>
 
 
 <script>
 import vActivity from '@/components/v-activity.vue';
+import vConfirmStartModal from "@/components/v-confirm-start-modal.vue";
 
 export default {
-  components: {vActivity},
+  components: {vActivity, vConfirmStartModal},
   data() {
     return {
       // control panel
       powerButtonState: 'error',
       // activity
-      activities: [{activity_id: '1'}]
+      activities: [{activity_id: '1', type: 'warning', details: 'Basic details about the event.'}],
+      // modal
+      showConfirmStartModal: false
     }
   },
   mounted() {
@@ -58,9 +62,18 @@ export default {
         toastr.error('Failed to get bot information.');
       });
     },
+    startBot() {
+      this.showConfirmStartModal = false;
+      this.powerButtonState = 'active';
+    },
+    stopBot() {
+      this.powerButtonState = 'paused';
+    },
     toggleTradingBot() {
-      if(this.powerButtonState !== 'active') this.powerButtonState = 'active';
-      else this.powerButtonState = 'paused';
+      // set to active
+      if(this.powerButtonState !== 'active') this.showConfirmStartModal = true;
+      // set to paused
+      else this.stopBot();
     }
   }
 }

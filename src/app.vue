@@ -4,7 +4,7 @@
   <v-header v-if="!$route.meta.hideNav" :key="$route.path"></v-header>
   
   <!-- content -->
-  <div :class="{'phone-padding-body': $store.getters.isMobileView, 'padding-bottom': $store.getters.isLoggedIn}">
+  <div :class="{'padding-bottom': $store.getters.isLoggedIn}">
     <!-- pull to refresh -->
     <div id="pull-to-refresh"></div>
     <!-- update banner -->
@@ -72,9 +72,6 @@ $theme-colors: (
   --dark-rgb: 52,73,94;
   --body-rgb: 33,37,41;
 
-  --phone-header-height : 3.75rem;
-  --phone-footer-height : 3.75rem;
-
   --safe-area-inset-top   : 0px;
   --safe-area-inset-bottom: 0px;
   --safe-area-inset-left  : 0px;
@@ -128,26 +125,6 @@ body {
   
   //background color
   background-color: var(--light);
-
-  //phone padding
-  .phone-padding-top {
-    padding-top: var(--safe-area-inset-top);
-    padding-left: var(--safe-area-inset-left);
-    padding-right: var(--safe-area-inset-right);
-  }
-  .phone-padding-bottom {
-    padding-bottom: var(--safe-area-inset-bottom);
-    padding-left: var(--safe-area-inset-left);
-    padding-right: var(--safe-area-inset-right);
-  }
-  .phone-padding-body {
-    padding-top: calc(var(--phone-header-height) + var(--safe-area-inset-top));
-    padding-left: var(--safe-area-inset-left);
-    padding-right: var(--safe-area-inset-right);
-    &.padding-bottom {
-      padding-bottom: calc(var(--phone-footer-height) + var(--safe-area-inset-bottom));
-    }
-  }
   
   //toastr styling
   #toast-container > div {

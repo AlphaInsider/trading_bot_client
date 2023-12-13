@@ -74,9 +74,8 @@ export default {
   },
   computed: {
     currentStep() {
-      if(!this.$store.getters.broker) return 0;
-      else if(!this.$store.getters.alphainsider) return 1;
-      else if(!this.$store.state.)
+      if(!this.$store.state.bot.broker) return 0;
+      else if(!this.$store.state.bot.alphainsider) return 1;
     }
   },
   mounted() {

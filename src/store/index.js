@@ -28,11 +28,9 @@ export default new Vuex.Store({
         ...data
       }));
       // Save session storage
-      if(Object.keys(data).some((item) => ['authToken', 'bot', 'allocation'].includes(item))) {
+      if(Object.keys(data).some((item) => ['authToken'].includes(item))) {
         sessionStorage.setItem('store', JSON.stringify({
-          authToken: state.authToken,
-          bot: state.bot,
-          allocation: state.allocation
+          authToken: state.authToken
         }));
       }
     },
@@ -49,9 +47,7 @@ export default new Vuex.Store({
         allocation: []
       }));
       sessionStorage.setItem('store', JSON.stringify({
-        authToken: state.authToken,
-        bot: state.bot,
-        allocation: state.allocation
+        authToken: state.authToken
       }));
     }
   },
@@ -69,19 +65,6 @@ export default new Vuex.Store({
     },
     isMobileView(state, getters) {
       return !state.windowSize.includes('lg');
-    },
-    status(state, getters) {
-      return state.bot.status || 'off';
-    },
-    alphainsider(state, getters) {
-      return (!_.isEmpty(state.bot.alphainsider) ? state.bot.alphainsider : undefined);
-    },
-    broker(state, getters) {
-      return (!_.isEmpty(state.bot.broker) ? state.bot.broker : undefined);
-    },
-    //TODO:
-    initialAllocation(state, getters) {
-      return (getters.broker ? math.evaluate('bignumber(a) - (bignumber(a) - bignumber(b)) - round(bignumber(c) / 100, 2))', {a: getters.broker.buying_power, b: getters.broker.value, c: state.bot.buffer_amount}).toString() : '0');
     }
   },
   
@@ -233,7 +216,7 @@ export default new Vuex.Store({
       return Promise.resolve()
       .then(async () => {
         // if not logged in or alphainsider not set, return
-        if(!getters.isLoggedIn || !getters.alphainsider) return;
+        if(!getters.isLoggedIn || !state.bot.alphainsider) return;
 
         //start loading
         await dispatch('startLoading', {label: ['getAllocation']});

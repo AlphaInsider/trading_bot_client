@@ -69,9 +69,9 @@
   </div>
 
   <!-- tastytrade -->
-  <div v-if="broker === 'tastytrade'" class="mt-3">
+  <div v-else-if="broker === 'tastytrade'" class="mt-3">
     <validation-observer v-slot="event">
-      <form @submit.prevent="event.handleSubmit(() => updateBrokerKeys(event))">
+      <form @submit.prevent="event.handleSubmit(() => updateBroker(event))">
         <!-- tastytrade username -->
         <div class="row mb-3">
           <div class="col-12 pt-2">
@@ -113,10 +113,10 @@
         <!-- tastytrade account_id -->
         <label>Account ID</label>
         <div class="form-group mb-2">
-          <validation-provider name="account_id" rules="min:3|max:20|required" v-slot="{ errors }">
+          <validation-provider name="account_id" rules="required" v-slot="{ errors }">
             <input-mask
             v-model="tastyTradeAccountId"
-            :mask="/^[a-zA-Z0-9_-]+$/"
+            :mask="/^\S+$/"
             type="text"
             :class="{'is-invalid': errors.length}"
             class="form-control"

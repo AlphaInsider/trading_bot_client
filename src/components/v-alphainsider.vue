@@ -56,9 +56,6 @@ export default {
       .catch(() => {
         toastr.error('Failed to update AlphaInsider API key.');
       });
-    },
-    close() {
-      this.$emit('close')
     }
   }
 }

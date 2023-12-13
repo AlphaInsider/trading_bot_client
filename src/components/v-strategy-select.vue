@@ -32,13 +32,13 @@
         <!-- allocation -->
         <h5 class="text-primary mb-0 mt-3">Bot Allocation</h5>
         <!-- current allocation -->
-        <div v-if="$store.getters.initialAllocation" class="row mt-1">
+        <div v-if="initialAllocation" class="row mt-1">
           <div class="col-12">
             <p class="m-0">Current allocation</p>
           </div>
           <div class="col-12">
             <input-mask
-            v-model="$store.getters.initialAllocation"
+            v-model="initialAllocation"
             mask="$ num"
             :blocks="{num: {mask: Number, scale: 15, thousandsSeparator: ',', radix: '.'}}"
             :unmask="true"
@@ -107,15 +107,19 @@ export default {
   computed: {
     rules() {
       let multiplierRules = {min_value: '1', max_value: '1.67', required: false};
-      let allocationRules = {min_value: '100', max_value: this.$store.getters.broker.value, required: true};
+      let allocationRules = {min_value: '100', max_value: this.$store.state.bot.broker.value, required: true};
       return {
         multiplier: multiplierRules,
         allocation: allocationRules
       };
     },
+    //TODO: 
+    initialAllocation() {
+      return (this.$store.state.bot.broker ? math.evaluate('bignumber(a) - (bignumber(a) - bignumber(b)) - round(bignumber(c) / 100, 2))', {a: state.bot.broker.buying_power, b: state.bot.broker.value, c: state.bot.buffer_amount}).toString() : '0');
+    },
     // TODO:
     bufferAmount() {
-      return (this.$store.getters.broker ? math.evaluate('round((bignumber(a) + (bignumber(b) - bignumber(c))) * 100)', {a: this.allocation, b: this.$store.getters.broker.buying_power, c: this.$store.getters.broker.value}).toString() : '0');
+      return (this.$store.state.bot.broker ? math.evaluate('round((bignumber(a) + (bignumber(b) - bignumber(c))) * 100)', {a: this.allocation, b: this.$store.state.bot.broker.buying_power, c: this.$store.state.bot.broker.value}).toString() : '0');
     }
   },
   mounted() {

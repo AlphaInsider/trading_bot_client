@@ -101,15 +101,12 @@ export default {
     }
   },
   mounted() {
-    this.init();
+    return Promise.all([
+      this.$store.dispatch('getBotInfo'),
+      this.$store.dispatch('getAllocation')
+    ]);
   },
   methods: {
-    init() {
-      return Promise.all([
-        this.$store.dispatch('getBotInfo'),
-        this.$store.dispatch('getAllocation')
-      ]);
-    },
     updateSettings(setting) {
       // request updateSettings
       return this.$store.dispatch('request', {

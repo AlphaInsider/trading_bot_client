@@ -55,7 +55,7 @@ export default {
   },
   methods: {
     confirmed() {
-      this.$emit('confirmed')
+      this.$emit('confirmed');
     }
   }
 }

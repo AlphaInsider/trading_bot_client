@@ -57,29 +57,21 @@ export default {
     }
   },
   methods: {
-    searchStrategies: _.debounce(function() {
-      return Promise.resolve()
-      .then(async () => {
-        //skip if searchInput is empty
-        if(!this.searchInput) return;
-        //start loading
-        await this.$store.dispatch('startLoading', {label: ['searchStrategies']});
-        // searchStrategies
-        this.searchResults = await this.$store.dispatch('request', {
-          type: 'post',
-          auth: !!this.$store.getters.alphainsider,
-          url: 'searchStrategies',
-          query: {
-            search: this.searchInput,
-            type: {includes: ['stock'], excludes: []},
-            limit: 6
-          }
-        });
-      })
-      // finished
-      .finally(() => {
-        return this.$store.dispatch('finishLoading', {label: ['searchStrategies']});
-      })
+    searchStrategies: _.debounce(async function() {
+      //skip if searchInput is empty
+      if(!this.searchInput) return;
+      // searchStrategies
+      this.searchResults = await this.$store.dispatch('request', {
+        type: 'post',
+        auth: !!this.$store.state.bot.alphainsider,
+        url: 'searchStrategies',
+        loadingLabel: 'searchStrategies',
+        query: {
+          search: this.searchInput,
+          type: {includes: ['stock'], excludes: []},
+          limit: 6
+        }
+      });
     }, 500),
     selectStrategy(strategy) {
       //emit strategy to parent

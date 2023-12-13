@@ -4,11 +4,11 @@
   <div class="control-panel d-flex justify-content-center mt-2">
     <!-- power button -->
     <div class="d-flex flex-column align-items-center">
-      <button @click="toggleTradingBot()" :class="{'btn-outline-success': $store.getters.status === 'on', 'btn-outline-danger': $store.getters.status === 'off', 'btn-outline-warning': ['rebalancing', 'closing'].includes($store.getters.status)}" type="button" class="btn power-btn">
+      <button @click="toggleTradingBot()" :class="{'btn-outline-success': status === 'on', 'btn-outline-danger': status === 'off', 'btn-outline-warning': ['rebalancing', 'closing'].includes(status)}" type="button" class="btn power-btn">
         <i class="fas fa-power-off"></i>
       </button>
       <h3 class="mt-2 mb-0">
-        Trading Bot: <span :class="{'text-success': $store.getters.status === 'on', 'text-danger': $store.getters.status === 'off', 'text-warning': ['rebalancing', 'closing'].includes($store.getters.status)}" class="text-capitalize">{{ $store.getters.status }}</span>
+        Trading Bot: <span :class="{'text-success': status === 'on', 'text-danger': status === 'off', 'text-warning': ['rebalancing', 'closing'].includes(status)}" class="text-capitalize">{{ status }}</span>
       </h3>
     </div>
   </div>
@@ -60,6 +60,11 @@ export default {
       showRiskModal: false
     }
   },
+  computed: {
+    status() {
+      return this.$store.state.bot.status || 'off';
+    }
+  },
   mounted() {
     this.$store.dispatch('getBotInfo');
   },
@@ -73,7 +78,7 @@ export default {
     },
     toggleTradingBot() {
       // show confirmation modal
-      if(this.$store.getters.status !== 'active') this.showRiskModal = true;
+      if(this.status !== 'active') this.showRiskModal = true;
       // stop bot
       else this.stopBot();
     },

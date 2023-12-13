@@ -12,16 +12,16 @@
       <!-- body -->
       <div class="card-body">
         <!-- current api key -->
-        <div v-if="$store.getters.alphainsider" class="d-flex">
+        <div v-if="$store.state.bot.alphainsider" class="d-flex">
           <!-- account tier -->
           <div class="border-right pr-3">
             <label>Account Tier</label>
-            <h2 class="text-capitalize m-0">{{ $store.getters.alphainsider.account_type }}</h2>
+            <h2 class="text-capitalize m-0">{{ $store.state.bot.alphainsider.account_type }}</h2>
           </div>
           <!-- name -->
           <div class="pl-3">
             <label>Name</label>
-            <h2 class="text-capitalize text-truncate m-0">{{ $store.getters.alphainsider.name }}</h2>
+            <h2 class="text-capitalize text-truncate m-0">{{ $store.state.bot.alphainsider.name }}</h2>
           </div>
           <!-- logo -->
           <div class="ml-auto align-self-center">
@@ -48,22 +48,22 @@
       <!-- Body -->
       <div class="card-body">
         <!-- info -->
-        <div v-if="$store.getters.broker" class="d-flex">
+        <div v-if="$store.state.bot.broker" class="d-flex">
           <!-- broker -->
           <div class="pr-3">
             <label>Current Broker</label>
-            <h2 v-if="$store.getters.broker.type === 'tastytrade'" class="m-0">TastyTrade</h2>
-            <h2 v-else class="text-capitalize m-0">{{ $store.getters.broker.type }}</h2>
+            <h2 v-if="$store.state.bot.broker.type === 'tastytrade'" class="m-0">TastyTrade</h2>
+            <h2 v-else class="text-capitalize m-0">{{ $store.state.bot.broker.type }}</h2>
           </div>
           <!-- type -->
           <div class="border-left px-3">
             <label>Type</label>
-            <h2 class="text-capitalize m-0">{{ ($store.getters.broker.live ? 'Live' : 'Paper') }}</h2>
+            <h2 class="text-capitalize m-0">{{ ($store.state.bot.broker.live ? 'Live' : 'Paper') }}</h2>
           </div>
           <!-- logo -->
           <div class="ml-auto align-self-center">
-            <img v-if="$store.getters.broker.type === 'alpaca'" src="/img/brokers/alpaca-logo.png" alt="Alpaca" width="54">
-            <img v-else-if="$store.getters.broker.type === 'tastytrade'" src="/img/brokers/tastytrade-logo.svg" alt="TastyTrade" width="150">
+            <img v-if="$store.state.bot.broker.type === 'alpaca'" src="/img/brokers/alpaca-logo.png" alt="Alpaca" width="54">
+            <img v-else-if="$store.state.bot.broker.type === 'tastytrade'" src="/img/brokers/tastytrade-logo.svg" alt="TastyTrade" width="150">
           </div>
         </div>
 

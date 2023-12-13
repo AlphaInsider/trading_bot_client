@@ -95,11 +95,6 @@ export default {
       showStrategySelectModal: false
     };
   },
-  computed: {
-    closeOnStop() {
-      return this.$store.state.bot.close_on_stop || false;
-    }
-  },
   mounted() {
     return Promise.all([
       this.$store.dispatch('getBotInfo'),

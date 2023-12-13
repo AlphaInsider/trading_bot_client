@@ -33,14 +33,26 @@
     <div class="card-body">
       <!-- bot error handling -->
       <div class="p-1">
-        <!-- checkbox -->
+        <!-- rebalance_on_start -->
+        <div class="d-flex align-items-center">
+          <div>
+            <p class="mb-0">Rebalance On Start</p>
+            <small class="text-muted">When starting, the bot will rebalance immediately to match the AlphaInsider strategy.</small>
+          </div>
+          <div class="custom-control custom-switch ml-auto">
+            <input @input="updateSettings({rebalance_on_start: !$store.state.bot.rebalance_on_start})" :value="$store.state.bot.rebalance_on_start" type="checkbox" class="custom-control-input" id="subscription-switch">
+            <label class="custom-control-label pointer" for="subscription-switch"></label>
+          </div>
+        </div>
+        
+        <!-- close_on_stop -->
         <div class="d-flex align-items-center">
           <div>
             <p class="mb-0">Close On Stop</p>
             <small class="text-muted">Close all positions when the trading bot stops.</small>
           </div>
           <div class="custom-control custom-switch ml-auto">
-            <input @change="updateCloseOnStop($event)" v-model="closeOnStop" type="checkbox" class="custom-control-input" id="subscription-switch">
+            <input @input="updateSettings({close_on_stop: !$store.state.bot.close_on_stop})" :value="$store.state.bot.close_on_stop" type="checkbox" class="custom-control-input" id="subscription-switch">
             <label class="custom-control-label pointer" for="subscription-switch"></label>
           </div>
         </div>
@@ -92,19 +104,19 @@ export default {
     this.init();
   },
   methods: {
-    async init() {
-      await this.$store.dispatch('getBotInfo');
-      await this.$store.dispatch('getAllocation');
+    init() {
+      return Promise.all([
+        this.$store.dispatch('getBotInfo'),
+        this.$store.dispatch('getAllocation')
+      ]);
     },
-    updateCloseOnStop($event) {
+    updateSettings(setting) {
       // request updateSettings
       return this.$store.dispatch('request', {
         type: 'post',
         auth: true,
         url: 'updateSettings',
-        query: {
-          close_on_stop: ($event.target.value === "on")
-        }
+        query: setting
       })
       // success, getBotInfo
       .then(() => {

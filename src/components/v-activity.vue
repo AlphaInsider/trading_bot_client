@@ -10,11 +10,11 @@
       <div class="col-9 col-md-10 d-flex align-items-center px-3 py-4">
         <div>
           <label>Details</label>
-          <h5 class="mb-0">Basic details about the event.</h5>
+          <h5 class="mb-0">activity.description</h5>
         </div>
         <!-- Date Created -->
         <div class="ml-auto">
-          <small class="text-muted text-nowrap ml-auto"><i class="far fa-history mt-1"></i> <v-date :date="$moment().startOf('day').toISOString()"></v-date></small>
+          <small class="text-muted text-nowrap ml-auto"><i class="far fa-history mt-1"></i> <v-date :date="activity.created_at"></v-date></small>
         </div>
       </div>
     </div>

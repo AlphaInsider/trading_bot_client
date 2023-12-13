@@ -64,8 +64,7 @@
               </p>
               <ul>
                 <li><span class="font-weight-bold">strategies > getStrategies</span>: This gives permission to get any active strategy you have access to on AlphaInsider.</li>
-                <li><span class="font-weight-bold">strategies > getUserStrategies</span>: This gives permission to get all active strategies you created.</li>
-                <li><span class="font-weight-bold">subscriptions > getStrategySubscriptions</span>: This gives permission to get all active strategies you are subscribed to.</li>
+                <li><span class="font-weight-bold">strategies > searchStrategies</span>: This gives permission to search any strategy on AlphaInsider, including your own public/private strategies.</li>
                 <li><span class="font-weight-bold">subscriptions > getAccountSubscription</span>: This gives permission to get your current account tier subscription.</li>
                 <li><span class="font-weight-bold">trades > getPositions</span>: This gives permission to get positions on any active strategy you have access to on AlphaInsider.</li>
                 <li><span class="font-weight-bold">websockets > wsPositions</span>: This gives permission to create a websocket for positions on any active strategy you have access to on AlphaInsider.</li>

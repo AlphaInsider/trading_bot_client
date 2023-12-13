@@ -16,7 +16,8 @@ export default new Vuex.Store({
     wsSubscriptions: [],
     wsMessage: {},
     authToken: '',
-    strategySubscriptions: [],
+    bot: {},
+    allocation: [],
     ...JSON.parse(sessionStorage.getItem('store'))
   },
   
@@ -27,10 +28,11 @@ export default new Vuex.Store({
         ...data
       }));
       // Save session storage
-      if(Object.keys(data).some((item) => ['authToken', 'strategySubscriptions'].includes(item))) {
+      if(Object.keys(data).some((item) => ['authToken', 'bot', 'allocation'].includes(item))) {
         sessionStorage.setItem('store', JSON.stringify({
           authToken: state.authToken,
-          strategySubscriptions: state.strategySubscriptions
+          bot: state.bot,
+          allocation: state.allocation
         }));
       }
     },
@@ -43,11 +45,13 @@ export default new Vuex.Store({
         wsSubscriptions: [],
         wsMessage: {},
         authToken: '',
-        strategySubscriptions: [],
+        bot: {},
+        allocation: []
       }));
       sessionStorage.setItem('store', JSON.stringify({
         authToken: state.authToken,
-        strategySubscriptions: state.strategySubscriptions
+        bot: state.bot,
+        allocation: state.allocation
       }));
     }
   },
@@ -65,6 +69,19 @@ export default new Vuex.Store({
     },
     isMobileView(state, getters) {
       return !state.windowSize.includes('lg');
+    },
+    status(state, getters) {
+      return state.bot.status || 'off';
+    },
+    alphainsider(state, getters) {
+      return (!_.isEmpty(state.bot.alphainsider) ? state.bot.alphainsider : undefined);
+    },
+    broker(state, getters) {
+      return (!_.isEmpty(state.bot.broker) ? state.bot.broker : undefined);
+    },
+    //TODO:
+    initialAllocation(state, getters) {
+      return (getters.broker ? math.evaluate('bignumber(a) - (bignumber(a) - bignumber(b)) - round(bignumber(c) / 100, 2))', {a: getters.broker.buying_power, b: getters.broker.value, c: state.bot.buffer_amount}).toString() : '0');
     }
   },
   
@@ -177,35 +194,145 @@ export default new Vuex.Store({
       return ((params.redirectLogin && router.app._route.path !== '/login') ? router.replace('/login') : router.go())
     },
     
-    //DONE: getStrategySubscriptions --[strategy_id]--
-    async getStrategySubscriptions({state, commit, getters, dispatch}, params = {}) {
-      //skip if not logged in
-      if(!getters.isLoggedIn) return;
+    //CHECK: getBotInfo
+    async getBotInfo({state, commit, getters, dispatch}, params = {}) {
+      // if not logged in
+      if(!getters.isLoggedIn) return Promise.resolve();
+
       //start loading
-      await dispatch('startLoading', {label: ['getStrategySubscriptions']});
-      //request getStrategySubscriptions
+      await dispatch('startLoading', {label: ['getBotInfo']});
+
+      // request getBotInfo
       return dispatch('request', {
         type: 'get',
         auth: true,
-        url: 'getStrategySubscriptions',
-        query: {
-          strategy_id: params.strategy_id
-        }
+        url: 'getBotInfo'
       })
-      //set strategy subscriptions
-      .then((strategySubscriptions) => {
+
+      // set bot info
+      .then((bot) => {
         commit('saveState', {
-          strategySubscriptions: ((params.strategy_id) ? _.unionBy(strategySubscriptions, state.strategySubscriptions, 'strategy_id') : strategySubscriptions)
+          bot
         });
       })
-      //error
+
+      // error
       .catch((error) => {
-        toastr.error('Failed to get strategy subscriptions.');
+        toastr.error('Failed to get trading bot information.');
         throw error;
       })
-      //finish loading
+
+      // finish loading
       .finally(() => {
-        return dispatch('finishLoading', {label: ['getStrategySubscriptions']});
+        return dispatch('finishLoading', {label: ['getBotInfo']});
+      });
+    },
+    
+    //CHECK: getAllocation
+    async getAllocation({state, commit, getters, dispatch}, params = {}) {
+      return Promise.resolve()
+      .then(async () => {
+        // if not logged in or alphainsider not set, return
+        if(!getters.isLoggedIn || !getters.alphainsider) return;
+
+        //start loading
+        await dispatch('startLoading', {label: ['getAllocation']});
+
+        // request getAllocation
+        let allocation = await dispatch('request', {
+          type: 'get',
+          auth: true,
+          url: 'getAllocation',
+          query: {}
+        });
+
+        // request getStrategies
+        let strategies = await dispatch('request', {
+          type: 'get',
+          auth: true,
+          url: 'getStrategies',
+          query: {
+            strategy_id: _.map(allocation, 'strategy_id')
+          }
+        });
+
+        // calculate
+        let computed = _.chain(strategies).map((strategy) => {
+          let info = _.find(allocation, {strategy_id: strategy.strategy_id});
+          return (info ? {...strategy, allocation_id: info.allocation_id, bot_id: info.bot_id, multiplier: info.multiplier} : null);
+        }).compact().value();
+
+        // save state
+        commit('saveState', {
+          allocation: computed
+        });
+      })
+      // error
+      .catch((error) => {
+        toastr.error('Failed to get allocation.');
+      })
+      // finally
+      .finally(() => {
+        return dispatch('finishLoading', {label: ['getAllocation']});
+      });
+    },
+    
+    //CHECK: startBot
+    async startBot({state, commit, getters, dispatch}, params = {}) {
+      return Promise.resolve()
+      .then(async () => {
+        // if not logged in
+        if(!getters.isLoggedIn) return Promise.resolve();
+
+        //start loading
+        await dispatch('startLoading', {label: ['startBot']})
+
+        // request startBot
+        await dispatch('request', {
+          type: 'post',
+          auth: true,
+          url: 'startBot'
+        });
+
+        // getBotInfo
+        await dispatch('getBotInfo');
+      })
+      // error
+      .catch((error) => {
+        toastr.error('Failed to start trading bot.');
+      })
+      // finish loading
+      .finally(() => {
+        return dispatch('finishLoading', {label: ['startBot']});
+      });
+    },
+
+    //CHECK: stopBot
+    async stopBot({state, commit, getters, dispatch}, params = {}) {
+      return Promise.resolve()
+      .then(async () => {
+        // if not logged in
+        if(!getters.isLoggedIn) return Promise.resolve();
+
+        //start loading
+        await dispatch('startLoading', {label: ['stopBot']})
+
+        // request startBot
+        await dispatch('request', {
+          type: 'post',
+          auth: true,
+          url: 'stopBot'
+        });
+
+        // getBotInfo
+        await dispatch('getBotInfo');
+      })
+      .catch((error) => {
+        toastr.error('Failed to stop trading bot.');
+      })
+      // finish loading
+      .finally(() => {
+        return dispatch('finishLoading', {label: ['stopBot']});
       });
     },
     

@@ -4,17 +4,17 @@
   <div class="card">
     <!-- title -->
     <div class="card-header d-flex align-items-center bg-white">
-      <h5 class="text-primary mb-0">AlphaInsider API</h5>
+      <h5 class="text-primary mb-0">Strategies</h5>
       <div class="d-flex ml-auto">
-        <button @click="showStrategySelectModal=true" type="button" class="btn btn-light btn-sm border ml-auto"><i class="fas fa-pencil-alt"></i> Edit</button>
+        <button @click="showStrategySelectModal=true" :disabled="!$store.getters.alphainsider || !$store.getters.broker" type="button" class="btn btn-light btn-sm border ml-auto"><i class="fas fa-pencil-alt"></i> Edit</button>
       </div>
     </div>
     <!-- body -->
     <div class="card-body">
-      <div v-if="strategies.length > 0">
-        <div v-for="(strategy, index) in strategies" :key="strategy.strategy_id">
+      <div v-if="$store.state.allocation.length > 0">
+        <div v-for="(strategy, index) in $store.state.allocation" :key="strategy.strategy_id">
           <v-strategy :strategy="strategy"></v-strategy>
-          <hr v-if="index !== strategies.length-1">
+          <hr v-if="index !== $store.state.allocation.length-1">
         </div>
       </div>
       <div v-else class="d-flex-column bg-light rounded text-center py-4 mt-1">
@@ -40,7 +40,7 @@
             <small class="text-muted">Close all positions when the trading bot stops.</small>
           </div>
           <div class="custom-control custom-switch ml-auto">
-            <input @change="updateCloseOnStop()" v-model="closeOnStop" type="checkbox" class="custom-control-input" id="subscription-switch">
+            <input @change="updateCloseOnStop($event)" v-model="closeOnStop" type="checkbox" class="custom-control-input" id="subscription-switch">
             <label class="custom-control-label pointer" for="subscription-switch"></label>
           </div>
         </div>
@@ -50,7 +50,17 @@
 
   <!-- modals -->
   <v-modal v-if="showStrategySelectModal" @close="showStrategySelectModal=false">
-    <v-strategy-select @update="($event) => updateStrategy($event)"></v-strategy-select>
+    <div class="card">
+      <!-- title -->
+      <div class="card-header bg-white d-flex p-3">
+        <h5 class="text-primary mb-0">Strategy Select</h5>
+        <h5 @click="showStrategySelectModal = false" class="mb-0 ml-auto"><i class="far fa-times text-muted pointer"></i></h5>
+      </div>
+      <!-- body -->
+      <div class="card-body p-3">
+        <v-strategy-select @update="$router.go()"></v-strategy-select>
+      </div>
+    </div>
   </v-modal>
 </div>
 </template>
@@ -66,22 +76,44 @@ export default {
   components: {vAlphainsider, vStrategy, vStrategySelect, vModal},
   data() {
     return {
-      // strategy
+      // strategies
+      allocation: [],
       strategies: [],
-      // general
-      closeOnStop: true,
       // modal
       showStrategySelectModal: false
     };
   },
-  mounted() {},
+  computed: {
+    closeOnStop() {
+      return this.$store.state.bot.close_on_stop || false;
+    }
+  },
+  mounted() {
+    this.init();
+  },
   methods: {
-    updateStrategy(strategies) {
-      this.showStrategySelectModal = false;
-      this.strategies = strategies;
+    async init() {
+      await this.$store.dispatch('getBotInfo');
+      await this.$store.dispatch('getAllocation');
     },
-    updateCloseOnStop() {
-      this.closeOnStop = !this.closeOnStop;
+    updateCloseOnStop($event) {
+      // request updateSettings
+      return this.$store.dispatch('request', {
+        type: 'post',
+        auth: true,
+        url: 'updateSettings',
+        query: {
+          close_on_stop: ($event.target.value === "on")
+        }
+      })
+      // success, getBotInfo
+      .then(() => {
+        return this.$store.dispatch('getBotInfo');
+      })
+      // error
+      .catch(() => {
+        toastr.error('Failed to update bot trading settings.');
+      });
     }
   }
 }

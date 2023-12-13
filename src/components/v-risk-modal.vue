@@ -2,13 +2,13 @@
 <v-modal @close="$emit('close')">
   <!-- title -->
   <div class="card-header bg-white d-flex p-3">
-    <h5 class="text-primary mb-0">Start AlphaBot</h5>
+    <h5 class="text-primary mb-0">Risk Disclaimer</h5>
     <h5 @click="$emit('close')" class="mb-0 ml-auto"><i class="far fa-times text-muted pointer"></i></h5>
   </div>
   <!-- body -->
   <div class="card-body p-3">
     <validation-observer v-slot="event">
-      <form @submit.prevent="event.handleSubmit(() => confirmStart())">
+      <form @submit.prevent="event.handleSubmit(() => confirmed())">
         <p class="mb-0">
           By activating AlphaBot, you grant it permission to automatically rebalance your portfolio to match the chosen AlphaInsider strategy,
           including buying and selling assets and using all available cash. While active, <b class="text-danger">you cannot manually trade</b>. To regain control,
@@ -34,7 +34,7 @@
         <!-- submit -->
         <div class="d-flex align-items-center">
           <button @click="$emit('close')" type="button" class="btn btn-light border ml-auto mr-2">Cancel</button>
-          <button type="submit" class="btn btn-primary">Start <i class="fas fa-long-arrow-right"></i></button>
+          <button type="submit" class="btn btn-primary">Confirm <i class="fas fa-long-arrow-right"></i></button>
         </div>
       </form>
     </validation-observer>
@@ -54,7 +54,7 @@ export default {
     }
   },
   methods: {
-    confirmStart() {
+    confirmed() {
       this.$emit('confirmed')
     }
   }

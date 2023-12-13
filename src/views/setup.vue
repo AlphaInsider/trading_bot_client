@@ -3,18 +3,45 @@
     <div class="row no-gutters justify-content-center w-100">
       <div class="col-11 col-md-6">
         <!-- connect broker -->
-        <div v-if="currentStep === 0">
-          <v-broker @update="next()" class="shadow-sm"></v-broker>
+        <div v-if="currentStep === 0" class="card shadow-sm">
+          <div class="card">
+            <!-- title -->
+            <div class="card-header bg-white d-flex align-items-center p-3">
+              <h5 class="text-primary mb-0">Connect Brokerage</h5>
+            </div>
+            <!-- body -->
+            <div class="card-body p-3">
+              <v-broker @update="next()"></v-broker>
+            </div>
+          </div>
         </div>
 
         <!-- connect alphainsider -->
         <div v-else-if="currentStep === 1" class="card shadow-sm">
-          <v-alphainsider @update="next()" class="shadow-sm"></v-alphainsider>
+          <div class="card">
+            <!-- title -->
+            <div class="card-header bg-white d-flex align-items-center p-3">
+              <h5 class="text-primary mb-0">Connect AlphaInsider</h5>
+            </div>
+            <!-- body -->
+            <div class="card-body p-3">
+              <v-alphainsider @update="next()"></v-alphainsider>
+            </div>
+          </div>
         </div>
 
         <!-- select strategy -->
         <div v-else-if="currentStep === 2" class="card shadow-sm">
-          <v-strategy-select @update="next()" class="shadow-sm"></v-strategy-select>
+          <div class="card">
+            <!-- title -->
+            <div class="card-header bg-white d-flex align-items-center p-3">
+              <h5 class="text-primary mb-0">Strategy Select</h5>
+            </div>
+            <!-- body -->
+            <div class="card-body p-3">
+              <v-strategy-select @update="next()"></v-strategy-select>
+            </div>
+          </div>
         </div>
 
         <!-- finish -->
@@ -45,7 +72,17 @@ export default {
       currentStep: 2
     };
   },
-  mounted() {},
+  computed: {
+    currentStep() {
+      if(!this.$store.getters.broker) return 0;
+      else if(!this.$store.getters.alphainsider) return 1;
+      else if(!this.$store.state.)
+    }
+  },
+  mounted() {
+    this.$store.dispatch('getBotInfo');
+    
+  },
   methods: {
     back() {
       this.currentStep = (this.currentStep > 0 ? this.currentStep-1 : this.currentStep);

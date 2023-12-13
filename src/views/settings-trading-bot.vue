@@ -95,21 +95,13 @@ export default {
       showStrategySelectModal: false
     };
   },
-  computed: {
-    closeOnStop() {
-      return this.$store.state.bot.close_on_stop || false;
-    }
-  },
   mounted() {
-    this.init();
+    return Promise.all([
+      this.$store.dispatch('getBotInfo'),
+      this.$store.dispatch('getAllocation')
+    ]);
   },
   methods: {
-    init() {
-      return Promise.all([
-        this.$store.dispatch('getBotInfo'),
-        this.$store.dispatch('getAllocation')
-      ]);
-    },
     updateSettings(setting) {
       // request updateSettings
       return this.$store.dispatch('request', {

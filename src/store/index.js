@@ -4,6 +4,7 @@ import * as jose from 'jose';
 import axios from 'axios';
 import moment from 'moment';
 import * as math from 'mathjs';
+import {all} from "mathjs";
 
 Vue.use(Vuex);
 
@@ -229,6 +230,9 @@ export default new Vuex.Store({
           query: {}
         });
 
+        // skip if no strategy allocation
+        if(allocation.length <= 0) return;
+        
         // request getStrategies
         let strategies = await dispatch('request', {
           type: 'get',

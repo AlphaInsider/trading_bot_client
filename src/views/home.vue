@@ -24,17 +24,8 @@
     </transition-group>
     <!-- infinite loading -->
     <infinite-loading :identifier="'activity-list'" spinner="waveDots" @infinite="getActivity($event)" @$InfiniteLoading:reset="activity = []">
-      <!-- loading -->
       <!-- no results, no more results, error -->
-      <div v-for="(name, index) in ['no-results', 'no-more', 'error']" :key="index" :slot="name">
-        <div class="d-flex w-100 justify-content-center mt-2">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="text-muted mb-0">Created {{ $moment($store.state.bot.created_at).format('MMMM DD, YYYY [at] h:mma') }}</h5>
-            </div>
-          </div>
-        </div>
-      </div>
+      <div v-for="(name, index) in ['no-results', 'no-more', 'error']" :key="index" :slot="name"></div>
     </infinite-loading>
   </div>
   

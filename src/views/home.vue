@@ -4,11 +4,11 @@
   <div class="control-panel d-flex justify-content-center mt-2">
     <!-- power button -->
     <div class="d-flex flex-column align-items-center">
-      <button @click="toggleTradingBot()" :class="{'btn-outline-success': status === 'on', 'btn-outline-danger': status === 'off', 'btn-outline-warning': ['rebalancing', 'closing'].includes(status)}" type="button" class="btn power-btn">
+      <button @click="toggleTradingBot()" :class="{'btn-outline-success': ['on', 'rebalancing'].includes(status), 'btn-outline-danger': status === 'off', 'btn-outline-warning': status === 'closing'}" type="button" class="btn power-btn">
         <i class="fas fa-power-off"></i>
       </button>
       <h3 class="mt-2 mb-0">
-        Trading Bot: <span :class="{'text-success': status === 'on', 'text-danger': status === 'off', 'text-warning': ['rebalancing', 'closing'].includes(status)}" class="text-capitalize">{{ status }}</span>
+        Trading Bot: <span :class="{'text-success': ['on', 'rebalancing'].includes(status), 'text-danger': status === 'off', 'text-warning': status === 'closing'}" class="text-capitalize">{{ status }}</span>
       </h3>
     </div>
   </div>
@@ -71,14 +71,14 @@ export default {
   methods: {
     startBot() {
       this.showRiskModal = false;
-      this.$store.dispatch('stopBot');
+      this.$store.dispatch('startBot');
     },
     stopBot() {
-      this.$store.dispatch('startBot');
+      this.$store.dispatch('stopBot');
     },
     toggleTradingBot() {
       // show confirmation modal
-      if(this.status !== 'active') this.showRiskModal = true;
+      if(['off', 'closing'].includes(this.status)) this.showRiskModal = true;
       // stop bot
       else this.stopBot();
     },

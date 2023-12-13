@@ -7,7 +7,7 @@
         <div class="col-12">
           <div class="text-center">
             <h1 class="text-white">Risk Disclaimer</h1>
-            <h5 class="text-white">Last Update: December 07, 2023</h5>
+            <h5 class="text-white">Last Update: December 13, 2023</h5>
           </div>
         </div>
       </div>
@@ -27,80 +27,47 @@
             indemnification, governing law, and disclaimers. Activation of AlphaBot indicates your understanding and 
             acceptance of these risks and terms.
           </p>
-          <h3>1. Introduction</h3>
+          <h3>Introduction</h3>
           <p>
-            This document outlines the risks associated with using AlphaBot "The Bot", a user-owned trading bot. Before activating 
-            the bot, it is crucial to understand these risks thoroughly.
+            This agreement outlines the terms and conditions of using AlphaBot, an open-source trading bot designed to 
+            automate order execution between trading strategy alert services and brokerage platforms. Activation and 
+            use of AlphaBot signify your understanding and acceptance of the following terms.
           </p>
 
-          <h3>2. Market Volatility</h3>
-          <p>Financial markets are inherently volatile and unpredictable. Risks include:</p>
+          <h3>Risk Acknowledgement</h3>
           <ul>
-            <li><strong>Sudden market shifts:</strong> Prices of assets can fluctuate rapidly, leading to losses on your investments.</li>
-            <li><strong>Black swan events:</strong> Unforeseen events like economic crises or natural disasters can significantly impact market performance, resulting in substantial losses.</li>
-            <li><strong>Technical issues:</strong> System malfunctions or errors within AlphaBot itself could lead to inappropriate trading decisions and financial losses.</li>
+            <li><strong>Market Volatility:</strong> You acknowledge the inherent volatility of financial markets, including rapid price fluctuations, potential losses due to unforeseen "black swan" events, and the risk of technical issues within AlphaBot leading to financial losses.</li>
+            <li><strong>Open-Source Risks:</strong> You understand the risks associated with using an open-source tool like AlphaBot for connecting trade alert services to your brokerage account.</li>
+          </ul>
+          <p>
+            You acknowledge that the performance of any vendor sending trade alerts linked to AlphaBot impacts your portfolio's performance. While these strategies may have performed well historically, AlphaBot does not guarantee successful performance and past performance is not indicative of future results. You accept the risk of potential losses if any of these strategies underperform or fail to meet your expectations.
+          </p>
+          <p>
+            The alert services compatible with AlphaBot may not be registered broker-dealers and are not supervised by regulatory authorities like the SEC or FINRA.
+          </p>
+
+          <h3>User Responsibilities</h3>
+          <p>
+            You acknowledge and agree that your use of AlphaBot is for the express purpose of facilitating the independent management of your personal investments. AlphaBot functions as a tool to assist in the execution of your chosen investment strategies and decisions. It is important to understand that AlphaBot, as well as any connected external services, do not provide investment advice, guidance, nor undertake order execution as an agent or representative on your behalf. Consequently, you bear full responsibility for all your investment decisions, including the monitoring of your investment positions and the accurate processing of trade signals. While AlphaBot aids in these processes, it does not relieve you of the responsibility for these decisions and actions, which are made solely at your discretion and risk.
+          </p>
+          <p>
+            By activating and using AlphaBot, you expressly authorize it to make changes, including trades and adjustments, within your brokerage account. You understand and accept that this may impact your ability to conduct manual trading of cash or reserves, thereby influencing your overall portfolio management.
+          </p>
+
+          <h3>Legal Terms</h3>
+          <p>
+            While AlphaBot is an open-source project, users must comply with the terms of the specific open-source license under which it is released. This includes any restrictions on the use, modification, distribution, or creation of derivative works. Copyrights to the original work and trademarks, such as the name and logo of AlphaBot, are retained by the creators and must be respected in accordance with applicable laws.
+          </p>
+          <ul>
+            <li><strong>Indemnification:</strong> By using AlphaBot, you agree to indemnify and hold harmless its creators and any affiliated third parties from all claims, demands, suits, actions, liabilities, costs, losses, expenses, and damages that may arise from your use of AlphaBot.</li>
+            <li><strong>Governing Law:</strong>The terms and conditions of this agreement are governed by and construed in accordance with the laws of the State of Delaware, without regard to its conflict of law principles.</li>
+            <li><strong>Disclaimer of Warranties and Limitation of Liability:</strong> AlphaBot is provided "as is" and without any express or implied warranties. The creators of AlphaBot disclaim all warranties regarding the accuracy, reliability, completeness, or fitness for a particular purpose of AlphaBot. Furthermore, the creators shall not be liable for any direct, indirect, incidental, consequential, or punitive damages arising from your use of AlphaBot.</li>
           </ul>
 
-          <h3>3. Investment Strategy Performance</h3>
+          <h3>Data Privacy</h3>
           <p>
-            The performance of the AlphaInsider strategy you choose directly impacts your portfolio's performance. While the
-            strategy may have performed well historically, past performance is not indicative of future results. You should be
-            prepared to face potential losses if the strategy underperforms or fails to meet your expectations.
+            You agree to the collection and use of your data in accordance with The Bot's <router-link to="/privacy-policy">Privacy Policy</router-link>, which includes storing data related to your portfolio and trading activity.
           </p>
-
-          <h3>4. Reliance on Automation</h3>
-          <p>
-            By activating AlphaBot, you are relying on automated algorithms and trading decisions. This means you relinquish some
-            control over your portfolio and entrust The Bot with making investment decisions. While AlphaBot strives to maximize
-            returns, there is no guarantee of success.
-          </p>
-
-          <h3>5. Limited Trading Control</h3>
-          <p>
-            AlphaBot's activation limits manual trading of cash or reserves, potentially impacting your ability to invest 
-            or adjust your portfolio.
-          </p>
-
-          <h3>6. User Responsibility</h3>
-          <p>
-            It is your sole responsibility to understand and accept the risks involved before activating AlphaBot. You are
-            responsible for conducting your own research and due diligence before choosing an AlphaInsider strategy and trusting
-            The Bot with your investments.
-          </p>
-
-          <h3>7. Indemnification</h3>
-          <p>
-            By activating AlphaBot, you agree to indemnify and hold harmless the creators of The Bot from any and all claims,
-            losses, liabilities, costs, and expenses arising from your use of The Bot, including those mentioned above.
-          </p>
-
-          <h3>8. Governing Law</h3>
-          <p>
-            These terms and conditions are governed and construed in accordance with the laws of the State of Delaware, without
-            regard to its conflict of laws principles.
-          </p>
-
-          <h3>Additional Legal Disclaimers</h3>
-          <ul>
-            <li>
-              <strong>Disclaimer of Warranties:</strong> AlphaBot is provided "as is" and without any warranties, 
-              express or implied. The creators of The Bot do not warrant its accuracy, reliability, completeness, 
-              or fitness for a particular purpose.
-            </li>
-            <li>
-              <strong>Limitation of Liability:</strong> The creators of AlphaBot shall not be liable for any damages, 
-              including but not limited to, direct, indirect, incidental, consequential, or punitive damages arising 
-              from your use of The Bot.
-            </li>
-            <li><strong>Intellectual Property:</strong> AlphaBot is protected by intellectual property laws. You are 
-              not permitted to copy, modify, distribute, or create derivative works of The Bot without prior written 
-              consent from the creators.</li>
-            <li><strong>Data Privacy:</strong> AlphaBot collects and stores data related to your portfolio and trading
-              activity. This data is used to improve The Bot's performance and provide you with relevant information. 
-              You agree to the collection and use of your data in accordance with The Bot's Privacy Policy.
-            </li>
-          </ul>
-
           <p>
             <strong>
               By activating AlphaBot, you acknowledge that you have read, understood, and agree to the Risk 

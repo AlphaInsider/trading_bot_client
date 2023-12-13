@@ -4,58 +4,101 @@
   <div class="control-panel d-flex justify-content-center mt-2">
     <!-- power button -->
     <div class="d-flex flex-column align-items-center">
-      <button @click="toggleTradingBot()" :class="{'btn-outline-success': powerButtonState === 'active', 'btn-outline-warning': powerButtonState === 'paused', 'btn-outline-danger': powerButtonState === 'error'}" type="button" class="btn power-btn">
+      <button @click="toggleTradingBot()" :class="{'btn-outline-success': $store.getters.status === 'on', 'btn-outline-danger': $store.getters.status === 'off', 'btn-outline-warning': ['rebalancing', 'closing'].includes($store.getters.status)}" type="button" class="btn power-btn">
         <i class="fas fa-power-off"></i>
       </button>
       <h3 class="mt-2 mb-0">
-        Trading Bot: <span :class="{'text-success': powerButtonState === 'active', 'text-warning': powerButtonState === 'paused', 'text-danger': powerButtonState === 'error'}" class="text-capitalize">{{ powerButtonState }}</span>
+        Trading Bot: <span :class="{'text-success': $store.getters.status === 'on', 'text-danger': $store.getters.status === 'off', 'text-warning': ['rebalancing', 'closing'].includes($store.getters.status)}" class="text-capitalize">{{ $store.getters.status }}</span>
       </h3>
     </div>
   </div>
   
   <!-- activity list -->
   <h3 class="text-primary mt-3 mb-0">Recent Activity</h3>
-  <div v-for="activity in activities" :key="activity.activity_id" class="row">
-    <div class="col-12 mt-2">
-      <v-activity :activity="activity"></v-activity>
-    </div>
+  <div class="d-flex flex-column">
+    <!-- Timelines -->
+    <transition-group v-if="activity.length > 0" enter-active-class="animate__animated animate__fadeIn animate__faster" mode="out-in">
+      <div v-for="(event, index) in activity" :key="event.activity_id">
+        <v-activity :activity="event" class="mt-2"></v-activity>
+      </div>
+    </transition-group>
+    <!-- infinite loading -->
+    <infinite-loading :identifier="'activity-list'" spinner="waveDots" @infinite="getActivity($event)" @$InfiniteLoading:reset="activity = []">
+      <!-- loading -->
+      <!-- no results, no more results, error -->
+      <div v-for="(name, index) in ['no-results', 'no-more', 'error']" :key="index" :slot="name">
+        <div class="d-flex w-100 justify-content-center mt-2">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="text-muted mb-0">Created {{ $moment($store.state.bot.created_at).format('MMMM DD, YYYY [at] h:mma') }}</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </infinite-loading>
   </div>
   
-  <v-confirm-start-modal v-if="showConfirmStartModal" @close="showConfirmStartModal = false" @confirmed="startBot()"></v-confirm-start-modal>
+  <!-- modals -->
+  <v-risk-modal v-if="showRiskModal" @close="showRiskModal = false" @confirmed="startBot()"></v-risk-modal>
 </div>
 </template>
 
 
 <script>
+import InfiniteLoading from 'vue-infinite-loading';
 import vActivity from '@/components/v-activity.vue';
-import vConfirmStartModal from "@/components/v-confirm-start-modal.vue";
+import vRiskModal from "@/components/v-risk-modal.vue";
 
 export default {
-  components: {vActivity, vConfirmStartModal},
+  components: {InfiniteLoading, vActivity, vRiskModal},
   data() {
     return {
-      // control panel
-      powerButtonState: 'error',
       // activity
-      activities: [{activity_id: '1', type: 'warning', details: 'Basic details about the event.'}],
+      activity: [],
+      activityLimit: 10,
       // modal
-      showConfirmStartModal: false
+      showRiskModal: false
     }
+  },
+  mounted() {
+    this.$store.dispatch('getBotInfo');
   },
   methods: {
     startBot() {
-      this.showConfirmStartModal = false;
-      this.powerButtonState = 'active';
+      this.showRiskModal = false;
+      this.$store.dispatch('stopBot');
     },
     stopBot() {
-      this.powerButtonState = 'paused';
+      this.$store.dispatch('startBot');
     },
     toggleTradingBot() {
-      // set to active
-      if(this.powerButtonState !== 'active') this.showConfirmStartModal = true;
-      // set to paused
+      // show confirmation modal
+      if(this.$store.getters.status !== 'active') this.showRiskModal = true;
+      // stop bot
       else this.stopBot();
-    }
+    },
+    getActivity($state) {
+      //request getActivity
+      return this.$store.dispatch('request', {
+        type: 'get',
+        auth: true,
+        url: 'getActivity',
+        query: {
+          limit: this.activityLimit,
+          offset_id: (this.activity.length > 0 ? _.last(this.activity).activity_id : undefined)
+        }
+      })
+      //success, set timelines
+      .then((data) => {
+        this.activity = _.unionBy(this.activity, data, 'activity_id');
+        ((data.length > 0) ? $state.loaded() : $state.complete())
+      })
+      //error
+      .catch((error) => {
+        toastr.error('Failed to get activity.');
+        $state.complete();
+      });
+    },
   }
 }
 </script>

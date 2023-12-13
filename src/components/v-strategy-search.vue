@@ -5,7 +5,7 @@
   v-model="searchInput"
   @input="searchStrategies()"
   @focus="searchInFocus=true"
-  @keyup.enter="strategyList.length >= 1 && selectStrategy(strategyList[0])"
+  @keyup.enter="searchResults.length >= 1 && selectStrategy(searchResults[0])"
   type="text"
   placeholder="Search Strategy..."
   class="form-control shadow-none border-right-0"
@@ -13,7 +13,7 @@
 
   <!-- dropdown menu -->
   <v-dropdown-menu
-  v-if="searchInFocus && (searchInput || strategyList.length >= 1)"
+  v-if="searchInFocus && (searchInput || searchResults.length > 0)"
   @close="(!$refs.search.contains($event.target)) && closeSearch()"
   :stay-open="true"
   :arrow-offset="12"
@@ -21,12 +21,12 @@
   >
     <!-- search results -->
     <div class="stock-list">
-      <div v-for="strategy in strategyList" :key="strategy.strategy_id" class="dropdown-item" @click="selectStrategy(strategy)">
+      <div v-for="strategy in searchResults" :key="strategy.strategy_id" class="dropdown-item" @click="selectStrategy(strategy)">
         <v-strategy :strategy="strategy" compact></v-strategy>
       </div>
     </div>
     <!-- no search results -->
-    <h6 v-if="searchInput && strategyList.length <= 0" class="text-muted my-1">No Search Results</h6>
+    <h6 v-if="searchInput && searchResults.length <= 0" class="text-muted my-1">No Search Results</h6>
   </v-dropdown-menu>
 
   <!-- search icon -->
@@ -56,45 +56,30 @@ export default {
       selectedStrategy: undefined,
     }
   },
-  computed: {
-    strategyList() {
-      let subscriptions = ((this.searchInput) ? _.filter(this.$store.state.strategySubscriptions, (subscription) => {
-        return (subscription.name+' '+subscription.description).includes(this.searchInput);
-      }) : this.$store.state.strategySubscriptions);
-      return _.chain(subscriptions).concat(this.searchResults).uniqBy('strategy_id').value();
-    }
-  },
   methods: {
     searchStrategies: _.debounce(function() {
-      //skip if searchInput is empty
-      if(!this.searchInput) return Promise.resolve();
-      //start loading
       return Promise.resolve()
-      .then(() => {
-        return this.$store.dispatch('startLoading', {label: ['searchStrategies']});
-      })
-      //request searchStocks
-      .then(() => {
-        return [{strategy_id: '1', user_id: 'crypto_user', name: 'Test Strategy 1, Test Strategy 1, Test Strategy 1, Test Strategy 1, Test Strategy 1, Test Strategy 1, Test Strategy 1, Test Strategy 1', description: 'testing 321', type: 'crypto', subscriber_count: 10}, {strategy_id: '2', user_id: 'crypto_user', name: 'Test Strategy 2', description: 'testing 123', type: 'stock', subscriber_count: 5}];
-        /*return this.$store.dispatch('request', {
+      .then(async () => {
+        //skip if searchInput is empty
+        if(!this.searchInput) return;
+        //start loading
+        await this.$store.dispatch('startLoading', {label: ['searchStrategies']});
+        // searchStrategies
+        this.searchResults = await this.$store.dispatch('request', {
           type: 'post',
-          auth: false,
+          auth: !!this.$store.getters.alphainsider,
           url: 'searchStrategies',
           query: {
             search: this.searchInput,
-            type: 'stock',
-            limit: 50
+            type: {includes: ['stock'], excludes: []},
+            limit: 6
           }
-        });*/
+        });
       })
-      //success, set searchResults
-      .then((data) => {
-        this.searchResults = data;
-      })
-      //finish loading
+      // finished
       .finally(() => {
         return this.$store.dispatch('finishLoading', {label: ['searchStrategies']});
-      });
+      })
     }, 500),
     selectStrategy(strategy) {
       //emit strategy to parent

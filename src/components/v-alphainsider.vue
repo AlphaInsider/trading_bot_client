@@ -1,38 +1,31 @@
 <template>
-<div class="card">
-  <!-- title -->
-  <div class="card-header bg-white d-flex align-items-center p-3">
-    <h5 class="text-primary mb-0">Connect AlphaInsider</h5>
-    <router-link to="/alphainsider-tutorial" class="btn btn-outline-primary btn-sm ml-auto">Help</router-link>
-  </div>
-  <!-- body -->
-  <div class="card-body p-3">
-    <validation-observer v-slot="event">
-      <form @submit.prevent="event.handleSubmit(() => updateAlphaInsider(event))">
-        <!-- new api key -->
-        <div class="row">
-          <div class="col-12 pt-2">
-            <h6 class="m-0">AlphaInsider API Key</h6>
-          </div>
-          <div class="col-12">
-            <validation-provider name="AlphaInsider API Key" rules="required" v-slot="{ errors }">
-              <input v-model="alphainsiderKey" type="text" :class="{'is-invalid': errors.length}" class="form-control">
-              <div class="invalid-feedback">
-                {{ errors[0] }}
-              </div>
-            </validation-provider>
-          </div>
+<div>
+  <validation-observer v-slot="event">
+    <form @submit.prevent="event.handleSubmit(() => updateAlphaInsider(event))">
+      <!-- new api key -->
+      <div class="row">
+        <div class="col-12 pt-2">
+          <h6 class="m-0">AlphaInsider API Key</h6>
         </div>
+        <div class="col-12">
+          <validation-provider name="alphainsider_key" rules="required" v-slot="{ errors }">
+            <input v-model="alphainsiderKey" type="text" :class="{'is-invalid': errors.length}" class="form-control">
+            <div class="invalid-feedback">
+              {{ errors[0] }}
+            </div>
+          </validation-provider>
+        </div>
+      </div>
 
-        <!-- save changes -->
-        <div class="row mt-3">
-          <div class="col-12 d-flex justify-content-end">
-            <button type="submit" class="btn btn-primary">Save</button>
-          </div>
+      <!-- save changes -->
+      <div class="row mt-3">
+        <div class="col-12 d-flex justify-content-end">
+          <router-link to="/alphainsider-tutorial" class="btn btn-light border mr-2">Help</router-link>
+          <button type="submit" class="btn btn-primary">Save</button>
         </div>
-      </form>
-    </validation-observer>
-  </div>
+      </div>
+    </form>
+  </validation-observer>
 </div>
 </template>
 
@@ -45,11 +38,28 @@ export default {
   },
   methods: {
     updateAlphaInsider() {
-      this.$emit('update');
+      if(!this.alphainsiderKey) return Promise.resolve();
+      // request updateAlphaInsider
+      return this.$store.dispatch('request', {
+        type: 'post',
+        auth: true,
+        url: 'updateAlphaInsider',
+        query: {
+          alphainsider_key: this.alphainsiderKey
+        }
+      })
+      //success, emit update
+      .then(() => {
+        this.$emit('update');
+      })
+      // error, toast error
+      .catch(() => {
+        toastr.error('Failed to update AlphaInsider API key.');
+      });
+    },
+    close() {
+      this.$emit('close')
     }
   }
 }
 </script>
-
-<style lang="scss" scoped>
-</style>

@@ -12,21 +12,26 @@
       <!-- body -->
       <div class="card-body">
         <!-- current api key -->
-        <div v-if="alphainsiderToken" class="row">
+        <div v-if="$store.getters.alphainsider" class="d-flex">
+          <!-- account tier -->
+          <div class="border-right pr-3">
+            <label>Account Tier</label>
+            <h2 class="text-capitalize m-0">{{ $store.getters.alphainsider.account_type }}</h2>
+          </div>
           <!-- name -->
-          <div class="col">
-            <label>Current API Key</label>
-            <h1 class="text-capitalize m-0">{{ alphainsiderToken.name }}</h1>
+          <div class="pl-3">
+            <label>Name</label>
+            <h2 class="text-capitalize text-truncate m-0">{{ $store.getters.alphainsider.name }}</h2>
           </div>
           <!-- logo -->
-          <div class="col-auto align-self-center">
+          <div class="ml-auto align-self-center">
             <img src="/img/logo.png" alt="AlphaInsider" width="50">
           </div>
         </div>
 
         <!-- no key -->
-        <div v-else class="text-center p-2">
-          <h5 class="text-muted mb-0">No AlphaInsider API Key Found</h5>
+        <div v-else class="d-flex-column bg-light rounded text-center py-4 mt-1">
+          <h5 class="my-2">No AlphaInsider API Key</h5>
         </div>
       </div>
     </div>
@@ -42,42 +47,59 @@
       </div>
       <!-- Body -->
       <div class="card-body">
-        <!-- key -->
-        <div v-if="brokerToken" class="row">
-          <!-- info -->
-          <div class="col d-flex">
-            <!-- broker -->
-            <div class="pr-4">
-              <label>Current Broker</label>
-              <h1 v-if="brokerToken.broker === 'tastytrade'" class="m-0">TastyTrade</h1>
-              <h1 v-else class="text-capitalize m-0">{{ brokerToken.broker }}</h1>
-            </div>
-            <!-- type -->
-            <div class="border-left pl-4">
-              <label>Type</label>
-              <h1 class="text-capitalize m-0">{{ brokerToken.type }}</h1>
-            </div>
+        <!-- info -->
+        <div v-if="$store.getters.broker" class="d-flex">
+          <!-- broker -->
+          <div class="pr-3">
+            <label>Current Broker</label>
+            <h2 v-if="$store.getters.broker.type === 'tastytrade'" class="m-0">TastyTrade</h2>
+            <h2 v-else class="text-capitalize m-0">{{ $store.getters.broker.type }}</h2>
+          </div>
+          <!-- type -->
+          <div class="border-left px-3">
+            <label>Type</label>
+            <h2 class="text-capitalize m-0">{{ ($store.getters.broker.live ? 'Live' : 'Paper') }}</h2>
           </div>
           <!-- logo -->
-          <div class="col-auto align-self-center">
-            <img v-if="brokerToken.broker === 'alpaca'" src="/img/brokers/alpaca-logo.png" alt="Alpaca" width="54">
-            <img v-else-if="brokerToken.broker === 'tastytrade'" src="/img/brokers/tastytrade-logo.svg" alt="TastyTrade" width="150">
+          <div class="ml-auto align-self-center">
+            <img v-if="$store.getters.broker.type === 'alpaca'" src="/img/brokers/alpaca-logo.png" alt="Alpaca" width="54">
+            <img v-else-if="$store.getters.broker.type === 'tastytrade'" src="/img/brokers/tastytrade-logo.svg" alt="TastyTrade" width="150">
           </div>
         </div>
 
         <!-- no key -->
-        <div v-else class="text-center p-2">
-          <h5 class="text-muted mb-0">No Broker API Key Found</h5>
+        <div v-else class="d-flex-column bg-light rounded text-center py-4 mt-1">
+          <h5 class="my-2">No Broker API Key</h5>
         </div>
       </div>
     </div>
     
     <!-- modals -->
-    <v-modal v-if="showAlphaInsiderModal" @close="showAlphaInsiderModal=false">
-      <v-alphainsider @update="showAlphaInsiderModal=false"></v-alphainsider>
+    <v-modal v-if="showAlphaInsiderModal" @close="showAlphaInsiderModal = false">
+      <div class="card">
+        <!-- title -->
+        <div class="card-header bg-white d-flex align-items-center p-3">
+          <h5 class="text-primary mb-0">Connect AlphaInsider</h5>
+          <h5 @click="showAlphaInsiderModal = false" class="mb-0 ml-auto"><i class="far fa-times text-muted pointer"></i></h5>
+        </div>
+        <!-- body -->
+        <div class="card-body p-3">
+          <v-alphainsider @update="$router.go()"></v-alphainsider>
+        </div>
+      </div>
     </v-modal>
-    <v-modal v-if="showBrokerModal" @close="showBrokerModal=false">
-      <v-broker @update="showBrokerModal=false"></v-broker>
+    <v-modal v-if="showBrokerModal" @close="showBrokerModal = false">
+      <div class="card">
+        <!-- title -->
+        <div class="card-header bg-white d-flex align-items-center p-3">
+          <h5 class="text-primary mb-0">Connect Brokerage</h5>
+          <h5 @click="showBrokerModal = false" class="mb-0 ml-auto"><i class="far fa-times text-muted pointer"></i></h5>
+        </div>
+        <!-- body -->
+        <div class="card-body p-3">
+          <v-broker @update="$router.go()"></v-broker>
+        </div>
+      </div>
     </v-modal>
   </div>
 </template>
@@ -86,30 +108,21 @@
 <script>
 import vAlphainsider from "@/components/v-alphainsider.vue";
 import vBroker from '@/components/v-broker.vue';
+import vDate from '@/components/v-date.vue';
 import vModal from '@/components/v-modal.vue';
 
 export default {
-  components: {vAlphainsider, vBroker, vModal},
+  components: {vAlphainsider, vBroker, vDate, vModal},
   data() {
     return {
-      alphainsiderToken: {
-        token_id: '123',
-        name: 'Test Token',
-        type: 'api',
-        expires: moment().add(2, 'years').toISOString(),
-        created_at: moment().subtract(1, 'month').toISOString(),
-        scope: ['test_permission']
-      },
-      brokerToken: {
-        broker: 'alpaca',
-        type: 'live'
-      },
       // modals
       showAlphaInsiderModal: false,
       showBrokerModal: false
     };
   },
-  mounted() {},
+  mounted() {
+    this.$store.dispatch('getBotInfo');
+  },
   methods: {}
 }
 </script>

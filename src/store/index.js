@@ -179,24 +179,28 @@ export default new Vuex.Store({
     
     //CHECK: getBotInfo
     async getBotInfo({state, commit, getters, dispatch}, params = {}) {
-      // if not logged in
-      if(!getters.isLoggedIn) return;
-      
-      //start loading
-      await dispatch('startLoading', {label: ['getBotInfo']});
-      
-      // request getBotInfo
-      return dispatch('request', {
-        type: 'get',
-        auth: true,
-        url: 'getBotInfo'
-      })
-      
-      // set bot info
-      .then((bot) => {
+      return Promise.resolve()
+      .then(async () => {
+        //skip if not logged in
+        if(!getters.isLoggedIn) return;
+        
+        //start loading
+        await dispatch('startLoading', {label: ['getBotInfo']});
+        
+        //request getBotInfo
+        let bot = await dispatch('request', {
+          type: 'get',
+          auth: true,
+          url: 'getBotInfo'
+        });
+        
+        //save state
         commit('saveState', {
           bot
         });
+        
+        //return
+        return bot;
       })
       
       // error
@@ -215,13 +219,13 @@ export default new Vuex.Store({
     async getAllocation({state, commit, getters, dispatch}, params = {}) {
       return Promise.resolve()
       .then(async () => {
-        // if not logged in or alphainsider not set, return
+        //skip if not logged in or alphainsider not set, return
         if(!getters.isLoggedIn || !state.bot.alphainsider) return;
         
         //start loading
         await dispatch('startLoading', {label: ['getAllocation']});
         
-        // request getAllocation
+        //request getAllocation
         let allocation = await dispatch('request', {
           type: 'get',
           auth: true,
@@ -229,7 +233,7 @@ export default new Vuex.Store({
           query: {}
         });
         
-        // request getStrategies
+        //request getStrategies
         let strategies = await dispatch('request', {
           type: 'get',
           auth: true,
@@ -239,23 +243,28 @@ export default new Vuex.Store({
           }
         });
         
-        // calculate
+        //calculate
         let computed = _.chain(strategies).map((strategy) => {
           let info = _.find(allocation, {strategy_id: strategy.strategy_id});
           return (info ? {...strategy, allocation_id: info.allocation_id, bot_id: info.bot_id, multiplier: info.multiplier} : null);
         }).compact().value();
         
-        // save state
+        //save state
         commit('saveState', {
           allocation: computed
         });
+        
+        //return
+        return computed;
       })
+      
       // error
       .catch((error) => {
         toastr.error('Failed to get allocation.');
         throw error;
       })
-      // finally
+      
+      // finish loading
       .finally(() => {
         return dispatch('finishLoading', {label: ['getAllocation']});
       });
@@ -265,58 +274,62 @@ export default new Vuex.Store({
     async startBot({state, commit, getters, dispatch}, params = {}) {
       return Promise.resolve()
       .then(async () => {
-        // if not logged in
+        //skip if not logged in
         if(!getters.isLoggedIn) return;
         
         //start loading
         await dispatch('startLoading', {label: ['startBot']})
         
-        // request startBot
+        //request startBot
         await dispatch('request', {
           type: 'post',
           auth: true,
           url: 'startBot'
         });
         
-        // getBotInfo
+        //getBotInfo
         await dispatch('getBotInfo');
       })
+      
       // error
       .catch((error) => {
         toastr.error('Failed to start trading bot.');
         throw error;
       })
+      
       // finish loading
       .finally(() => {
         return dispatch('finishLoading', {label: ['startBot']});
       });
     },
-
+    
     //CHECK: stopBot
     async stopBot({state, commit, getters, dispatch}, params = {}) {
       return Promise.resolve()
       .then(async () => {
-        // if not logged in
+        //skip if not logged in
         if(!getters.isLoggedIn) return;
         
         //start loading
         await dispatch('startLoading', {label: ['stopBot']})
         
-        // request startBot
+        //request startBot
         await dispatch('request', {
           type: 'post',
           auth: true,
           url: 'stopBot'
         });
         
-        // getBotInfo
+        //getBotInfo
         await dispatch('getBotInfo');
       })
+      
       // error
       .catch((error) => {
         toastr.error('Failed to stop trading bot.');
         throw error;
       })
+      
       // finish loading
       .finally(() => {
         return dispatch('finishLoading', {label: ['stopBot']});

@@ -16,7 +16,7 @@
         <h3 class="mt-2 mb-0">
           <span :class="{'text-success': ['on', 'rebalancing', 'scheduled_rebalance'].includes(status), 'text-danger': status === 'off', 'text-warning': ['closing', 'scheduled_close'].includes(status)}" class="text-uppercase">{{ $_.replace(status, '_', ' ') }}</span>
         </h3>
-        <!-- setup redirect -->
+        <!-- status description -->
         <p v-if="disablePowerButton" class="mb-0">Please finish <router-link to="/setup">setting up the bot</router-link> before running.</p>
         <p v-else-if="status === 'on'" class="mb-0">Watching for strategy changes.</p>
         <p v-else-if="status === 'rebalancing'" class="mb-0">Adjusting positions to match your strategy.</p>
@@ -136,7 +136,7 @@ export default {
     },
     toggleTradingBot() {
       // show confirmation modal
-      if(['off', 'closing'].includes(this.status)) this.showRiskModal = true;
+      if(this.status === 'off') this.showRiskModal = true;
       // stop bot
       else this.stopBot();
     },

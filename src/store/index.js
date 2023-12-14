@@ -257,6 +257,7 @@ export default new Vuex.Store({
       // error
       .catch((error) => {
         toastr.error('Failed to get allocation.');
+        throw error;
       })
       // finally
       .finally(() => {
@@ -287,6 +288,7 @@ export default new Vuex.Store({
       // error
       .catch((error) => {
         toastr.error('Failed to start trading bot.');
+        throw error;
       })
       // finish loading
       .finally(() => {
@@ -316,6 +318,7 @@ export default new Vuex.Store({
       })
       .catch((error) => {
         toastr.error('Failed to stop trading bot.');
+        throw error;
       })
       // finish loading
       .finally(() => {

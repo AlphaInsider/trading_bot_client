@@ -10,7 +10,7 @@
   placeholder="Search Strategy..."
   class="form-control shadow-none border-right-0"
   >
-
+  
   <!-- dropdown menu -->
   <v-dropdown-menu
   v-if="searchInFocus && (searchInput || searchResults.length > 0)"
@@ -20,7 +20,7 @@
   class="w-100"
   >
     <!-- search results -->
-    <div class="stock-list">
+    <div class="search-list">
       <div v-for="strategy in searchResults" :key="strategy.strategy_id" class="dropdown-item" @click="selectStrategy(strategy)">
         <v-strategy :strategy="strategy" compact></v-strategy>
       </div>
@@ -28,7 +28,7 @@
     <!-- no search results -->
     <h6 v-if="searchInput && searchResults.length <= 0" class="text-muted my-1">No Search Results</h6>
   </v-dropdown-menu>
-
+  
   <!-- search icon -->
   <div @click="searchInFocus=true" class="input-group-append">
     <div class="search-button input-group-text bg-white">
@@ -40,10 +40,10 @@
 </template>
 
 <script>
-import vDropdownMenu from "@/components/v-dropdown-menu.vue";
-import VStrategy from "@/components/v-strategy.vue";
+import vDropdownMenu from '@/components/v-dropdown-menu.vue';
+import vStrategy from '@/components/v-strategy.vue';
 export default {
-  components: {VStrategy, vDropdownMenu},
+  components: {vDropdownMenu, vStrategy},
   props: {
     strategyType: {type: String, default: 'stock'}
   },
@@ -60,7 +60,9 @@ export default {
     searchStrategies: _.debounce(async function() {
       //skip if searchInput is empty
       if(!this.searchInput) return;
-      // searchStrategies
+      //start loading
+      await this.$store.dispatch('startLoading', {label: ['stockSearch']});
+      //request searchStocks
       this.searchResults = await this.$store.dispatch('request', {
         type: 'post',
         auth: !!this.$store.state.bot.alphainsider,
@@ -71,7 +73,10 @@ export default {
           type: {includes: ['stock'], excludes: []},
           limit: 6
         }
-      });
+      })
+      .catch((error) => {});
+      //finish loading
+      await this.$store.dispatch('finishLoading', {label: ['stockSearch']});
     }, 500),
     selectStrategy(strategy) {
       //emit strategy to parent
@@ -97,5 +102,10 @@ export default {
   outline: 0;
   -webkit-box-shadow: 0 0 0 0.2rem rgba(var(--primary-rgb), 0.25);
   box-shadow: 0 0 0 0.2rem rgba(var(--primary-rgb), 0.25);
+}
+//search list styling
+.search-list {
+  max-height: 20rem;
+  overflow-y: auto;
 }
 </style>

@@ -79,8 +79,8 @@
 
 
 <script>
-import vStrategy from "@/components/v-strategy.vue";
-import vAlphainsider from "@/components/v-alphainsider.vue";
+import vStrategy from '@/components/v-strategy.vue';
+import vAlphainsider from '@/components/v-alphainsider.vue';
 import vStrategySelect from '@/components/v-strategy-select.vue';
 import vModal from '@/components/v-modal.vue';
 

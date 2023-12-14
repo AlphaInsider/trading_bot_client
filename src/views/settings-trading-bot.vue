@@ -37,7 +37,7 @@
         <div class="d-flex align-items-center">
           <div>
             <p class="mb-0">Rebalance On Start</p>
-            <small class="text-muted">When starting, the bot will rebalance immediately to match the AlphaInsider strategy.</small>
+            <small class="text-muted">Rebalance immediately when the trading bot starts.</small>
           </div>
           <div class="custom-control custom-switch ml-auto">
             <input @input="updateSettings({rebalance_on_start: !$store.state.bot.rebalance_on_start})" :checked="$store.state.bot.rebalance_on_start" type="checkbox" class="custom-control-input" id="rebalanceOnStart-switch">
@@ -96,10 +96,8 @@ export default {
     };
   },
   mounted() {
-    return Promise.all([
-      this.$store.dispatch('getBotInfo'),
-      this.$store.dispatch('getAllocation')
-    ]);
+    this.$store.dispatch('getBotInfo');
+    this.$store.dispatch('getAllocation');
   },
   methods: {
     updateSettings(setting) {

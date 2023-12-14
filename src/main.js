@@ -107,14 +107,14 @@ Object.defineProperty(Vue.prototype, '$formatNumber', {
     return ((math.evaluate('a < 0', {a: number})) ? '-' : '') + symbol + left + right;
   }
 });
-/*Object.defineProperty(Vue.prototype, '$ws', {
+Object.defineProperty(Vue.prototype, '$ws', {
   value: new Sockette(wsBaseURL, {
     onopen: (event) => store.dispatch('wsConnect'),
     onmessage: (event) => store.dispatch('wsHandleMessage', {message: event.data}),
     onclose: (event) => store.dispatch('wsDisconnect'),
     onerror: (event) => store.dispatch('wsDisconnect')
   })
-});*/
+});
 //global components
 Vue.component('input-mask', IMaskComponent);
 Vue.component('validation-observer', ValidationObserver);

@@ -1,5 +1,9 @@
 <template>
 <div class="container my-3 my-lg-4">
+  <!-- watch websockets -->
+  <v-websocket :channels="['wsActivity']" @message="[$event.type, ''].includes(query.a_filter.value) && (activity=[$event].concat(activity))"></v-websocket>
+  <v-websocket :channels="['wsStatus']" @message="$store.dispatch('setBotStatus', {status: $event})"></v-websocket>
+  
   <!-- control panel -->
   <div class="control-panel d-flex justify-content-center mt-2">
     <!-- power button -->
@@ -47,10 +51,11 @@
 <script>
 import InfiniteLoading from 'vue-infinite-loading';
 import vActivity from '@/components/v-activity.vue';
-import vRiskModal from "@/components/v-risk-modal.vue";
+import vRiskModal from '@/components/v-risk-modal.vue';
+import vWebsocket from '@/components/v-websocket.vue';
 
 export default {
-  components: {InfiniteLoading, vActivity, vRiskModal},
+  components: {InfiniteLoading, vActivity, vRiskModal, vWebsocket},
   data() {
     return {
       // activity

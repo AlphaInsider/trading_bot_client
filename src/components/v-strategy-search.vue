@@ -40,8 +40,8 @@
 </template>
 
 <script>
-import vDropdownMenu from "@/components/v-dropdown-menu.vue";
-import VStrategy from "@/components/v-strategy.vue";
+import vDropdownMenu from '@/components/v-dropdown-menu.vue';
+import VStrategy from '@/components/v-strategy.vue';
 export default {
   components: {VStrategy, vDropdownMenu},
   props: {

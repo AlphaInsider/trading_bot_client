@@ -180,31 +180,31 @@ export default new Vuex.Store({
     //CHECK: getBotInfo
     async getBotInfo({state, commit, getters, dispatch}, params = {}) {
       // if not logged in
-      if(!getters.isLoggedIn) return Promise.resolve();
-
+      if(!getters.isLoggedIn) return;
+      
       //start loading
       await dispatch('startLoading', {label: ['getBotInfo']});
-
+      
       // request getBotInfo
       return dispatch('request', {
         type: 'get',
         auth: true,
         url: 'getBotInfo'
       })
-
+      
       // set bot info
       .then((bot) => {
         commit('saveState', {
           bot
         });
       })
-
+      
       // error
       .catch((error) => {
         toastr.error('Failed to get trading bot information.');
         throw error;
       })
-
+      
       // finish loading
       .finally(() => {
         return dispatch('finishLoading', {label: ['getBotInfo']});
@@ -217,10 +217,10 @@ export default new Vuex.Store({
       .then(async () => {
         // if not logged in or alphainsider not set, return
         if(!getters.isLoggedIn || !state.bot.alphainsider) return;
-
+        
         //start loading
         await dispatch('startLoading', {label: ['getAllocation']});
-
+        
         // request getAllocation
         let allocation = await dispatch('request', {
           type: 'get',
@@ -228,7 +228,7 @@ export default new Vuex.Store({
           url: 'getAllocation',
           query: {}
         });
-
+        
         // request getStrategies
         let strategies = await dispatch('request', {
           type: 'get',
@@ -238,13 +238,13 @@ export default new Vuex.Store({
             strategy_id: _.map(allocation, 'strategy_id')
           }
         });
-
+        
         // calculate
         let computed = _.chain(strategies).map((strategy) => {
           let info = _.find(allocation, {strategy_id: strategy.strategy_id});
           return (info ? {...strategy, allocation_id: info.allocation_id, bot_id: info.bot_id, multiplier: info.multiplier} : null);
         }).compact().value();
-
+        
         // save state
         commit('saveState', {
           allocation: computed
@@ -253,6 +253,7 @@ export default new Vuex.Store({
       // error
       .catch((error) => {
         toastr.error('Failed to get allocation.');
+        throw error;
       })
       // finally
       .finally(() => {
@@ -265,24 +266,25 @@ export default new Vuex.Store({
       return Promise.resolve()
       .then(async () => {
         // if not logged in
-        if(!getters.isLoggedIn) return Promise.resolve();
-
+        if(!getters.isLoggedIn) return;
+        
         //start loading
         await dispatch('startLoading', {label: ['startBot']})
-
+        
         // request startBot
         await dispatch('request', {
           type: 'post',
           auth: true,
           url: 'startBot'
         });
-
+        
         // getBotInfo
         await dispatch('getBotInfo');
       })
       // error
       .catch((error) => {
         toastr.error('Failed to start trading bot.');
+        throw error;
       })
       // finish loading
       .finally(() => {
@@ -295,27 +297,40 @@ export default new Vuex.Store({
       return Promise.resolve()
       .then(async () => {
         // if not logged in
-        if(!getters.isLoggedIn) return Promise.resolve();
-
+        if(!getters.isLoggedIn) return;
+        
         //start loading
         await dispatch('startLoading', {label: ['stopBot']})
-
+        
         // request startBot
         await dispatch('request', {
           type: 'post',
           auth: true,
           url: 'stopBot'
         });
-
+        
         // getBotInfo
         await dispatch('getBotInfo');
       })
+      // error
       .catch((error) => {
         toastr.error('Failed to stop trading bot.');
+        throw error;
       })
       // finish loading
       .finally(() => {
         return dispatch('finishLoading', {label: ['stopBot']});
+      });
+    },
+    
+    //DONE: setBotStatus <status>
+    async setBotStatus({state, commit, getters, dispatch}, params = {}) {
+      //set bot status
+      commit('saveState', {
+        bot: {
+          ...state.bot,
+          status: params.status
+        }
       });
     },
     

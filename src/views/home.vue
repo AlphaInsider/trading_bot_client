@@ -143,9 +143,7 @@ export default {
     getActivity($state) {
       //get activity type filter
       let type = [];
-      if(this.query.a_filter.value === 'info') type = ['info'];
-      else if(this.query.a_filter.value === 'warning') type = ['warning'];
-      else if(this.query.a_filter.value === 'error') type = ['error'];
+      if(['info', 'warning', 'error'].includes(this.query.a_filter.value)) type = this.query.a_filter.value;
       //request getActivity
       return this.$store.dispatch('request', {
         type: 'get',

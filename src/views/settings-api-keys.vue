@@ -106,7 +106,7 @@
 
 
 <script>
-import vAlphainsider from "@/components/v-alphainsider.vue";
+import vAlphainsider from '@/components/v-alphainsider.vue';
 import vBroker from '@/components/v-broker.vue';
 import vDate from '@/components/v-date.vue';
 import vModal from '@/components/v-modal.vue';

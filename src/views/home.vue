@@ -3,6 +3,10 @@
   <!-- watch query params -->
   <v-query-params v-model="query"></v-query-params>
   
+  <!-- watch websockets -->
+  <v-websocket :channels="['wsActivity']" @message="[$event.type, ''].includes(query.a_filter.value) && (activity=[$event].concat(activity))"></v-websocket>
+  <v-websocket :channels="['wsStatus']" @message="$store.dispatch('setBotStatus', {status: $event})"></v-websocket>
+  
   <!-- page -->
   <div class="container my-3 my-lg-4">
     <!-- control panel -->
@@ -93,12 +97,13 @@
 <script>
 import InfiniteLoading from 'vue-infinite-loading';
 import vActivity from '@/components/v-activity.vue';
-import vRiskModal from "@/components/v-risk-modal.vue";
+import vRiskModal from '@/components/v-risk-modal.vue';
 import vQueryParams from '@/components/v-query-params.vue';
 import vDropdownMenu from '@/components/v-dropdown-menu.vue';
+import vWebsocket from '@/components/v-websocket.vue';
 
 export default {
-  components: {InfiniteLoading, vActivity, vRiskModal, vQueryParams, vDropdownMenu},
+  components: {InfiniteLoading, vActivity, vRiskModal, vQueryParams, vDropdownMenu, vWebsocket},
   data() {
     return {
       //query params

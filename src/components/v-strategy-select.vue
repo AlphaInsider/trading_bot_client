@@ -4,7 +4,7 @@
     <form @submit.prevent="event.handleSubmit(() => updateAllocation(event))">
       <!-- search strategy -->
       <v-strategy-search :strategy-type="'stock'" @input="strategy = $event"></v-strategy-search>
-
+      
       <div v-if="strategy" class="mt-3">
         <!-- strategy view -->
         <div class="card">
@@ -12,7 +12,7 @@
             <v-strategy :strategy="strategy"></v-strategy>
           </div>
         </div>
-
+        
         <!-- multiplier -->
         <h5 class="text-primary mb-0 mt-3">Multiplier</h5>
         <div class="row mt-1">
@@ -28,7 +28,7 @@
             </validation-provider>
           </div>
         </div>
-
+        
         <!-- allocation -->
         <h5 class="text-primary mb-0 mt-3">Bot Allocation</h5>
         <!-- current allocation -->
@@ -71,19 +71,18 @@
           </div>
         </div>
       </div>
-
+      
       <div v-else :class="((event.failed && !strategy) ? 'text-danger border border-danger' : 'text-muted')" class="d-flex-column bg-light rounded text-center py-4 mt-3">
         <h5 class="my-2">No Strategy Selected</h5>
       </div>
-
-
+      
       <!-- save changes -->
       <div class="row mt-3">
         <div class="col-12 d-flex justify-content-end">
           <button :disabled="!strategy" type="submit" class="btn btn-primary">Save</button>
         </div>
       </div>
-
+      
     </form>
   </validation-observer>
 </div>
@@ -92,7 +91,6 @@
 <script>
 import vStrategy from '@/components/v-strategy.vue';
 import vStrategySearch from '@/components/v-strategy-search.vue';
-import * as math from "mathjs";
 
 export default {
   components: {vStrategy, vStrategySearch},
@@ -122,24 +120,26 @@ export default {
       return (this.$store.state.bot.broker ? math.evaluate('round((bignumber(a) + (bignumber(b) - bignumber(c))) * 100)', {a: this.allocation, b: this.$store.state.bot.broker.buying_power, c: this.$store.state.bot.broker.value}).toString() : '0');
     }
   },
-  mounted() {
-    this.$store.dispatch('getAllocation').then(() => this.strategy = this.$store.state.allocation[0]);
+  async mounted() {
+    this.strategy = await this.$store.dispatch('getAllocation');
   },
   methods: {
-    updateAllocation() {
-      // request updateAllocation
-      return this.$store.dispatch('request', {
-        type: 'post',
-        auth: true,
-        url: 'updateAllocation',
-        query: {
-          strategy_id: this.strategy.strategy_id,
-          multiplier: this.multiplier
-        }
-      })
-      // request updateSettings
-      .then(() => {
-        return this.$store.dispatch('request', {
+    async updateAllocation() {
+      //update allocation and buffer amount
+      try {
+        //request updateAllocation
+        await this.$store.dispatch('request', {
+          type: 'post',
+          auth: true,
+          url: 'updateAllocation',
+          query: {
+            strategy_id: this.strategy.strategy_id,
+            multiplier: this.multiplier
+          }
+        });
+        
+        //request updateSettings
+        await this.$store.dispatch('request', {
           type: 'post',
           auth: true,
           url: 'updateSettings',
@@ -147,19 +147,15 @@ export default {
             buffer_amount: this.bufferAmount
           }
         });
-      })
-      // success, emit update
-      .then(() => {
+        
+        //success, emit update
         this.$emit('update');
-      })
-      // error
-      .catch(() => {
+      }
+      //error
+      catch(error) {
         toastr.error('Failed to update bot trading settings.');
-      });
+      }
     }
   }
 }
 </script>
-
-<style lang="scss" scoped>
-</style>

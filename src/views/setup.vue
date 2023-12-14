@@ -2,8 +2,12 @@
   <div class="container d-flex align-items-center justify-content-center min-vh-100 my-3 my-lg-4">
     <div class="row no-gutters justify-content-center w-100">
       <div class="col-11 col-md-6">
+        <!-- bot empty -->
+        <div v-if="$_.isEmpty($store.state.bot)" class="d-flex flex-column align-items-center">
+          <h4>Loading...</h4>
+        </div>
         <!-- connect broker -->
-        <div v-if="currentStep === 0" class="card shadow-sm">
+        <div v-else-if="!$store.state.bot.broker" class="card shadow-sm">
           <div class="card">
             <!-- title -->
             <div class="card-header bg-white d-flex align-items-center p-3">
@@ -11,13 +15,13 @@
             </div>
             <!-- body -->
             <div class="card-body p-3">
-              <v-broker @update="next()"></v-broker>
+              <v-broker @update="loadBot()"></v-broker>
             </div>
           </div>
         </div>
 
         <!-- connect alphainsider -->
-        <div v-else-if="currentStep === 1" class="card shadow-sm">
+        <div v-else-if="!$store.state.bot.alphainsider" class="card shadow-sm">
           <div class="card">
             <!-- title -->
             <div class="card-header bg-white d-flex align-items-center p-3">
@@ -25,13 +29,13 @@
             </div>
             <!-- body -->
             <div class="card-body p-3">
-              <v-alphainsider @update="next()"></v-alphainsider>
+              <v-alphainsider @update="loadBot()"></v-alphainsider>
             </div>
           </div>
         </div>
 
         <!-- select strategy -->
-        <div v-else-if="currentStep === 2" class="card shadow-sm">
+        <div v-else-if="$store.state.allocation.length <= 0" class="card shadow-sm">
           <div class="card">
             <!-- title -->
             <div class="card-header bg-white d-flex align-items-center p-3">
@@ -39,18 +43,18 @@
             </div>
             <!-- body -->
             <div class="card-body p-3">
-              <v-strategy-select @update="next()"></v-strategy-select>
+              <v-strategy-select @update="loadBot()"></v-strategy-select>
             </div>
           </div>
         </div>
 
         <!-- finish -->
-        <div v-else-if="currentStep === 3" class="card card-finished shadow-sm">
+        <div v-else class="card card-finished shadow-sm">
           <div class="card-body d-flex align-items-center justify-content-center">
             <div class="row justify-content-center w-100">
               <div class="col-12 col-lg-8 text-center">
                 <h1>You're all set!</h1>
-                <router-link to="/" class="btn btn-primary btn-block">Finish</router-link>
+                <router-link to="/" class="btn btn-primary btn-block" replace>Finish</router-link>
               </div>
             </div>
           </div>
@@ -67,30 +71,19 @@ import vStrategySelect from '@/components/v-strategy-select.vue';
 
 export default {
   components: {vBroker, vAlphainsider, vStrategySelect},
-  data() {
-    return {
-      currentStep: 2
-    };
-  },
-  computed: {
-    currentStep() {
-      if(!this.$store.state.bot.broker) return 0;
-      else if(!this.$store.state.bot.alphainsider) return 1;
-    }
-  },
   mounted() {
-    this.$store.dispatch('getBotInfo');
-    
+    this.loadBot();
   },
   methods: {
-    back() {
-      this.currentStep = (this.currentStep > 0 ? this.currentStep-1 : this.currentStep);
-    },
-    next() {
-      this.currentStep = this.currentStep+1;
-    },
-    updateStrategy() {
-      this.next();
+    loadBot() {
+      return Promise.all([
+        this.$store.dispatch('getBotInfo'), 
+        this.$store.dispatch('getAllocation')
+      ])
+      .catch(async () => {
+        await new Promise(resolve => setTimeout(resolve(), 3000));
+        this.$router.replace('/');
+      });
     }
   }
 }

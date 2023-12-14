@@ -9,8 +9,8 @@
       <!-- details -->
       <div class="col-9 col-md-10 d-flex align-items-center px-3 py-4">
         <div>
-          <label>Details</label>
-          <h5 class="mb-0">activity.description</h5>
+          <label>Message</label>
+          <h5 class="mb-0">{{ activity.message }}</h5>
         </div>
         <!-- Date Created -->
         <div class="ml-auto">

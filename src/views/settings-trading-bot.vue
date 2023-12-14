@@ -37,11 +37,11 @@
         <div class="d-flex align-items-center">
           <div>
             <p class="mb-0">Rebalance On Start</p>
-            <small class="text-muted">When starting, the bot will rebalance immediately to match the AlphaInsider strategy.</small>
+            <small class="text-muted">Rebalance immediately when the trading bot starts.</small>
           </div>
           <div class="custom-control custom-switch ml-auto">
-            <input @input="updateSettings({rebalance_on_start: !$store.state.bot.rebalance_on_start})" :value="$store.state.bot.rebalance_on_start" type="checkbox" class="custom-control-input" id="subscription-switch">
-            <label class="custom-control-label pointer" for="subscription-switch"></label>
+            <input @input="updateSettings({rebalance_on_start: !$store.state.bot.rebalance_on_start})" :checked="$store.state.bot.rebalance_on_start" type="checkbox" class="custom-control-input" id="rebalanceOnStart-switch">
+            <label class="custom-control-label pointer" for="rebalanceOnStart-switch"></label>
           </div>
         </div>
         
@@ -52,8 +52,8 @@
             <small class="text-muted">Close all positions when the trading bot stops.</small>
           </div>
           <div class="custom-control custom-switch ml-auto">
-            <input @input="updateSettings({close_on_stop: !$store.state.bot.close_on_stop})" :value="$store.state.bot.close_on_stop" type="checkbox" class="custom-control-input" id="subscription-switch">
-            <label class="custom-control-label pointer" for="subscription-switch"></label>
+            <input @input="updateSettings({close_on_stop: !$store.state.bot.close_on_stop})" :checked="$store.state.bot.close_on_stop" type="checkbox" class="custom-control-input" id="closeOnStop-switch">
+            <label class="custom-control-label pointer" for="closeOnStop-switch"></label>
           </div>
         </div>
       </div>
@@ -96,10 +96,8 @@ export default {
     };
   },
   mounted() {
-    return Promise.all([
-      this.$store.dispatch('getBotInfo'),
-      this.$store.dispatch('getAllocation')
-    ]);
+    this.$store.dispatch('getBotInfo');
+    this.$store.dispatch('getAllocation');
   },
   methods: {
     updateSettings(setting) {
@@ -111,8 +109,8 @@ export default {
         query: setting
       })
       // success, getBotInfo
-      .then(() => {
-        return this.$store.dispatch('getBotInfo');
+      .then(async () => {
+        await this.$store.dispatch('getBotInfo');
       })
       // error
       .catch(() => {

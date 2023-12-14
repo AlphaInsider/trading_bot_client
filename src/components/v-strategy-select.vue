@@ -113,7 +113,7 @@ export default {
     },
     //TODO: 
     initialAllocation() {
-      return (this.$store.state.bot.broker ? math.evaluate('bignumber(a) - (bignumber(a) - bignumber(b)) - round(bignumber(c) / 100, 2))', {a: state.bot.broker.buying_power, b: state.bot.broker.value, c: state.bot.buffer_amount}).toString() : '0');
+      return (this.$store.state.bot.broker ? math.evaluate('bignumber(a) - (bignumber(a) - bignumber(b)) - round(bignumber(c) / 100, 2))', {a: this.$store.state.bot.broker.buying_power, b: this.$store.state.bot.broker.value, c: this.$store.state.bot.buffer_amount}).toString() : '0');
     },
     // TODO:
     bufferAmount() {

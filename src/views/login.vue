@@ -58,13 +58,23 @@ export default {
           password: this.password
         }
       })
-      //success, set tokens
-      .then((data) => {
-        return this.$store.dispatch('setTokens', {authToken: data.auth_token});
+      //success
+      .then(async (data) => {
+        // set tokens
+        await this.$store.dispatch('setTokens', {authToken: data.auth_token});
+        // get bot information
+        return Promise.all([
+          this.$store.dispatch('getBotInfo'),
+          this.$store.dispatch('getAllocation')
+        ]);
       })
       //redirect
-      .then(async (data) => {
+      .then(() => {
+        // check if redirect in url bar
         if(this.$route.query.redirect && this.$route.query.redirect !== this.$route.path) return this.$router.replace(this.$route.query.redirect);
+        // redirect to setup if no alphainsider, no broker, or no allocation set
+        else if(!this.$store.state.bot.alphainsider || !this.$store.state.bot.broker || this.$store.state.allocation.length <= 0) this.$router.replace('/setup');
+        // otherwise, redirect to home
         else return this.$router.replace('/');
       })
       //error, reset form

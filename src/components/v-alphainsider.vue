@@ -9,10 +9,14 @@
         </div>
         <div class="col-12">
           <validation-provider name="alphainsider_key" rules="required" v-slot="{ errors }">
-            <input v-model="alphainsiderKey" type="text" :class="{'is-invalid': errors.length}" class="form-control">
-            <div class="invalid-feedback">
-              {{ errors[0] }}
-            </div>
+            <input-mask
+            v-model="alphainsiderKey"
+            :mask="/^\S+$/"
+            type="text"
+            :class="{'is-invalid': errors.length}"
+            class="form-control"
+            />
+            <div class="invalid-feedback">{{ errors[0] }}</div>
           </validation-provider>
         </div>
       </div>

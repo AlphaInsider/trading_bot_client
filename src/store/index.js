@@ -234,7 +234,7 @@ export default new Vuex.Store({
         });
 
         //skip if no strategy allocation
-        if(allocation.length <= 0) return;
+        if(allocation.length <= 0) return [];
         
         //request getStrategies
         let strategies = await dispatch('request', {

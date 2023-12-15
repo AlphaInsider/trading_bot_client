@@ -232,7 +232,7 @@ export default new Vuex.Store({
           url: 'getAllocation',
           query: {}
         });
-
+        
         //skip if no strategy allocation
         if(allocation.length <= 0) return [];
         
@@ -249,7 +249,7 @@ export default new Vuex.Store({
         //calculate
         let computed = _.chain(strategies).map((strategy) => {
           let info = _.find(allocation, {strategy_id: strategy.strategy_id});
-          return (info ? {...strategy, allocation_id: info.allocation_id, bot_id: info.bot_id, multiplier: info.multiplier} : null);
+          return (info ? {...strategy, allocation_id: info.allocation_id, bot_id: info.bot_id} : null);
         }).compact().value();
         
         //save state

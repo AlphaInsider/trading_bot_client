@@ -35,10 +35,14 @@
           </div>
           <div class="col-12">
             <validation-provider name="Alpaca public key" rules="required" v-slot="{ errors }">
-              <input v-model="alpacaKey" type="text" :class="{'is-invalid': errors.length}" class="form-control">
-              <div class="invalid-feedback">
-                {{ errors[0] }}
-              </div>
+              <input-mask
+              v-model="alpacaKey"
+              :mask="/^\S+$/"
+              type="text"
+              :class="{'is-invalid': errors.length}"
+              class="form-control"
+              />
+              <div class="invalid-feedback">{{ errors[0] }}</div>
             </validation-provider>
           </div>
         </div>
@@ -50,10 +54,14 @@
           </div>
           <div class="col-12">
             <validation-provider name="Alpaca private key" rules="required" v-slot="{ errors }">
-              <input v-model="alpacaSecret" type="text" :class="{'is-invalid': errors.length}" class="form-control">
-              <div class="invalid-feedback">
-                {{ errors[0] }}
-              </div>
+              <input-mask
+              v-model="alpacaSecret"
+              :mask="/^\S+$/"
+              type="text"
+              :class="{'is-invalid': errors.length}"
+              class="form-control"
+              />
+              <div class="invalid-feedback">{{ errors[0] }}</div>
             </validation-provider>
           </div>
         </div>

@@ -41,7 +41,7 @@ export default {
   },
   methods: {
     async updateAllocation() {
-      //update allocation and buffer amount
+      //update allocation
       try {
         //request updateAllocation
         await this.$store.dispatch('request', {

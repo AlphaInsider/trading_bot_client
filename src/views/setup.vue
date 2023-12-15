@@ -71,20 +71,9 @@ import vStrategySelect from '@/components/v-strategy-select.vue';
 
 export default {
   components: {vBroker, vAlphainsider, vStrategySelect},
-  mounted() {
-    this.loadBot();
-  },
-  methods: {
-    loadBot() {
-      return Promise.all([
-        this.$store.dispatch('getBotInfo'), 
-        this.$store.dispatch('getAllocation')
-      ])
-      .catch(async () => {
-        await new Promise(resolve => setTimeout(resolve(), 3000));
-        this.$router.replace('/');
-      });
-    }
+  async mounted() {
+    await this.$store.dispatch('getBotInfo');
+    await this.$store.dispatch('getAllocation');
   }
 }
 </script>

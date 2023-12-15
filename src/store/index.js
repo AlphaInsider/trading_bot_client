@@ -220,7 +220,7 @@ export default new Vuex.Store({
       return Promise.resolve()
       .then(async () => {
         //skip if not logged in or alphainsider not set, return
-        if(!getters.isLoggedIn || !state.bot.alphainsider) return;
+        if(!getters.isLoggedIn || !state.bot.alphainsider) return [];
         
         //start loading
         await dispatch('startLoading', {label: ['getAllocation']});
@@ -234,7 +234,7 @@ export default new Vuex.Store({
         });
 
         //skip if no strategy allocation
-        if(allocation.length <= 0) return;
+        if(allocation.length <= 0) return [];
         
         //request getStrategies
         let strategies = await dispatch('request', {

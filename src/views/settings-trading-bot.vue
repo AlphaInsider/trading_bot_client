@@ -95,27 +95,28 @@ export default {
       showStrategySelectModal: false
     };
   },
-  mounted() {
-    this.$store.dispatch('getBotInfo');
-    this.$store.dispatch('getAllocation');
+  async mounted() {
+    await this.$store.dispatch('getBotInfo');
+    await this.$store.dispatch('getAllocation');
   },
   methods: {
-    updateSettings(setting) {
-      // request updateSettings
-      return this.$store.dispatch('request', {
-        type: 'post',
-        auth: true,
-        url: 'updateSettings',
-        query: setting
-      })
-      // success, getBotInfo
-      .then(async () => {
+    async updateSettings(setting) {
+      try {
+        // update bot settings
+        await this.$store.dispatch('request', {
+          type: 'post',
+          auth: true,
+          url: 'updateSettings',
+          query: setting
+        });
+        
+        // get bot info
         await this.$store.dispatch('getBotInfo');
-      })
+      }
       // error
-      .catch(() => {
+      catch(error) {
         toastr.error('Failed to update bot trading settings.');
-      });
+      }
     }
   }
 }

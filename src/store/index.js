@@ -220,7 +220,7 @@ export default new Vuex.Store({
       return Promise.resolve()
       .then(async () => {
         //skip if not logged in or alphainsider not set, return
-        if(!getters.isLoggedIn || !state.bot.alphainsider) return;
+        if(!getters.isLoggedIn || !state.bot.alphainsider) return [];
         
         //start loading
         await dispatch('startLoading', {label: ['getAllocation']});

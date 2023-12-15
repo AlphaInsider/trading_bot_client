@@ -124,12 +124,12 @@ export default {
       return this.$store.state.bot.status || 'off';
     },
     disablePowerButton() {
-      return !this.$store.state.bot.alphainsider || !this.$store.state.broker || this.$store.state.allocation.length <= 0;
+      return !this.$store.state.bot.alphainsider || !this.$store.state.bot.broker || this.$store.state.allocation.length <= 0;
     }
   },
-  mounted() {
-    this.$store.dispatch('getBotInfo');
-    this.$store.dispatch('getAllocation');
+  async mounted() {
+    await this.$store.dispatch('getBotInfo');
+    await this.$store.dispatch('getAllocation');
   },
   methods: {
     startBot() {
@@ -148,7 +148,7 @@ export default {
     getActivity($state) {
       //get activity type filter
       let type = [];
-      if(['info', 'warning', 'error'].includes(this.query.a_filter.value)) type = this.query.a_filter.value;
+      if(['info', 'warning', 'error'].includes(this.query.a_filter.value)) type = [this.query.a_filter.value];
       //request getActivity
       return this.$store.dispatch('request', {
         type: 'get',

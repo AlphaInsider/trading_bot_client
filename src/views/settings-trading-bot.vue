@@ -95,9 +95,9 @@ export default {
       showStrategySelectModal: false
     };
   },
-  mounted() {
-    this.$store.dispatch('getBotInfo');
-    this.$store.dispatch('getAllocation');
+  async mounted() {
+    await this.$store.dispatch('getBotInfo');
+    await this.$store.dispatch('getAllocation');
   },
   methods: {
     async updateSettings(setting) {

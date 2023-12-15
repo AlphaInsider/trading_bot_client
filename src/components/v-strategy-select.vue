@@ -1,29 +1,27 @@
 <template>
 <div>
-  <validation-observer v-slot="event">
-    <!-- search strategy -->
-    <v-strategy-search :strategy-type="'stock'" @input="strategies = [$event]"></v-strategy-search>
+  <!-- search strategy -->
+  <v-strategy-search :strategy-type="'stock'" @input="strategies = [$event]"></v-strategy-search>
 
-    <div v-if="strategies.length > 0" class="mt-3">
-      <!-- strategy list -->
-      <div v-for="(strategy, index) in strategies" :key="strategy.strategy_id" :class="{'mt-2': index > 0}" class="card">
-        <div class="card-body">
-          <v-strategy :strategy="strategy"></v-strategy>
-        </div>
+  <div v-if="strategies.length > 0" class="mt-3">
+    <!-- strategy list -->
+    <div v-for="(strategy, index) in strategies" :key="strategy.strategy_id" :class="{'mt-2': index > 0}" class="card">
+      <div class="card-body">
+        <v-strategy :strategy="strategy"></v-strategy>
       </div>
     </div>
+  </div>
 
-    <div v-else :class="((event.failed && !strategy) ? 'text-danger border border-danger' : 'text-muted')" class="d-flex-column bg-light rounded text-center py-4 mt-3">
-      <h5 class="my-2">No Strategies Selected</h5>
-    </div>
+  <div v-else class="d-flex-column bg-light rounded text-muted text-center py-4 mt-3">
+    <h5 class="my-2">No Strategies Selected</h5>
+  </div>
 
-    <!-- save changes -->
-    <div class="row mt-3">
-      <div class="col-12 d-flex justify-content-end">
-        <button @click="updateAllocation()" :disabled="strategies.length <= 0" type="submit" class="btn btn-primary">Save</button>
-      </div>
+  <!-- save changes -->
+  <div class="row mt-3">
+    <div class="col-12 d-flex justify-content-end">
+      <button @click="updateAllocation()" :disabled="strategies.length <= 0" type="submit" class="btn btn-primary">Save</button>
     </div>
-  </validation-observer>
+  </div>
 </div>
 </template>
 

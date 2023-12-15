@@ -1,28 +1,27 @@
 <template>
 <div>
   <validation-observer v-slot="event">
-    <form @submit.prevent="event.handleSubmit(() => updateAllocation(event))">
-      <!-- search strategy -->
-      <v-strategy-search :strategy-type="'stock'" @input="strategy = $event"></v-strategy-search>
-      
-      <!-- selected strategy -->
-      <div v-if="strategy" class="card mt-3">
+    <!-- search strategy -->
+    <v-strategy-search :strategy-type="'stock'" @input="strategies = [$event]"></v-strategy-search>
+    
+    <div v-if="strategies.length > 0" class="mt-3">
+      <!-- strategy list -->
+      <div v-for="(strategy, index) in strategies" :key="strategy.strategy_id" :class="{'mt-2': index > 0}" class="card">
         <div class="card-body">
           <v-strategy :strategy="strategy"></v-strategy>
         </div>
       </div>
-      <div v-else :class="((event.failed && !strategy) ? 'text-danger border border-danger' : 'text-muted')" class="d-flex-column bg-light rounded text-center py-4 mt-3">
-        <h5 class="my-2">No Strategy Selected</h5>
+    </div>
+    <div v-else :class="((event.failed && !strategy) ? 'text-danger border border-danger' : 'text-muted')" class="d-flex-column bg-light rounded text-center py-4 mt-3">
+      <h5 class="my-2">No Strategies Selected</h5>
+    </div>
+    
+    <!-- save changes -->
+    <div class="row mt-3">
+      <div class="col-12 d-flex justify-content-end">
+        <button @click="updateAllocation()" :disabled="strategies.length <= 0" type="submit" class="btn btn-primary">Save</button>
       </div>
-      
-      <!-- save changes -->
-      <div class="row mt-3">
-        <div class="col-12 d-flex justify-content-end">
-          <button :disabled="!strategy" type="submit" class="btn btn-primary">Save</button>
-        </div>
-      </div>
-      
-    </form>
+    </div>
   </validation-observer>
 </div>
 </template>
@@ -35,11 +34,11 @@ export default {
   components: {vStrategy, vStrategySearch},
   data() {
     return {
-      strategy: undefined
+      strategies: []
     };
   },
   async mounted() {
-    this.strategy = await this.$store.dispatch('getAllocation');
+    this.strategies = await this.$store.dispatch('getAllocation');
   },
   methods: {
     async updateAllocation() {
@@ -51,7 +50,7 @@ export default {
           auth: true,
           url: 'updateAllocation',
           query: {
-            strategy_id: this.strategy.strategy_id
+            strategy_id: this.strategies[0].strategy_id
           }
         });
         

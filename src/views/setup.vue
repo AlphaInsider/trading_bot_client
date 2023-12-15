@@ -71,9 +71,14 @@ import vStrategySelect from '@/components/v-strategy-select.vue';
 
 export default {
   components: {vBroker, vAlphainsider, vStrategySelect},
-  async mounted() {
-    await this.$store.dispatch('getBotInfo');
-    await this.$store.dispatch('getAllocation');
+  mounted() {
+    this.loadBot();
+  },
+  methods: {
+    async loadBot() {
+      await this.$store.dispatch('getBotInfo');
+      await this.$store.dispatch('getAllocation');
+    }
   }
 }
 </script>

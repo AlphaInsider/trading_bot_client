@@ -84,7 +84,7 @@ export default new Vuex.Store({
       });
     },
     
-    //DONE: startLoading <[label]>
+    //TODO: startLoading <[label]> --skip--
     async startLoading({state, commit, getters, dispatch}, params = {}) {
       return Promise.all(params.label.map((label) => {
         //start loading
@@ -280,9 +280,6 @@ export default new Vuex.Store({
         //skip if not logged in
         if(!getters.isLoggedIn) return;
         
-        //start loading
-        await dispatch('startLoading', {label: ['startBot']})
-        
         //request startBot
         await dispatch('request', {
           type: 'post',
@@ -298,11 +295,6 @@ export default new Vuex.Store({
       .catch((error) => {
         toastr.error('Failed to start trading bot.');
         throw error;
-      })
-      
-      // finish loading
-      .finally(() => {
-        return dispatch('finishLoading', {label: ['startBot']});
       });
     },
     
@@ -312,9 +304,6 @@ export default new Vuex.Store({
       .then(async () => {
         //skip if not logged in
         if(!getters.isLoggedIn) return;
-        
-        //start loading
-        await dispatch('startLoading', {label: ['stopBot']})
         
         //request startBot
         await dispatch('request', {
@@ -331,11 +320,6 @@ export default new Vuex.Store({
       .catch((error) => {
         toastr.error('Failed to stop trading bot.');
         throw error;
-      })
-      
-      // finish loading
-      .finally(() => {
-        return dispatch('finishLoading', {label: ['stopBot']});
       });
     },
     

@@ -1,5 +1,5 @@
 <template>
-  <div class="container d-flex align-items-center justify-content-center min-vh-100 my-3 my-lg-4">
+  <div class="container d-flex align-items-center justify-content-center min-vh-100">
     <div class="row no-gutters justify-content-center w-100">
       <div class="col-11 col-md-6">
         <!-- bot empty -->

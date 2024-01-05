@@ -84,7 +84,7 @@ export default new Vuex.Store({
       });
     },
     
-    //TODO: startLoading <[label]> --skip--
+    //DONE: startLoading <[label]>
     async startLoading({state, commit, getters, dispatch}, params = {}) {
       return Promise.all(params.label.map((label) => {
         //start loading

@@ -225,6 +225,10 @@ body {
       border: 1px solid var(--primary);
       box-shadow: 0 0 4px rgba(var(--primary-rgb), 1);
     }
+    &.disabled {
+      pointer-events: none;
+      opacity: 0.5;
+    }
   }
 
   //account tier backgrounds

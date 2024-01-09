@@ -13,7 +13,7 @@
         </div>
       </div>
       <!-- tastytrade -->
-      <div @click="broker = 'tastytrade'" :class="{active: broker === 'tastytrade'}" class="option-select card">
+      <div @click="broker = 'tastytrade'" :class="{active: broker === 'tastytrade', 'disabled': $store.getters.accountTier !== 'premium'}" class="option-select card">
         <div class="card-body d-flex flex-column align-items-center justify-content-around bg-white">
           <img src="/img/brokers/tastytrade-logo.svg" alt="TastyTrade" width="100">
         </div>
@@ -23,7 +23,7 @@
       </div>
     </div>
   </div>
-
+  
   <!-- alpaca -->
   <div v-if="broker === 'alpaca'" class="mt-3">
     <validation-observer v-slot="event">
@@ -46,7 +46,7 @@
             </validation-provider>
           </div>
         </div>
-
+        
         <!-- alpaca secret -->
         <div class="row justify-content-center mb-3">
           <div class="col-12 pt-2">
@@ -65,7 +65,7 @@
             </validation-provider>
           </div>
         </div>
-
+        
         <!-- save changes -->
         <div class="row mt-3 mt-md-0">
           <div class="col-12 d-flex justify-content-end">
@@ -76,7 +76,7 @@
       </form>
     </validation-observer>
   </div>
-
+  
   <!-- tastytrade -->
   <div v-else-if="broker === 'tastytrade'" class="mt-3">
     <validation-observer v-slot="event">
@@ -99,7 +99,7 @@
             </validation-provider>
           </div>
         </div>
-
+        
         <!-- tastytrade password -->
         <div class="row mb-3">
           <div class="col-12 pt-2">
@@ -118,7 +118,7 @@
             </validation-provider>
           </div>
         </div>
-
+        
         <!-- tastytrade account_id -->
         <label>Account ID</label>
         <div class="form-group mb-2">
@@ -133,7 +133,7 @@
             <div class="invalid-feedback">{{ errors[0] }}</div>
           </validation-provider>
         </div>
-
+        
         <!-- save changes -->
         <div class="row mt-3 mt-md-0">
           <div class="col-12 d-flex justify-content-end">

@@ -18,9 +18,9 @@
             <label>Account Tier</label>
             <h2 class="text-capitalize m-0">{{ $store.state.bot.alphainsider.account_type }}</h2>
           </div>
-          <!-- name -->
+          <!-- key name -->
           <div class="pl-3">
-            <label>Name</label>
+            <label>Key Name</label>
             <h2 class="text-capitalize text-truncate m-0">{{ $store.state.bot.alphainsider.name }}</h2>
           </div>
           <!-- logo -->

@@ -61,10 +61,16 @@ export default new Vuex.Store({
       return state.authToken !== '';
     },
     user_id(state, getters) {
-      return getters.authTokenInfo.user_id;
+      return ((state.bot.alphainsider) ? state.bot.alphainsider.user_id : undefined);
+    },
+    accountTier(state, getters) {
+      return ((state.bot.alphainsider) ? state.bot.alphainsider.account_type : 'standard');
     },
     isMobileView(state, getters) {
       return !state.windowSize.includes('lg');
+    },
+    isElectron(state, getters) {
+      return /electron/i.test(navigator.userAgent);
     }
   },
   
@@ -171,6 +177,25 @@ export default new Vuex.Store({
       });
     },
     
+    //CHECK: login --password--
+    async login({state, commit, getters, dispatch}, params = {}) {
+      //request login
+      let {auth_token} = await dispatch('request', {
+        type: 'post',
+        auth: false,
+        url: 'login',
+        query: {
+          password: params.password
+        }
+      });
+      //set tokens
+      await dispatch('setTokens', {authToken: auth_token});
+      //get bot information
+      await dispatch('getBotInfo');
+      //get allocation
+      await dispatch('getAllocation');
+    },
+    
     //DONE: logout <redirectLogin>
     async logout({state, commit, getters, dispatch}, params = {}) {
       commit('resetState');
@@ -183,9 +208,6 @@ export default new Vuex.Store({
       .then(async () => {
         //skip if not logged in
         if(!getters.isLoggedIn) return;
-        
-        //start loading
-        await dispatch('startLoading', {label: ['getBotInfo']});
         
         //request getBotInfo
         let bot = await dispatch('request', {
@@ -203,15 +225,10 @@ export default new Vuex.Store({
         return bot;
       })
       
-      // error
+      //error
       .catch((error) => {
         toastr.error('Failed to get trading bot information.');
         throw error;
-      })
-      
-      // finish loading
-      .finally(() => {
-        return dispatch('finishLoading', {label: ['getBotInfo']});
       });
     },
     
@@ -221,9 +238,6 @@ export default new Vuex.Store({
       .then(async () => {
         //skip if not logged in or alphainsider not set, return
         if(!getters.isLoggedIn || !state.bot.alphainsider) return [];
-        
-        //start loading
-        await dispatch('startLoading', {label: ['getAllocation']});
         
         //request getAllocation
         let allocation = await dispatch('request', {
@@ -261,15 +275,10 @@ export default new Vuex.Store({
         return computed;
       })
       
-      // error
+      //error
       .catch((error) => {
         toastr.error('Failed to get allocation.');
         throw error;
-      })
-      
-      // finish loading
-      .finally(() => {
-        return dispatch('finishLoading', {label: ['getAllocation']});
       });
     },
     

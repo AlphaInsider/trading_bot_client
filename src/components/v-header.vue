@@ -29,7 +29,7 @@
         <router-link to="/settings" active-class="active" class="p-2">Settings</router-link>
       </div>
       <!-- sign out -->
-      <button type="button" class="btn btn-outline-primary px-4" @click="$store.dispatch('logout')">Sign Out</button>
+      <button v-if="!$store.getters.isElectron" type="button" class="btn btn-outline-primary px-4" @click="$store.dispatch('logout')">Sign Out</button>
     </div>
   </nav>
 </div>

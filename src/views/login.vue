@@ -50,24 +50,11 @@ export default {
   methods: {
     login(event) {
       //request login
-      return this.$store.dispatch('request', {
-        type: 'post',
-        auth: false,
-        url: 'login',
-        query: {
-          password: this.password
-        }
+      return this.$store.dispatch('login', {
+        password: this.password
       })
       //success
       .then(async (data) => {
-        // set tokens
-        await this.$store.dispatch('setTokens', {authToken: data.auth_token});
-        // get bot information
-        await this.$store.dispatch('getBotInfo');
-        // get allocation
-        await this.$store.dispatch('getAllocation');
-
-        // redirect
         // check if redirect in url bar
         if(this.$route.query.redirect && this.$route.query.redirect !== this.$route.path) return this.$router.replace(this.$route.query.redirect);
         // redirect to setup if no alphainsider, no broker, or no allocation set

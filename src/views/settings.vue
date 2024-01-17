@@ -15,13 +15,14 @@
           <router-link to="/settings/api-keys" tag="li" active-class="active" class="list-group-item"><i class="fal fa-file-invoice-dollar"></i> API Keys</router-link>
         </ul>
       </div>
-
+      
       <div class="sidebar-links card mt-3">
         <ul class="list-group list-group-flush disable-highlighting">
           <li class="list-group-item"><a href="https://alphainsider.freshdesk.com/support/tickets/new" target="_blank" class="d-block text-body"><i class="fal fa-comments-alt"></i> Contact Us</a></li>
         </ul>
       </div>
-      <div v-if="$store.getters.isMobileView" class="sidebar-links card mt-3">
+      
+      <div v-if="$store.getters.isMobileView && !$store.getters.isElectron" class="sidebar-links card mt-3">
         <ul class="list-group list-group-flush disable-highlighting">
           <li @click="$store.dispatch('logout')" class="list-group-item text-danger"><i class="far fa-sign-out fa-flip-horizontal"></i> Sign Out</li>
         </ul>

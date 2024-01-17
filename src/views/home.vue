@@ -11,26 +11,87 @@
   <div class="container my-3 my-lg-4">
     <!-- control panel -->
     <div class="control-panel d-flex justify-content-center mt-2">
-      <div class="d-flex flex-column align-items-center">
-        <!-- power button -->
-        <button @click="toggleTradingBot()" :class="{'btn-outline-success': ['on', 'rebalancing', 'scheduled_rebalance'].includes(status), 'btn-outline-danger': status === 'off', 'btn-outline-warning': ['closing', 'scheduled_close'].includes(status)}" :disabled="disablePowerButton" type="button" class="btn power-btn">
-          <i class="fas fa-power-off"></i>
-        </button>
-        <!-- bot status -->
+      <!-- setup -->
+      <div v-if="!$store.state.bot.alphainsider || !$store.state.bot.broker || $store.state.allocation.length <= 0" class="d-flex flex-column align-items-center">
+        <button :disabled="true" type="button" class="btn power-btn btn-outline-secondary"><i class="fas fa-power-off"></i></button>
         <h3 class="mt-2 mb-0">
-          <span :class="{'text-success': ['on', 'rebalancing', 'scheduled_rebalance'].includes(status), 'text-danger': status === 'off', 'text-warning': ['closing', 'scheduled_close'].includes(status)}" class="text-uppercase">{{ $_.replace(status, '_', ' ') }}</span>
+          <span class="text-uppercase text-secondary">Setup Required</span>
         </h3>
-        <!-- status description -->
-        <p v-if="disablePowerButton" class="mb-0">Please finish <router-link to="/setup">setting up the bot</router-link> before running.</p>
-        <p v-else-if="status === 'on'" class="mb-0">Watching for strategy changes.</p>
-        <p v-else-if="status === 'rebalancing'" class="mb-0">Adjusting positions to match your strategy.</p>
-        <p v-else-if="status === 'scheduled_rebalance'" class="mb-0">Waiting for the market to open to rebalance positions.</p>
-        <p v-else-if="status === 'closing'" class="mb-0">Closing all positions.</p>
-        <p v-else-if="status === 'scheduled_close'" class="mb-0">Waiting for the market to open to close all positions.</p>
-        <p v-else-if="status === 'off'" class="mb-0">Not activity trading or monitoring.</p>
+        <p class="mb-0">Please finish <router-link to="/setup">setting up the bot</router-link> before running.</p>
+      </div>
+      <!-- invalid account type -->
+      <div v-else-if="!['reg_t', 'portfolio'].includes($store.state.bot.broker.margin_type)" class="d-flex flex-column align-items-center">
+        <button :disabled="true" type="button" class="btn power-btn btn-outline-secondary"><i class="fas fa-power-off"></i></button>
+        <h3 class="mt-2 mb-0">
+          <span class="text-uppercase text-secondary">Margin Required</span>
+        </h3>
+        <p class="mb-0">Your brokerage account must have Reg T or Portfolio margin enabled.</p>
+      </div>
+      <!-- insufficient funds -->
+      <div v-else-if="$math.evaluate('bignumber(a) < 25000', {a: $store.state.bot.broker.value})" class="d-flex flex-column align-items-center">
+        <button :disabled="true" type="button" class="btn power-btn btn-outline-secondary"><i class="fas fa-power-off"></i></button>
+        <h3 class="mt-2 mb-0">
+          <span class="text-uppercase text-secondary">Insufficient Funds</span>
+        </h3>
+        <p class="mb-0">Broker must maintain at least $25,000 due to <a href="https://www.investopedia.com/terms/p/patterndaytrader.asp" target="_blank">PDT</a> rules.</p>
+      </div>
+      <!-- on -->
+      <div v-else-if="$store.state.bot.status === 'on'" class="d-flex flex-column align-items-center">
+        <button @click="$store.dispatch('stopBot')" type="button" class="btn power-btn btn-outline-success"><i class="fas fa-power-off"></i></button>
+        <h3 class="mt-2 mb-0">
+          <span class="text-uppercase text-success">On</span>
+        </h3>
+        <p class="mb-0">Watching for strategy changes.</p>
+      </div>
+      <!-- rebalancing -->
+      <div v-else-if="$store.state.bot.status === 'rebalancing'" class="d-flex flex-column align-items-center">
+        <button @click="$store.dispatch('stopBot')" type="button" class="btn power-btn btn-outline-success"><i class="fas fa-power-off"></i></button>
+        <h3 class="mt-2 mb-0">
+          <span class="text-uppercase text-success">Rebalancing</span>
+        </h3>
+        <p class="mb-0">Adjusting positions to match your strategy.</p>
+      </div>
+      <!-- scheduled_rebalance -->
+      <div v-else-if="$store.state.bot.status === 'scheduled_rebalance'" class="d-flex flex-column align-items-center">
+        <button @click="$store.dispatch('stopBot')" type="button" class="btn power-btn btn-outline-success"><i class="fas fa-power-off"></i></button>
+        <h3 class="mt-2 mb-0">
+          <span class="text-uppercase text-success">Scheduled Rebalance</span>
+        </h3>
+        <p class="mb-0">Rebalancing positions at the next viable time.</p>
+      </div>
+      <!-- closing -->
+      <div v-else-if="$store.state.bot.status === 'closing'" class="d-flex flex-column align-items-center">
+        <button @click="$store.dispatch('stopBot')" type="button" class="btn power-btn btn-outline-warning"><i class="fas fa-power-off"></i></button>
+        <h3 class="mt-2 mb-0">
+          <span class="text-uppercase text-warning">Closing</span>
+        </h3>
+        <p class="mb-0">Closing all positions.</p>
+      </div>
+      <!-- scheduled_close -->
+      <div v-else-if="$store.state.bot.status === 'scheduled_close'" class="d-flex flex-column align-items-center">
+        <button @click="$store.dispatch('stopBot')" type="button" class="btn power-btn btn-outline-warning"><i class="fas fa-power-off"></i></button>
+        <h3 class="mt-2 mb-0">
+          <span class="text-uppercase text-warning">Scheduled Close</span>
+        </h3>
+        <p class="mb-0">Closing positions at the next viable time.</p>
+      </div>
+      <!-- off -->
+      <div v-else-if="$store.state.bot.status === 'off'" class="d-flex flex-column align-items-center">
+        <button @click="showRiskModal = true" type="button" class="btn power-btn btn-outline-danger"><i class="fas fa-power-off"></i></button>
+        <h3 class="mt-2 mb-0">
+          <span class="text-uppercase text-danger">Off</span>
+        </h3>
+        <p class="mb-0">Not activity trading or monitoring.</p>
       </div>
     </div>
-
+    
+    <!-- RegT alert-->
+    <div class="d-flex justify-content-center">
+      <div v-if="$store.state.bot.broker && $store.state.bot.broker.margin_type === 'reg_t'" class="alert alert-info my-2" role="alert">
+        <i class="fas fa-info-circle"></i> Expect 40% of strategy's performance due to your account using Reg T margin while AlphaInsider uses Portfolio margin.
+      </div>
+    </div>
+    
     <!-- activity list -->
     <div class="d-flex align-items-baseline">
       <h3 class="text-primary mt-3 mb-0">Recent Activity</h3>
@@ -89,7 +150,7 @@
   </div>
   
   <!-- modals -->
-  <v-risk-modal v-if="showRiskModal" @close="showRiskModal = false" @confirmed="startBot()"></v-risk-modal>
+  <v-risk-modal v-if="showRiskModal" @close="showRiskModal = false" @confirmed="showRiskModal = false, $store.dispatch('startBot')"></v-risk-modal>
 </div>
 </template>
 
@@ -118,33 +179,11 @@ export default {
       showRiskModal: false
     }
   },
-  computed: {
-    status() {
-      //status: on, rebalancing, scheduled_rebalance, closing, scheduled_close, off
-      return this.$store.state.bot.status || 'off';
-    },
-    disablePowerButton() {
-      return !this.$store.state.bot.alphainsider || !this.$store.state.bot.broker || this.$store.state.allocation.length <= 0;
-    }
-  },
   async mounted() {
     await this.$store.dispatch('getBotInfo');
     await this.$store.dispatch('getAllocation');
   },
   methods: {
-    startBot() {
-      this.showRiskModal = false;
-      this.$store.dispatch('startBot');
-    },
-    stopBot() {
-      this.$store.dispatch('stopBot');
-    },
-    toggleTradingBot() {
-      // show confirmation modal
-      if(this.status === 'off') this.showRiskModal = true;
-      // stop bot
-      else this.stopBot();
-    },
     getActivity($state) {
       //get activity type filter
       let type = [];

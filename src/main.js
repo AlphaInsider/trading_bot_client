@@ -141,6 +141,18 @@ let routes = [
     meta: {
       auth: false,
       hideNav: true
+    },
+    beforeEnter: async (to, from, next) => {
+      //if electron and not logged in, login and redirect home or setup
+      if(store.getters.isElectron && !store.getters.isLoggedIn) {
+        await store.dispatch('login');
+        if(!store.state.bot.alphainsider || !store.state.bot.broker || store.state.allocation.length <= 0) next({name: 'setup'});
+        else next({name: 'home'});
+      }
+      //else, continue
+      else {
+        next();
+      }
     }
   },
   {

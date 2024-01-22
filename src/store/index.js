@@ -66,11 +66,11 @@ export default new Vuex.Store({
     accountTier(state, getters) {
       return ((state.bot.alphainsider) ? state.bot.alphainsider.account_type : 'standard');
     },
+    host(state, getters) {
+      return ((/electron/i.test(navigator.userAgent)) ? 'desktop' : (_.endsWith(window.location.hostname, 'heroku.com')) ? 'heroku' : 'digital_ocean');
+    },
     isMobileView(state, getters) {
       return !state.windowSize.includes('lg');
-    },
-    isElectron(state, getters) {
-      return /electron/i.test(navigator.userAgent);
     }
   },
   

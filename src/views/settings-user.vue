@@ -18,7 +18,7 @@
   </div>
   
   <!-- change password -->
-  <div v-if="$store.getters.host !== 'desktop'" class="card">
+  <div v-if="$store.getters.host !== 'electron'" class="card">
     <!-- title -->
     <div class="d-flex card-header bg-white">
       <h5 class="text-primary mb-0">Change Password</h5>

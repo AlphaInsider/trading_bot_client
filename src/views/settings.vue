@@ -22,7 +22,7 @@
         </ul>
       </div>
       
-      <div v-if="$store.getters.isMobileView && $store.getters.host !== 'desktop'" class="sidebar-links card mt-3">
+      <div v-if="$store.getters.isMobileView && $store.getters.host !== 'electron'" class="sidebar-links card mt-3">
         <ul class="list-group list-group-flush disable-highlighting">
           <li @click="$store.dispatch('logout')" class="list-group-item text-danger"><i class="far fa-sign-out fa-flip-horizontal"></i> Sign Out</li>
         </ul>

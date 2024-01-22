@@ -86,7 +86,7 @@ export default {
     providerLink() {
       return (this.$store.getters.host === 'heroku' ? 'https://dashboard.heroku.com/apps' : 'https://cloud.digitalocean.com/apps');
     }
-  },
+  }
 }
 </script>
 

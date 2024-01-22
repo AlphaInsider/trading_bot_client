@@ -71,7 +71,7 @@ export default {
         query: {
           search: this.searchInput,
           type: {includes: ['stock'], excludes: []},
-          limit: 6
+          limit: 25
         }
       })
       .catch((error) => {});

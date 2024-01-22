@@ -231,6 +231,11 @@ let routes = [
     component: () => import('@/views/tutorial-password.vue')
   },
   {
+    path: '/update-tutorial',
+    name: 'update_tutorial',
+    component: () => import('@/views/tutorial-update.vue')
+  },
+  {
     path: '/broker-tutorial',
     name: 'broker_tutorial',
     component: () => import('@/views/tutorial-broker.vue')

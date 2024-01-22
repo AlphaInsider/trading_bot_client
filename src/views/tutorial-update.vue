@@ -6,8 +6,8 @@
       <div class="title row justify-content-center px-4">
         <div class="col-12">
           <div class="text-center">
-            <h1 class="text-white">Forgot Password</h1>
-            <h5 class="text-white">Follow these steps to update your AlphaBot password.</h5>
+            <h1 class="text-white">Update AlphaBot</h1>
+            <h5 class="text-white">Follow these steps to update your AlphaBot application.</h5>
           </div>
         </div>
       </div>
@@ -63,16 +63,16 @@
         <div class="col-12 col-lg-8">
           <div class="card">
             <div class="card-header d-flex align-items-center">
-              <span class="badge badge-secondary mr-2">Step 2</span> Update password
+              <span class="badge badge-secondary mr-2">Step 2</span> Update application
             </div>
             <div class="card-body">
               <!-- Heroku -->
               <p v-if="provider === 'heroku'" class="card-text">
-                Once inside the application dashboard, navigate to the "<b>Settings</b>" tab. Scroll down to "<b>Config Vars</b>" and click on the "<b>Reveal Config Vars</b>" button. Update the field next to the "<b>USER_PASSWORD</b>" key to change the password. Click the "<b>Save changes</b>" button to update the password.
+                Once inside the application dashboard, click on the "<b>More</b>" dropdown button. Scroll down to "<b>Restart all dynos</b>" and click.
               </p>
               <!-- DigitalOcean -->
               <p v-else-if="provider === 'digitalocean'" class="card-text">
-                Once inside the application dashboard, navigate to the "<b>Settings</b>" tab. Scroll down to "<b>App-Level Environment Variables</b>" and click on "<b>Edit</b>" text button. Update the value field next to the "<b>USER_PASSWORD</b>" key to change the password. Click the "<b>Save</b>" button to update the password.
+                Once inside the application dashboard, click on the "<b>Actions</b>" dropdown button. Scroll down to "<b>Force Rebuild and Deploy</b>" and click.
               </p>
             </div>
           </div>
@@ -88,7 +88,7 @@
             </div>
             <div class="card-body">
               <p class="card-text">
-                After saving, the application will update automatically with the new password. Head back to the application website to log into the bot with the new password.
+                The application will automatically pull down the latest updates and redeploy. Head back to the AlphaBot website to see the latest changes.
               </p>
             </div>
           </div>

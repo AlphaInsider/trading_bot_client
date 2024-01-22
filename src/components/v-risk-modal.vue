@@ -11,7 +11,7 @@
       <form @submit.prevent="event.handleSubmit(() => confirmed())">
         <p class="mb-0">
           <strong class="text-danger">Warning:</strong> you cannot manually trade on your brokerage while AlphaBot is on. To regain control,
-          simply turn off using the AlphaBot user interface or delete the app.
+          simply turn off the bot or delete the app.
         </p>
         
         <p class="mb-0 mt-2">

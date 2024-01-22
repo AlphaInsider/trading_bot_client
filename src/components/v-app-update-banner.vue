@@ -5,7 +5,7 @@
       <div class="container d-flex py-2">
         <div class="w-100 text-center">
           <h6 class="mb-0">
-            <i class="fas fa-download"></i> There is a new update available. <router-link to="/update-tutorial" class="btn btn-light border mr-2">Update trading bot</router-link>.
+            <i class="fas fa-download"></i> There is a new update available. <router-link to="/update-tutorial" class="btn btn-outline-light py-1 ml-2">Update trading bot</router-link>
           </h6>
         </div>
       </div>
@@ -21,10 +21,25 @@ export default {
     };
   },
   mounted() {
-    this.checkAppUpdate();
+    this.checkForUpdate();
   },
   methods: {
-    checkAppUpdate() {}
+    checkForUpdate() {
+      //request getVersion
+      return this.$store.dispatch('request', {
+        type: 'get',
+        url: 'getVersion',
+        query: {}
+      })
+      //success, show/hide update banner
+      .then((data) => {
+        this.showUpdateBanner = data.upgradable;
+      })
+      // error, toast error
+      .catch(() => {
+        toastr.error('Failed to get app version.');
+      });
+    }
   }
 }
 </script>

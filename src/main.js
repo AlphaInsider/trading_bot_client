@@ -144,7 +144,7 @@ let routes = [
     },
     beforeEnter: async (to, from, next) => {
       //if host is desktop and not logged in, login and redirect home or setup
-      if(store.getters.host === 'desktop' && !store.getters.isLoggedIn) {
+      if(store.getters.host === 'electron' && !store.getters.isLoggedIn) {
         await store.dispatch('login');
         if(!store.state.bot.alphainsider || !store.state.bot.broker || store.state.allocation.length <= 0) next({name: 'setup'});
         else next({name: 'home'});

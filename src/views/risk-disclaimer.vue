@@ -78,5 +78,3 @@
   padding-bottom: 75px;
 }
 </style>
-<script setup>
-</script>

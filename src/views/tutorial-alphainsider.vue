@@ -95,10 +95,6 @@
 </div>
 </template>
 
-
-<script>
-</script>
-
 <style lang="scss" scoped>
 .overview {
   background-color: #051125;

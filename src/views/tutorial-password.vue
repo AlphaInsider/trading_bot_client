@@ -109,8 +109,6 @@ export default {
   },
   computed: {
     providerLink() {
-      // digital ocean: https://cloud.digitalocean.com/apps
-      // heroku: https://dashboard.heroku.com/apps
       return (this.provider === 'heroku' ? 'https://dashboard.heroku.com/apps' : 'https://cloud.digitalocean.com/apps');
     }
   },

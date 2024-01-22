@@ -5,7 +5,7 @@
       <div class="container d-flex py-2">
         <div class="w-100 text-center">
           <h6 class="mb-0">
-            <i class="fas fa-download"></i> There is a new update available. <a :href="updateLink" target="_blank" class="link pointer font-weight-bold">Update trading bot</a>.
+            <i class="fas fa-download"></i> There is a new update available. <router-link to="/update-tutorial" class="btn btn-light border mr-2">Update trading bot</router-link>.
           </h6>
         </div>
       </div>
@@ -20,19 +20,11 @@ export default {
       showUpdateBanner: false
     };
   },
-  computed: {
-    updateLink() {
-      // digital ocean: https://cloud.digitalocean.com/apps
-      // heroku: https://dashboard.heroku.com/apps
-      return 'https://cloud.digitalocean.com/apps';
-    }
-  },
   mounted() {
     this.checkAppUpdate();
   },
   methods: {
-    checkAppUpdate() {},
-    performUpdate() {}
+    checkAppUpdate() {}
   }
 }
 </script>

@@ -63,11 +63,7 @@
                 From the "<span class="font-weight-bold">New API Key</span>" section, enter a "<span class="font-weight-bold">Name</span>" for the API key then select the following from the "<span class="font-weight-bold">Permissions</span>" dropdown:
               </p>
               <ul>
-                <li><span class="font-weight-bold">strategies > getStrategies</span>: This gives permission to get any active strategy you have access to on AlphaInsider.</li>
-                <li><span class="font-weight-bold">strategies > searchStrategies</span>: This gives permission to search any strategy on AlphaInsider, including your own public/private strategies.</li>
-                <li><span class="font-weight-bold">subscriptions > getAccountSubscription</span>: This gives permission to get your current account tier subscription.</li>
-                <li><span class="font-weight-bold">trades > getPositions</span>: This gives permission to get positions on any active strategy you have access to on AlphaInsider.</li>
-                <li><span class="font-weight-bold">websockets > wsPositions</span>: This gives permission to create a websocket for positions on any active strategy you have access to on AlphaInsider.</li>
+                <li><span class="font-weight-bold">bot > tradingBot</span>: This gives permission for AlphaBot to have access to permissions specific for watching AlphaInsider strategies.</li>
               </ul>
               <p class="card-text">
                 Once the name and permissions are set, click on the "<span class="font-weight-bold">Create Key</span>" button.

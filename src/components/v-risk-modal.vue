@@ -10,14 +10,17 @@
     <validation-observer v-slot="event">
       <form @submit.prevent="event.handleSubmit(() => confirmed())">
         <p class="mb-0">
-          By activating AlphaBot, you grant it permission to automatically rebalance your portfolio to match the chosen AlphaInsider strategy,
-          including buying and selling assets and using all available cash. While active, <b class="text-danger">you cannot manually trade</b>. To regain control,
-          simply pause or delete the AlphaBot app. <b class="text-danger">You acknowledge potential risks and agree
-          to indemnify AlphaBot from any losses or claims arising from its use</b>.
+          <strong class="text-danger">Warning:</strong> you cannot manually trade on your brokerage while AlphaBot is on. To regain control,
+          simply turn off using the AlphaBot user interface or delete the app.
         </p>
         
         <p class="mb-0 mt-2">
-          You also acknowledge and agree to the <a href="/risk-disclaimer" target="_blank">risk disclaimer</a>.
+          By activating AlphaBot, you grant it permission to automatically rebalance your portfolio to match the chosen AlphaInsider strategy,
+          including buying and selling assets and using all available cash.
+        </p>
+        
+        <p class="mb-0 mt-2">
+          You acknowledge potential risks and agree to indemnify AlphaBot, AlphaInsider, and all associated parties from any losses or claims arising from its use. You also acknowledge you have read and understood AlphaBot's <a href="/risk-disclaimer" target="_blank">risk disclaimer</a> and <a href="/privacy-policy" target="_blank">privacy policy</a> and you agree to all provisions.
         </p>
 
         <!-- confirmation -->

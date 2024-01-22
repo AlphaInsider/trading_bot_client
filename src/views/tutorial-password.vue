@@ -17,37 +17,12 @@
   <!-- Steps -->
   <div class="instructions-body">
     <div class="container">
-
-      <!-- Deployment Select -->
-      <div class="row justify-content-center">
-        <div class="col-12 col-lg-8 d-flex justify-content-center">
-          <!-- Heroku -->
-          <div @click="provider = 'heroku'" :class="{active: provider === 'heroku'}" class="option-select card mr-3">
-            <div class="card-body d-flex flex-column align-items-center justify-content-around" style="background-color: #534292;">
-              <img src="/img/heroku-logo.png" alt="Heroku" width="54">
-            </div>
-            <div class="card-footer text-center">
-              <h6 class="mb-0">Heroku</h6>
-            </div>
-          </div>
-          <!-- DigitalOcean -->
-          <div @click="provider = 'digitalocean'" :class="{active: provider === 'digitalocean'}" class="option-select card">
-            <div class="card-body d-flex flex-column align-items-center justify-content-center">
-              <img src="/img/digitalocean-logo.svg" alt="DigitalOcean" width="60">
-            </div>
-            <div class="card-footer text-center">
-              <h6 class="mb-0">DigitalOcean</h6>
-            </div>
-          </div>
-        </div>
-      </div>
-      
       <!-- Step 1 -->
-      <div class="row justify-content-center mt-3">
+      <div class="row justify-content-center">
         <div class="col-12 col-lg-8">
           <div class="card">
             <div class="card-header d-flex align-items-center">
-              <span class="badge badge-secondary mr-2">Step 1</span> Sign into {{ $_.capitalize(provider) }}
+              <span class="badge badge-secondary mr-2">Step 1</span> Sign into {{ ($store.getters.host === 'heroku' ? 'Heroku' : 'DigitalOcean') }}
             </div>
             <div class="card-body">
               <p class="card-text">
@@ -67,11 +42,11 @@
             </div>
             <div class="card-body">
               <!-- Heroku -->
-              <p v-if="provider === 'heroku'" class="card-text">
+              <p v-if="$store.getters.host === 'heroku'" class="card-text">
                 Once inside the application dashboard, navigate to the "<b>Settings</b>" tab. Scroll down to "<b>Config Vars</b>" and click on the "<b>Reveal Config Vars</b>" button. Update the field next to the "<b>USER_PASSWORD</b>" key to change the password. Click the "<b>Save changes</b>" button to update the password.
               </p>
               <!-- DigitalOcean -->
-              <p v-else-if="provider === 'digitalocean'" class="card-text">
+              <p v-else class="card-text">
                 Once inside the application dashboard, navigate to the "<b>Settings</b>" tab. Scroll down to "<b>App-Level Environment Variables</b>" and click on "<b>Edit</b>" text button. Update the value field next to the "<b>USER_PASSWORD</b>" key to change the password. Click the "<b>Save</b>" button to update the password.
               </p>
             </div>
@@ -102,14 +77,9 @@
 
 <script>
 export default {
-  data() {
-    return {
-      provider: 'heroku'
-    }
-  },
   computed: {
     providerLink() {
-      return (this.provider === 'heroku' ? 'https://dashboard.heroku.com/apps' : 'https://cloud.digitalocean.com/apps');
+      return (this.$store.getters.host === 'heroku' ? 'https://dashboard.heroku.com/apps' : 'https://cloud.digitalocean.com/apps');
     }
   },
 }

@@ -31,30 +31,27 @@
     </div>
     <!-- body -->
     <div class="card-body">
-      <!-- bot error handling -->
-      <div class="p-1">
-        <!-- rebalance_on_start -->
-        <div class="d-flex align-items-center">
-          <div>
-            <p class="mb-0">Rebalance On Start</p>
-            <small class="text-muted">Rebalance immediately when the trading bot starts.</small>
-          </div>
-          <div class="custom-control custom-switch ml-auto">
-            <input @input="updateSettings({rebalance_on_start: !$store.state.bot.rebalance_on_start})" :checked="$store.state.bot.rebalance_on_start" type="checkbox" class="custom-control-input" id="rebalanceOnStart-switch">
-            <label class="custom-control-label pointer" for="rebalanceOnStart-switch"></label>
-          </div>
+      <!-- rebalance_on_start -->
+      <div class="d-flex align-items-center p-1">
+        <div>
+          <p class="mb-0">Rebalance On Start</p>
+          <small class="text-muted">Rebalance immediately when the trading bot starts.</small>
         </div>
-        
-        <!-- close_on_stop -->
-        <div class="d-flex align-items-center">
-          <div>
-            <p class="mb-0">Close On Stop</p>
-            <small class="text-muted">Close all positions when the trading bot stops.</small>
-          </div>
-          <div class="custom-control custom-switch ml-auto">
-            <input @input="updateSettings({close_on_stop: !$store.state.bot.close_on_stop})" :checked="$store.state.bot.close_on_stop" type="checkbox" class="custom-control-input" id="closeOnStop-switch">
-            <label class="custom-control-label pointer" for="closeOnStop-switch"></label>
-          </div>
+        <div class="custom-control custom-switch ml-auto">
+          <input @input="updateSettings({rebalance_on_start: !$store.state.bot.rebalance_on_start})" :checked="$store.state.bot.rebalance_on_start" type="checkbox" class="custom-control-input" id="rebalanceOnStart-switch">
+          <label class="custom-control-label pointer" for="rebalanceOnStart-switch"></label>
+        </div>
+      </div>
+
+      <!-- close_on_stop -->
+      <div class="d-flex align-items-center p-1">
+        <div>
+          <p class="mb-0">Close On Stop</p>
+          <small class="text-muted">Close all positions when the trading bot stops.</small>
+        </div>
+        <div class="custom-control custom-switch ml-auto">
+          <input @input="updateSettings({close_on_stop: !$store.state.bot.close_on_stop})" :checked="$store.state.bot.close_on_stop" type="checkbox" class="custom-control-input" id="closeOnStop-switch">
+          <label class="custom-control-label pointer" for="closeOnStop-switch"></label>
         </div>
       </div>
     </div>

@@ -156,11 +156,6 @@ let routes = [
     }
   },
   {
-    path: '/forgot-password',
-    name: 'forgot_password',
-    component: () => import('@/views/forgot-password.vue')
-  },
-  {
     path: '/setup',
     name: 'setup',
     component: () => import('@/views/setup.vue'),

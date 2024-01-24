@@ -9,3 +9,6 @@ $ npm run serve
 ```bash
 $ npm run build
 ```
+
+### Server Side Code Can be Found Here:
+[trading_bot](https://github.com/AlphaInsider/trading_bot)

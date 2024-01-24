@@ -31,7 +31,7 @@
         </form>
       </validation-observer>
       <!-- forgot password -->
-      <router-link to="/forgot-password">Forgot Password?</router-link>
+      <router-link to="/password-tutorial">Forgot Password?</router-link>
     </div>
   </div>
 </div>

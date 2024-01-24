@@ -1,4 +1,4 @@
-# Trading Bot Client
+# AlphaBot Client
 ### Development   
 - Run Local Environment  
 ```bash
@@ -11,4 +11,4 @@ $ npm run build
 ```
 
 ### Server Side Code Can be Found Here:
-[trading_bot](https://github.com/AlphaInsider/trading_bot)
+[AlphaInsider/trading_bot](https://github.com/AlphaInsider/trading_bot)

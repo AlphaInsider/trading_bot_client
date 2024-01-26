@@ -17,9 +17,18 @@
   <!-- Steps -->
   <div class="instructions-body">
     <div class="container">
+
+      <!-- Tutorial Video -->
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+          <div class="embed-responsive embed-responsive-16by9">
+            <iframe class="embed-responsive-item trading-bot-video" src="https://www.youtube.com/embed/rezdx0KpwSI?si=ZQ52GzpunUFUzTYX&rel=0" title="Connecting AlphaInsider to your broker" allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
       
       <!-- Step 1 -->
-      <div class="row justify-content-center">
+      <div class="row justify-content-center mt-3">
         <div class="col-12 col-lg-8">
           <div class="card">
             <div class="card-header d-flex align-items-center">

@@ -40,6 +40,7 @@
 
 <script>
 import vLogo from '@/components/v-logo.vue';
+import store from "@/store";
 export default {
   components: {vLogo},
   data() {
@@ -58,7 +59,7 @@ export default {
         // check if redirect in url bar
         if(this.$route.query.redirect && this.$route.query.redirect !== this.$route.path) return this.$router.replace(this.$route.query.redirect);
         // redirect to setup if no alphainsider, no broker, or no allocation set
-        else if(!this.$store.state.bot.alphainsider || !this.$store.state.bot.broker || this.$store.state.allocation.length <= 0) return this.$router.replace('/setup');
+        else if(this.$store.state.bot.status === 'off' && (!this.$store.state.bot.alphainsider || !this.$store.state.bot.broker || this.$store.state.allocation.length <= 0)) return this.$router.replace('/setup');
         // otherwise, redirect to home
         else return this.$router.replace('/');
       })

@@ -11,32 +11,8 @@
   <div class="container my-3 my-lg-4">
     <!-- control panel -->
     <div class="control-panel d-flex justify-content-center mt-2">
-      <!-- setup -->
-      <div v-if="!$store.state.bot.alphainsider || !$store.state.bot.broker || $store.state.allocation.length <= 0" class="d-flex flex-column align-items-center">
-        <button :disabled="true" type="button" class="btn power-btn btn-outline-secondary"><i class="fas fa-power-off"></i></button>
-        <h3 class="mt-2 mb-0">
-          <span class="text-uppercase text-secondary">Setup Required</span>
-        </h3>
-        <p class="mb-0">Please finish <router-link to="/setup">setting up the bot</router-link> before running.</p>
-      </div>
-      <!-- invalid account type -->
-      <div v-else-if="!['reg_t', 'portfolio'].includes($store.state.bot.broker.margin_type)" class="d-flex flex-column align-items-center">
-        <button :disabled="true" type="button" class="btn power-btn btn-outline-secondary"><i class="fas fa-power-off"></i></button>
-        <h3 class="mt-2 mb-0">
-          <span class="text-uppercase text-secondary">Margin Required</span>
-        </h3>
-        <p class="mb-0">Your brokerage account must have Reg T or Portfolio margin enabled.</p>
-      </div>
-      <!-- insufficient funds -->
-      <div v-else-if="$math.evaluate('bignumber(a) < 25000', {a: $store.state.bot.broker.value})" class="d-flex flex-column align-items-center">
-        <button :disabled="true" type="button" class="btn power-btn btn-outline-secondary"><i class="fas fa-power-off"></i></button>
-        <h3 class="mt-2 mb-0">
-          <span class="text-uppercase text-secondary">Insufficient Funds</span>
-        </h3>
-        <p class="mb-0">Broker must maintain at least $25,000 due to <a href="https://www.investopedia.com/terms/p/patterndaytrader.asp" target="_blank">PDT</a> rules.</p>
-      </div>
       <!-- on -->
-      <div v-else-if="$store.state.bot.status === 'on'" class="d-flex flex-column align-items-center">
+      <div v-if="$store.state.bot.status === 'on'" class="d-flex flex-column align-items-center">
         <button @click="$store.dispatch('stopBot')" type="button" class="btn power-btn btn-outline-success"><i class="fas fa-power-off"></i></button>
         <h3 class="mt-2 mb-0">
           <span class="text-uppercase text-success">On</span>
@@ -74,6 +50,30 @@
           <span class="text-uppercase text-warning">Scheduled Close</span>
         </h3>
         <p class="mb-0">Closing positions at the next viable time.</p>
+      </div>
+      <!-- setup -->
+      <div v-else-if="!$store.state.bot.alphainsider || !$store.state.bot.broker || $store.state.allocation.length <= 0" class="d-flex flex-column align-items-center">
+        <button :disabled="true" type="button" class="btn power-btn btn-outline-secondary"><i class="fas fa-power-off"></i></button>
+        <h3 class="mt-2 mb-0">
+          <span class="text-uppercase text-secondary">Setup Required</span>
+        </h3>
+        <p class="mb-0">Please finish <router-link to="/setup">setting up the bot</router-link> before running.</p>
+      </div>
+      <!-- invalid account type -->
+      <div v-else-if="!['reg_t', 'portfolio'].includes($store.state.bot.broker.margin_type)" class="d-flex flex-column align-items-center">
+        <button :disabled="true" type="button" class="btn power-btn btn-outline-secondary"><i class="fas fa-power-off"></i></button>
+        <h3 class="mt-2 mb-0">
+          <span class="text-uppercase text-secondary">Margin Required</span>
+        </h3>
+        <p class="mb-0">Your brokerage account must have Reg T or Portfolio margin enabled.</p>
+      </div>
+      <!-- insufficient funds -->
+      <div v-else-if="$math.evaluate('bignumber(a) < 25000', {a: $store.state.bot.broker.value})" class="d-flex flex-column align-items-center">
+        <button :disabled="true" type="button" class="btn power-btn btn-outline-secondary"><i class="fas fa-power-off"></i></button>
+        <h3 class="mt-2 mb-0">
+          <span class="text-uppercase text-secondary">Insufficient Funds</span>
+        </h3>
+        <p class="mb-0">Broker must maintain at least $25,000 due to <a href="https://www.investopedia.com/terms/p/patterndaytrader.asp" target="_blank">PDT</a> rules.</p>
       </div>
       <!-- off -->
       <div v-else-if="$store.state.bot.status === 'off'" class="d-flex flex-column align-items-center">

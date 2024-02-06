@@ -146,7 +146,7 @@ let routes = [
       //if host is desktop and not logged in, login and redirect home or setup
       if(store.getters.host === 'electron' && !store.getters.isLoggedIn) {
         await store.dispatch('login');
-        if(!store.state.bot.alphainsider || !store.state.bot.broker || store.state.allocation.length <= 0) next({name: 'setup'});
+        if(store.state.bot.status === 'off' && (!store.state.bot.alphainsider || !store.state.bot.broker || store.state.allocation.length <= 0)) next({name: 'setup'});
         else next({name: 'home'});
       }
       //else, continue

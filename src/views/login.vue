@@ -40,7 +40,6 @@
 
 <script>
 import vLogo from '@/components/v-logo.vue';
-import store from "@/store";
 export default {
   components: {vLogo},
   data() {

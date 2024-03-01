@@ -22,7 +22,7 @@ jobs:
           fi
       
       # checkout master
-      - name: Checkout trading_bot
+      - name: Checkout master
         uses: actions/checkout@v4
         with:
           ref: master

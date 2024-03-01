@@ -1,4 +1,4 @@
-name: _merge_master
+name: _update_version
 
 on:
   workflow_call:
@@ -9,7 +9,7 @@ on:
         description: 'Version Number (eg: 0.0.0)'
 
 jobs:
-  merge_master:
+  update_version:
     runs-on: ubuntu-latest
     steps:
       # verify version format
@@ -21,22 +21,21 @@ jobs:
             exit 1
           fi
       
-      # checkout dev
-      - name: Checkout dev
+      # checkout master
+      - name: Checkout trading_bot
         uses: actions/checkout@v4
         with:
-          ref: dev
-          fetch-depth: 0
+          ref: master
       
       # update package version
-      - name: Update package.json version
+      - name: Update package version
         shell: bash
         run: |
           NEW_VERSION="${{ github.event.inputs.version }}"
           sed -i 's/"version": ".*"/"version": "'"$NEW_VERSION"'"/' package.json
       
-      # commit changes
-      - name: Commit changes
+      # push changes master
+      - name: Push changes master
         shell: bash
         run: |
           git config --global user.name "Github Action"
@@ -46,18 +45,5 @@ jobs:
             echo "Skipping, no changes to commit."
           else
             git commit -m "Updated version"
-            git push origin dev
-          fi
-      
-      # merge dev to master
-      - name: Merge dev to master
-        shell: bash
-        run: |
-          git fetch origin master
-          git checkout master
-          if git diff origin/master..origin/dev --quiet; then
-            echo "Skipping, no changes between dev and master."
-          else
-            git merge origin/dev --no-ff -m "Merged dev to master"
             git push origin master
           fi

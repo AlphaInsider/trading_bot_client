@@ -12,20 +12,19 @@ permissions:
   contents: write
 
 jobs:
-  # merge master
-  merge_master:
-    uses: ./.github/workflows/_merge_master.yml
+  # update version
+  update_version:
+    uses: ./.github/workflows/_update_version.yml
     with:
       version: ${{ github.event.inputs.version }}
   
   # new release
   new_release:
-    needs: merge_master
+    needs: update_version
     runs-on: ubuntu-latest
     steps:
       # create release
       - name: Create release
-        id: create_release
         uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

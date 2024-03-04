@@ -5,7 +5,7 @@
       <div class="container d-flex py-2">
         <div class="w-100 text-center">
           <h6 class="mb-0">
-            <i class="fas fa-download"></i> There is a new update available. <u><router-link to="/update-tutorial" class="text-white">Update trading bot</router-link></u>
+            <i class="fas fa-download"></i> There is a new update available. <u><a href="#" @click.prevent="update()" class="text-white">Update trading bot</a></u>
           </h6>
         </div>
       </div>
@@ -39,6 +39,16 @@ export default {
       .catch(() => {
         toastr.error('Failed to get app version.');
       });
+    },
+    update() {
+      //electron
+      if(this.$store.getters.host === 'electron') {
+        window.location.href = 'process:update';
+      }
+      //web
+      else {
+        this.$router.push('/update-tutorial');
+      }
     }
   }
 }

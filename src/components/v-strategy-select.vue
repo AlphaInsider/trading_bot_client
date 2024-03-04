@@ -1,7 +1,7 @@
 <template>
 <div>
   <!-- search strategy -->
-  <v-strategy-search :strategy-type="'stock'" @input="strategies = [$event]"></v-strategy-search>
+  <v-strategy-search @input="strategies = [$event]"></v-strategy-search>
 
   <div v-if="strategies.length > 0" class="mt-3">
     <!-- strategy list -->

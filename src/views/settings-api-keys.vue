@@ -62,8 +62,9 @@
           </div>
           <!-- logo -->
           <div class="ml-auto align-self-center">
-            <img v-if="$store.state.bot.broker.type === 'alpaca'" src="/img/brokers/alpaca-logo.png" alt="Alpaca" width="54">
+            <img v-if="$store.state.bot.broker.type === 'alpaca'" src="/img/brokers/alpaca-logo.png" alt="Alpaca" width="60">
             <img v-else-if="$store.state.bot.broker.type === 'tastytrade'" src="/img/brokers/tastytrade-logo.svg" alt="TastyTrade" width="150">
+            <img v-else-if="$store.state.bot.broker.type === 'binance'" src="/img/brokers/binance-logo.png" alt="TastyTrade" width="60">
           </div>
         </div>
 

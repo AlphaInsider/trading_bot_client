@@ -68,7 +68,7 @@
         <p class="mb-0">Your brokerage account must have Reg T or Portfolio margin enabled.</p>
       </div>
       <!-- insufficient funds -->
-      <div v-else-if="$math.evaluate('bignumber(a) < 25000', {a: $store.state.bot.broker.value})" class="d-flex flex-column align-items-center">
+      <div v-else-if="['alpaca', 'tastytrade'].includes($store.state.bot.broker) && $math.evaluate('bignumber(a) < 25000', {a: $store.state.bot.broker.value})" class="d-flex flex-column align-items-center">
         <button :disabled="true" type="button" class="btn power-btn btn-outline-secondary"><i class="fas fa-power-off"></i></button>
         <h3 class="mt-2 mb-0">
           <span class="text-uppercase text-secondary">Insufficient Funds</span>

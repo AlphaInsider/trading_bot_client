@@ -44,9 +44,6 @@ import vDropdownMenu from '@/components/v-dropdown-menu.vue';
 import vStrategy from '@/components/v-strategy.vue';
 export default {
   components: {vDropdownMenu, vStrategy},
-  props: {
-    strategyType: {type: String, default: 'stock'}
-  },
   data() {
     return {
       // search
@@ -55,6 +52,9 @@ export default {
       searchResults: [],
       selectedStrategy: undefined,
     }
+  },
+  async mounted(){
+    await this.$store.dispatch('getBotInfo');
   },
   methods: {
     searchStrategies: _.debounce(async function() {
@@ -70,7 +70,7 @@ export default {
         loadingLabel: 'searchStrategies',
         query: {
           search: this.searchInput,
-          type: {includes: ['stock'], excludes: []},
+          type: {includes: [(this.$store.state.bot.broker ? this.$store.state.bot.broker.allocation_type : 'stock')], excludes: []},
           limit: 25
         }
       })

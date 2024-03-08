@@ -67,7 +67,7 @@ export default new Vuex.Store({
       return ((state.bot.alphainsider) ? state.bot.alphainsider.account_type : 'standard');
     },
     host(state, getters) {
-      return ((/electron/i.test(navigator.userAgent)) ? 'electron' : (_.endsWith(window.location.hostname, 'herokuapp.com')) ? 'heroku' : 'digitalocean');
+      return ((/electron/i.test(navigator.userAgent)) ? 'electron' : 'digitalocean');
     },
     isMobileView(state, getters) {
       return !state.windowSize.includes('lg');

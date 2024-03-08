@@ -22,11 +22,11 @@
         <div class="col-12 col-lg-8">
           <div class="card">
             <div class="card-header d-flex align-items-center">
-              <span class="badge badge-secondary mr-2">Step 1</span> Sign into {{ ($store.getters.host === 'heroku' ? 'Heroku' : 'DigitalOcean') }}
+              <span class="badge badge-secondary mr-2">Step 1</span> Sign into DigitalOcean
             </div>
             <div class="card-body">
               <p class="card-text">
-                Navigate to the "<a :href="providerLink" target="_blank" class="link font-weight-bold">Application Dashboard</a>" and select the AlphaBot app.
+                Navigate to the "<a href="https://cloud.digitalocean.com/apps" target="_blank" class="link font-weight-bold">Application Dashboard</a>" and select the AlphaBot app.
               </p>
             </div>
           </div>
@@ -41,12 +41,7 @@
               <span class="badge badge-secondary mr-2">Step 2</span> Update password
             </div>
             <div class="card-body">
-              <!-- Heroku -->
-              <p v-if="$store.getters.host === 'heroku'" class="card-text">
-                Once inside the application dashboard, navigate to the "<b>Settings</b>" tab. Scroll down to "<b>Config Vars</b>" and click on the "<b>Reveal Config Vars</b>" button. Update the field next to the "<b>USER_PASSWORD</b>" key to change the password. Click the "<b>Save changes</b>" button to update the password.
-              </p>
-              <!-- DigitalOcean -->
-              <p v-else class="card-text">
+              <p class="card-text">
                 Once inside the application dashboard, navigate to the "<b>Settings</b>" tab. Scroll down to "<b>App-Level Environment Variables</b>" and click on "<b>Edit</b>" text button. Update the value field next to the "<b>USER_PASSWORD</b>" key to change the password. Click the "<b>Save</b>" button to update the password.
               </p>
             </div>
@@ -74,16 +69,6 @@
 </div>
 </template>
 
-
-<script>
-export default {
-  computed: {
-    providerLink() {
-      return (this.$store.getters.host === 'heroku' ? 'https://dashboard.heroku.com/apps' : 'https://cloud.digitalocean.com/apps');
-    }
-  }
-}
-</script>
 
 <style lang="scss" scoped>
 .overview {

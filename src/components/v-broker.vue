@@ -273,7 +273,7 @@ export default {
         })
         // error, toast error
         .catch(() => {
-          toastr.error('Failed to update Alpaca API key.');
+          toastr.error('Failed to set Alpaca API key.');
         });
       }
       
@@ -300,7 +300,7 @@ export default {
         })
         // error, toast error
         .catch(() => {
-          toastr.error('Failed to update TastyTrade API key.');
+          toastr.error('Failed to set TastyTrade API key.');
         });
       }
 
@@ -326,11 +326,11 @@ export default {
         })
         // error, toast error
         .catch((error) => {
-          toastr.error('Failed to update Binance API key.');
+          toastr.error('Failed to set Binance API key. Incorrect jurisdiction or key.');
         });
       }
       else {
-        toastr.error('Failed to update Binance API key.');
+        toastr.error('Failed to set key.');
       }
     }
   }

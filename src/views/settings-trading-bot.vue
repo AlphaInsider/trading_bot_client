@@ -98,8 +98,10 @@ export default {
   },
   methods: {
     async updateSettings(setting) {
-      try {
-        // update bot settings
+      // update bot settings
+      return Promise.resolve()
+      .then(async () => {
+        // request updaateSettings
         await this.$store.dispatch('request', {
           type: 'post',
           auth: true,
@@ -109,11 +111,11 @@ export default {
         
         // get bot info
         await this.$store.dispatch('getBotInfo');
-      }
-        // error
-      catch(error) {
+      })
+      // error
+      .catch((error) => {
         toastr.error('Failed to update bot trading settings.');
-      }
+      });
     }
   }
 }

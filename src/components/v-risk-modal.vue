@@ -22,7 +22,7 @@
         <p class="mb-0 mt-2">
           You acknowledge potential risks and agree to indemnify AlphaBot, AlphaInsider, and all associated parties from any losses or claims arising from its use. You also acknowledge you have read and understood AlphaBot's <a href="/risk-disclaimer" target="_blank">risk disclaimer</a> and <a href="/privacy-policy" target="_blank">privacy policy</a> and you agree to all provisions.
         </p>
-
+        
         <!-- confirmation -->
         <validation-provider name="confirmation" :rules="{required: {allowFalse: false}}" v-slot="{ errors }">
           <div class="custom-control custom-checkbox mt-3">
@@ -33,7 +33,7 @@
             </div>
           </div>
         </validation-provider>
-
+        
         <!-- submit -->
         <div class="d-flex align-items-center">
           <button @click="$emit('close')" type="button" class="btn btn-light border ml-auto mr-2">Cancel</button>

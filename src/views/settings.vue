@@ -2,7 +2,7 @@
 <div class="container my-3 my-lg-4">
   <!-- title -->
   <h3 v-if="!$store.getters.isMobileView" class="text-primary text-center text-lg-left">Settings</h3>
-
+  
   <!-- navbar, content -->
   <div class="row justify-content-center">
     <!-- navbar -->
@@ -28,7 +28,7 @@
         </ul>
       </div>
     </div>
-
+    
     <!-- content -->
     <div :class="(($route.name === 'settings') ? 'col-lg-9 d-none d-lg-block' : 'col-12 col-lg-9')">
       <router-view></router-view>

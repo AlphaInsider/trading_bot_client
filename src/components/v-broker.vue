@@ -29,7 +29,7 @@
           <h6 class="mb-0">Alpaca</h6>
         </div>
       </div>
-
+      
       <!-- tastytrade -->
       <div @click="broker = 'tastytrade'" :class="{active: broker === 'tastytrade', 'disabled': $store.getters.accountTier !== 'premium'}" class="option-select card mr-3">
         <div class="card-body d-flex flex-column align-items-center justify-content-around bg-white">
@@ -198,7 +198,7 @@
             </validation-provider>
           </div>
         </div>
-
+        
         <!-- binance secret -->
         <div class="row justify-content-center mb-3">
           <div class="col-12 pt-2">
@@ -217,7 +217,7 @@
             </validation-provider>
           </div>
         </div>
-
+        
         <!-- save changes -->
         <div class="row mt-3 mt-md-0">
           <div class="col-12 d-flex justify-content-end">
@@ -303,7 +303,7 @@ export default {
           toastr.error('Failed to set TastyTrade API key.');
         });
       }
-
+      
       // update Binance
       else if(this.broker === 'binance') {
         //error if user is not pro or premium account

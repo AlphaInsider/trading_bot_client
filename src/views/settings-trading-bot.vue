@@ -22,7 +22,7 @@
       </div>
     </div>
   </div>
-
+  
   <!-- general settings -->
   <div class="card mt-3">
     <!-- title -->
@@ -42,7 +42,7 @@
           <label class="custom-control-label pointer" for="rebalanceOnStart-switch"></label>
         </div>
       </div>
-
+      
       <!-- close_on_stop -->
       <div class="d-flex align-items-center p-1">
         <div>
@@ -56,7 +56,7 @@
       </div>
     </div>
   </div>
-
+  
   <!-- modals -->
   <v-modal v-if="showStrategySelectModal" @close="showStrategySelectModal=false">
     <div class="card">
@@ -110,7 +110,7 @@ export default {
         // get bot info
         await this.$store.dispatch('getBotInfo');
       }
-      // error
+        // error
       catch(error) {
         toastr.error('Failed to update bot trading settings.');
       }

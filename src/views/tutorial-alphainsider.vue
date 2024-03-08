@@ -17,7 +17,7 @@
   <!-- Steps -->
   <div class="instructions-body">
     <div class="container">
-
+      
       <!-- Tutorial Video -->
       <div class="row justify-content-center">
         <div class="col-12 col-lg-8">
@@ -43,7 +43,7 @@
           </div>
         </div>
       </div>
-
+      
       <!-- Step 2 -->
       <div class="row justify-content-center mt-2">
         <div class="col-12 col-lg-8">
@@ -59,7 +59,7 @@
           </div>
         </div>
       </div>
-
+      
       <!-- Step 3 -->
       <div class="row justify-content-center mt-2">
         <div class="col-12 col-lg-8">

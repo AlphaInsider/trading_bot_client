@@ -2,7 +2,7 @@
 <div>
   <!-- search strategy -->
   <v-strategy-search @input="strategies = [$event]"></v-strategy-search>
-
+  
   <div v-if="strategies.length > 0" class="mt-3">
     <!-- strategy list -->
     <div v-for="(strategy, index) in strategies" :key="strategy.strategy_id" :class="{'mt-2': index > 0}" class="card">
@@ -11,11 +11,11 @@
       </div>
     </div>
   </div>
-
+  
   <div v-else class="d-flex-column bg-light rounded text-muted text-center py-4 mt-3">
     <h5 class="my-2">No Strategies Selected</h5>
   </div>
-
+  
   <!-- save changes -->
   <div class="row mt-3">
     <div class="col-12 d-flex justify-content-end">
@@ -56,7 +56,7 @@ export default {
         //success, emit update
         this.$emit('update');
       }
-      //error
+        //error
       catch(error) {
         toastr.error('Failed to update bot trading settings.');
       }

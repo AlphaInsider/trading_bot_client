@@ -1,16 +1,16 @@
 <template>
-  <div v-if="showUpdateBanner">
-    <!-- update banner -->
-    <div class="text-white bg-info shadow-sm">
-      <div class="container d-flex py-2">
-        <div class="w-100 text-center">
-          <h6 class="mb-0">
-            <i class="fas fa-download"></i> There is a new update available. <u><a href="#" @click.prevent="update()" class="text-white">Update trading bot</a></u>
-          </h6>
-        </div>
+<div v-if="showUpdateBanner">
+  <!-- update banner -->
+  <div class="text-white bg-info shadow-sm">
+    <div class="container d-flex py-2">
+      <div class="w-100 text-center">
+        <h6 class="mb-0">
+          <i class="fas fa-download"></i> There is a new update available. <u><a href="#" @click.prevent="update()" class="text-white">Update trading bot</a></u>
+        </h6>
       </div>
     </div>
   </div>
+</div>
 </template>
 
 <script>

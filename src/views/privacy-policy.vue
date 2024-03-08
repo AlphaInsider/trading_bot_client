@@ -13,7 +13,7 @@
       </div>
     </div>
   </div>
-
+  
   <!-- Privacy Policy Details -->
   <div class="my-5 mx-2 mx-lg-5">
     <div class="container">

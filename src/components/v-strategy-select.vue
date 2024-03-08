@@ -42,7 +42,8 @@ export default {
   methods: {
     async updateAllocation() {
       //update allocation
-      try {
+      return Promise.resolve()
+      .then(async () => {
         //request updateAllocation
         await this.$store.dispatch('request', {
           type: 'post',
@@ -55,11 +56,11 @@ export default {
         
         //success, emit update
         this.$emit('update');
-      }
-        //error
-      catch(error) {
+      })
+      //error
+      .catch((error) => {
         toastr.error('Failed to update bot trading settings.');
-      }
+      });
     }
   }
 }

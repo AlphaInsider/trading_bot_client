@@ -352,16 +352,17 @@ export default new Vuex.Store({
         //set prevToken
         let prevToken = state.authToken;
         //get token
-        try {
+        return Promise.resolve()
+        .then(async () => {
           //get token
           if(getters.isLoggedIn) await dispatch('getToken');
           //if token changed, update websocket
           if(prevToken !== state.authToken) await dispatch('wsUpdate', {force: true});
-        }
+        })
         //error, disconnect
-        catch(error) {
+        .catch(async (error) => {
           await dispatch('wsDisconnect');
-        }
+        });
       }
       clearInterval(window.websocketHeartbeat);
       window.websocketHeartbeat = setInterval(heartbeat, 5000);

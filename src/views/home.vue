@@ -68,7 +68,7 @@
         <p class="mb-0">Your brokerage account must have Reg T or Portfolio margin enabled.</p>
       </div>
       <!-- insufficient funds -->
-      <div v-else-if="$math.evaluate('bignumber(a) < b', {a: $store.state.bot.broker.value, b: ($store.state.bot.broker.allocation_type === 'stock' ? '25000' : '100')})" class="d-flex flex-column align-items-center">
+      <div v-else-if="$math.evaluate('a < b', {a: $store.state.bot.broker.value, b: ($store.state.bot.broker.allocation_type === 'stock' ? '25000' : '100')})" class="d-flex flex-column align-items-center">
         <button :disabled="true" type="button" class="btn power-btn btn-outline-secondary"><i class="fas fa-power-off"></i></button>
         <h3 class="mt-2 mb-0">
           <span class="text-uppercase text-secondary">Insufficient Funds</span>

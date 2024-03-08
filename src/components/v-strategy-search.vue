@@ -53,7 +53,7 @@ export default {
       selectedStrategy: undefined,
     }
   },
-  async mounted(){
+  async mounted() {
     await this.$store.dispatch('getBotInfo');
   },
   methods: {
@@ -70,7 +70,7 @@ export default {
         loadingLabel: 'searchStrategies',
         query: {
           search: this.searchInput,
-          type: {includes: [(this.$store.state.bot.broker ? this.$store.state.bot.broker.allocation_type : 'stock')], excludes: []},
+          type: {includes: (this.$store.state.bot.broker ? [this.$store.state.bot.broker.allocation_type] : []), excludes: []},
           limit: 25
         }
       })

@@ -68,12 +68,13 @@
         <p class="mb-0">Your brokerage account must have Reg T or Portfolio margin enabled.</p>
       </div>
       <!-- insufficient funds -->
-      <div v-else-if="['alpaca', 'tastytrade'].includes($store.state.bot.broker) && $math.evaluate('bignumber(a) < 25000', {a: $store.state.bot.broker.value})" class="d-flex flex-column align-items-center">
+      <div v-else-if="$math.evaluate('bignumber(a) < b', {a: $store.state.bot.broker.value, b: ($store.state.bot.broker.allocation_type === 'stock' ? '25000' : '100')})" class="d-flex flex-column align-items-center">
         <button :disabled="true" type="button" class="btn power-btn btn-outline-secondary"><i class="fas fa-power-off"></i></button>
         <h3 class="mt-2 mb-0">
           <span class="text-uppercase text-secondary">Insufficient Funds</span>
         </h3>
-        <p class="mb-0">Broker must maintain at least $25,000 due to <a href="https://www.investopedia.com/terms/p/patterndaytrader.asp" target="_blank">PDT</a> rules.</p>
+        <p v-if="$store.state.bot.broker.allocation_type === 'stock'" class="mb-0">Broker must maintain at least $25,000 due to <a href="https://www.investopedia.com/terms/p/patterndaytrader.asp" target="_blank">PDT</a> rules.</p>
+        <p v-else class="mb-0">Broker must maintain at least $100 to run trading bot.</p>
       </div>
       <!-- off -->
       <div v-else-if="$store.state.bot.status === 'off'" class="d-flex flex-column align-items-center">

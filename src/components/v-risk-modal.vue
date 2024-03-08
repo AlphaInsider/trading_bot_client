@@ -7,7 +7,7 @@
   </div>
   <!-- body -->
   <div class="card-body p-3">
-    <validation-observer v-slot="event">
+    <validation-observer key="risk" v-slot="event">
       <form @submit.prevent="event.handleSubmit(() => confirmed())">
         <p class="mb-0">
           <strong class="text-danger">Warning:</strong> you cannot manually trade on your brokerage while AlphaBot is on. To regain control,

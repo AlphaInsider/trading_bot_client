@@ -6,12 +6,12 @@
       <!-- toggle stock/crypto -->
       <div class="col-12 btn-group btn-group-justified bg-light rounded" role="group">
         <div class="btn-group w-100">
-          <button @click="type = 'stock'" type="button" :class="{'bg-light text-primary': type !== 'stock'}" class="btn btn-primary">
-            <h5 class="m-0">Stock</h5>
+          <button @click="type = 'stock'; broker = 'alpaca'" type="button" :class="{'bg-light text-primary': type !== 'stock'}" class="btn btn-primary">
+            <h5 class="m-0">Stocks</h5>
           </button>
         </div>
         <div class="btn-group w-100">
-          <button @click="type = 'crypto'" type="button" :class="{'bg-light text-primary': type !== 'crypto'}" class="btn btn-primary">
+          <button @click="type = 'crypto'; broker = 'binance'" type="button" :class="{'bg-light text-primary': type !== 'crypto'}" class="btn btn-primary">
             <h5 class="m-0">Crypto</h5>
           </button>
         </div>
@@ -57,7 +57,7 @@
   
   <!-- alpaca -->
   <div v-if="broker === 'alpaca'" class="mt-3">
-    <validation-observer v-slot="event">
+    <validation-observer key="alpaca" v-slot="event">
       <form @submit.prevent="event.handleSubmit(() => updateBroker(event))">
         <!-- alpaca key -->
         <div class="row justify-content-center mb-3">
@@ -110,7 +110,7 @@
   
   <!-- tastytrade -->
   <div v-else-if="broker === 'tastytrade'" class="mt-3">
-    <validation-observer v-slot="event">
+    <validation-observer key="tastytrade" v-slot="event">
       <form @submit.prevent="event.handleSubmit(() => updateBroker(event))">
         <!-- tastytrade username -->
         <div class="row mb-3">
@@ -177,8 +177,8 @@
   </div>
   
   <!-- binance -->
-  <div v-if="broker === 'binance'" class="mt-3">
-    <validation-observer v-slot="event">
+  <div v-else-if="broker === 'binance'" class="mt-3">
+    <validation-observer key="binance" v-slot="event">
       <form @submit.prevent="event.handleSubmit(() => updateBroker(event))">
         <!-- binance key -->
         <div class="row justify-content-center mb-3">
@@ -232,8 +232,6 @@
 </template>
 
 <script>
-import _ from "lodash";
-
 export default {
   data() {
     return {
@@ -308,9 +306,9 @@ export default {
 
       // update Binance
       else if(this.broker === 'binance') {
-        //error if user is not premium account
-        if(this.$store.getters.accountTier !== 'premium') {
-          toastr.error('You must have an AlphaInsider premium account to live trade on Binance.');
+        //error if user is not pro or premium account
+        if(!['pro', 'premium'].includes(this.$store.getters.accountTier)) {
+          toastr.error('You must have an AlphaInsider pro or premium account to live trade on Binance.');
           return;
         }
         return this.$store.dispatch('request', {

@@ -7,7 +7,7 @@
       <h4 class="mt-3">Welcome Back</h4>
       <!-- login -->
       <p>Enter your password to continue</p>
-      <validation-observer v-slot="event">
+      <validation-observer key="login" v-slot="event">
         <form @submit.prevent="event.handleSubmit(() => login(event))">
           <div class="row no-gutters mb-3">
             <!-- password -->

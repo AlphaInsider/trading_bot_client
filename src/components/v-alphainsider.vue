@@ -1,6 +1,6 @@
 <template>
 <div>
-  <validation-observer v-slot="event">
+  <validation-observer key="alphainsider" v-slot="event">
     <form @submit.prevent="event.handleSubmit(() => updateAlphaInsider(event))">
       <!-- new api key -->
       <div class="row">

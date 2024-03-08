@@ -326,7 +326,7 @@ export default {
         })
         // error, toast error
         .catch((error) => {
-          toastr.error('Failed to set Binance API key. Incorrect jurisdiction or key.');
+          toastr.error('Failed to set Binance API key. Invalid key or IP location not permitted.');
         });
       }
       else {

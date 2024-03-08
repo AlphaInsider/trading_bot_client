@@ -326,7 +326,6 @@ export default {
         })
         // error, toast error
         .catch((error) => {
-          console.log(error);
           toastr.error('Failed to update Binance API key.');
         });
       }

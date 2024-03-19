@@ -4,8 +4,12 @@ import { defineConfig } from 'vite';
 import legacy from '@vitejs/plugin-legacy';
 import { createVuePlugin as vue2 } from 'vite-plugin-vue2';
 import scriptSetup from 'unplugin-vue2-script-setup/vite';
+import { version } from './package.json';
 
 export default defineConfig({
+  define: {
+    __VERSION__: JSON.stringify(version)
+  },
   server: {
     port: 8080,
     proxy: {

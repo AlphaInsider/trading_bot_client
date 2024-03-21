@@ -11,7 +11,7 @@
           </button>
         </div>
         <div class="btn-group w-100">
-          <button @click="type = 'crypto'; broker = 'binance'" type="button" :class="{'bg-light text-primary': type !== 'crypto'}" class="btn btn-primary">
+          <button @click="type = 'crypto'; broker = 'bitfinex'" type="button" :class="{'bg-light text-primary': type !== 'crypto'}" class="btn btn-primary">
             <h5 class="m-0">Crypto</h5>
           </button>
         </div>
@@ -31,7 +31,7 @@
       </div>
       
       <!-- tastytrade -->
-      <div @click="broker = 'tastytrade'" :class="{active: broker === 'tastytrade', 'disabled': $store.getters.accountTier !== 'premium'}" class="option-select card mr-3">
+      <div @click="broker = 'tastytrade'" :class="{active: broker === 'tastytrade', 'disabled': $store.getters.accountTier !== 'premium'}" class="option-select card">
         <div class="card-body d-flex flex-column align-items-center justify-content-around bg-white">
           <img src="/img/brokers/tastytrade-logo.svg" alt="TastyTrade" width="120" class="p-2">
         </div>
@@ -43,8 +43,18 @@
     
     <!-- crypto brokers -->
     <div v-else class="col-12 d-flex justify-content-center mt-3">
+      <!-- bitfinex -->
+      <div @click="broker = 'bitfinex'" :class="{active: broker === 'bitfinex'}" class="option-select card mr-3">
+        <div class="card-body d-flex flex-column align-items-center justify-content-around bg-white">
+          <img src="/img/brokers/bitfinex-logo.png" alt="Bitfinex" width="120" class="p-2">
+        </div>
+        <div class="card-footer text-center">
+          <h6 class="mb-0">Bitfinex</h6>
+        </div>
+      </div>
+      
       <!-- binance -->
-      <div @click="broker = 'binance'" :class="{active: broker === 'binance', 'disabled': $store.getters.accountTier !== 'premium'}" class="option-select card">
+      <div @click="broker = 'binance'" :class="{active: broker === 'binance', 'disabled': !['pro', 'premium'].includes($store.getters.accountTier)}" class="option-select card">
         <div class="card-body d-flex flex-column align-items-center justify-content-around bg-white">
           <img src="/img/brokers/binance-logo.png" alt="Binance" width="100" class="p-2">
         </div>
@@ -176,6 +186,59 @@
     </validation-observer>
   </div>
   
+  <!-- bitfinex -->
+  <div v-else-if="broker === 'bitfinex'" class="mt-3">
+    <validation-observer key="bitfinex" v-slot="event">
+      <form @submit.prevent="event.handleSubmit(() => updateBroker(event))">
+        <!-- bitfinex key -->
+        <div class="row justify-content-center mb-3">
+          <div class="col-12 pt-2">
+            <h6 class="m-0">Public Key</h6>
+          </div>
+          <div class="col-12">
+            <validation-provider name="Bitfinex public key" rules="required" v-slot="{ errors }">
+              <input-mask
+              v-model="bitfinexKey"
+              :mask="/^\S+$/"
+              type="text"
+              :class="{'is-invalid': errors.length}"
+              class="form-control"
+              />
+              <div class="invalid-feedback">{{ errors[0] }}</div>
+            </validation-provider>
+          </div>
+        </div>
+        
+        <!-- bitfinex secret -->
+        <div class="row justify-content-center mb-3">
+          <div class="col-12 pt-2">
+            <h6 class="m-0">Secret Key</h6>
+          </div>
+          <div class="col-12">
+            <validation-provider name="Bitfinex secret key" rules="required" v-slot="{ errors }">
+              <input-mask
+              v-model="bitfinexSecret"
+              :mask="/^\S+$/"
+              type="text"
+              :class="{'is-invalid': errors.length}"
+              class="form-control"
+              />
+              <div class="invalid-feedback">{{ errors[0] }}</div>
+            </validation-provider>
+          </div>
+        </div>
+        
+        <!-- save changes -->
+        <div class="row mt-3 mt-md-0">
+          <div class="col-12 d-flex justify-content-end">
+            <router-link to="/broker-tutorial" class="btn btn-light border mr-2">Tutorial</router-link>
+            <button type="submit" class="btn btn-primary">Save</button>
+          </div>
+        </div>
+      </form>
+    </validation-observer>
+  </div>
+  
   <!-- binance -->
   <div v-else-if="broker === 'binance'" class="mt-3">
     <validation-observer key="binance" v-slot="event">
@@ -246,8 +309,14 @@ export default {
       tastyTradeAccountId: undefined,
       // binance
       binanceKey: undefined,
-      binanceSecret: undefined
+      binanceSecret: undefined,
+      // bitfinex
+      bitfinexKey: undefined,
+      bitfinexSecret: undefined
     };
+  },
+  async mounted() {
+    await this.$store.dispatch('getBotInfo');
   },
   methods: {
     updateBroker() {
@@ -300,7 +369,28 @@ export default {
         })
         // error, toast error
         .catch(() => {
-          toastr.error('Failed to set TastyTrade API key.');
+          toastr.error('Failed to set TastyTrade API key. Invalid keys.');
+        });
+      }
+      
+      // update Bitfinex
+      else if(this.broker === 'bitfinex') {
+        return this.$store.dispatch('request', {
+          type: 'post',
+          auth: true,
+          url: 'updateBrokerBitfinex',
+          query: {
+            bitfinex_key: this.bitfinexKey,
+            bitfinex_secret: this.bitfinexSecret
+          }
+        })
+        //success, emit update
+        .then(() => {
+          this.$emit('update');
+        })
+        // error, toast error
+        .catch((error) => {
+          toastr.error('Failed to set Bitfinex API key. Invalid keys, AlphaInsider account tier, or IP location not permitted.');
         });
       }
       
@@ -326,9 +416,11 @@ export default {
         })
         // error, toast error
         .catch((error) => {
-          toastr.error('Failed to set Binance API key. Invalid key or IP location not permitted.');
+          toastr.error('Failed to set Binance API key. Invalid keys or IP location not permitted.');
         });
       }
+      
+      // error
       else {
         toastr.error('Failed to set key.');
       }

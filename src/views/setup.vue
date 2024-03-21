@@ -1,7 +1,7 @@
 <template>
-<div class="container d-flex align-items-center justify-content-center min-vh-100">
+<div class="container d-flex align-items-md-center justify-content-center min-vh-100 p-2">
   <div class="row no-gutters justify-content-center w-100">
-    <div class="col-11 col-md-8 col-lg-6 col-xl-5">
+    <div class="col-12 col-md-8 col-lg-6 col-xl-5">
       <!-- bot empty -->
       <div v-if="$_.isEmpty($store.state.bot)" class="d-flex flex-column align-items-center">
         <h4>Loading...</h4>

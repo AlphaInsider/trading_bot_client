@@ -24,7 +24,6 @@
       <!-- save changes -->
       <div class="row mt-3">
         <div class="col-12 d-flex justify-content-end">
-          <router-link to="/alphainsider-tutorial" class="btn btn-light border mr-2">Tutorial</router-link>
           <button type="submit" class="btn btn-primary">Save</button>
         </div>
       </div>

@@ -85,7 +85,7 @@
       </div>
       <!-- body -->
       <div class="card-body p-3">
-        <v-alphainsider @update="$router.go()"></v-alphainsider>
+        <v-setup-alphainsider @update="$router.go()"></v-setup-alphainsider>
       </div>
     </div>
   </v-modal>
@@ -98,7 +98,7 @@
       </div>
       <!-- body -->
       <div class="card-body p-3">
-        <v-broker @update="$router.go()"></v-broker>
+        <v-setup-broker @update="$router.go()"></v-setup-broker>
       </div>
     </div>
   </v-modal>
@@ -107,13 +107,13 @@
 
 
 <script>
-import vAlphainsider from '@/components/v-alphainsider.vue';
-import vBroker from '@/components/v-broker.vue';
+import vSetupAlphainsider from '@/components/v-setup-alphainsider.vue';
+import vSetupBroker from '@/components/v-setup-broker.vue';
 import vDate from '@/components/v-date.vue';
 import vModal from '@/components/v-modal.vue';
 
 export default {
-  components: {vAlphainsider, vBroker, vDate, vModal},
+  components: {vSetupAlphainsider, vSetupBroker, vDate, vModal},
   data() {
     return {
       // modals

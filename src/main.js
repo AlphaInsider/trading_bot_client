@@ -231,16 +231,6 @@ let routes = [
     component: () => import('@/views/tutorial-update.vue')
   },
   {
-    path: '/broker-tutorial',
-    name: 'broker_tutorial',
-    component: () => import('@/views/tutorial-broker.vue')
-  },
-  {
-    path: '/alphainsider-tutorial',
-    name: 'alphainsider_tutorial',
-    component: () => import('@/views/tutorial-alphainsider.vue')
-  },
-  {
     path: '/page-not-found',
     name: 'error',
     component: () => import('@/views/error.vue')

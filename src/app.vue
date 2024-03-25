@@ -188,7 +188,12 @@ body {
   .line-height-sm {
     line-height: 1;
   }
-
+  
+  //negative z-index
+  .z-index-n1 {
+    z-index: -1;
+  }
+  
   //strategy calculation background color
   .bg-calculation {
     background-color: rgba(var(--warning-rgb), 0.2) !important;

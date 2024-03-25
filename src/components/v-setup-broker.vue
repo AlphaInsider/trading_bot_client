@@ -10,13 +10,13 @@
       </div>
       <div class="mt-2">
         <div class="btn-group btn-group-toggle btn-block" data-toggle="buttons">
-          <button type="button" @click="allocationType = 'stock'; broker = 'alpaca'; tradingType = 'paper';" :class="(allocationType === 'stock' ? 'btn-primary' : 'btn-outline-primary')" class="btn w-50">Stock</button>
-          <button type="button" @click="allocationType = 'cryptocurrency'; broker = 'bitfinex'; tradingType = 'paper';" :class="(allocationType === 'cryptocurrency' ? 'btn-primary' : 'btn-outline-primary')" class="btn w-50">Cryptocurrency</button>
+          <button type="button" @click="assetClass = 'stock'; broker = 'alpaca'; tradingType = 'paper';" :class="(assetClass === 'stock' ? 'btn-primary' : 'btn-outline-primary')" class="btn w-50">Stock</button>
+          <button type="button" @click="assetClass = 'cryptocurrency'; broker = 'bitfinex'; tradingType = 'paper';" :class="(assetClass === 'cryptocurrency' ? 'btn-primary' : 'btn-outline-primary')" class="btn w-50">Cryptocurrency</button>
         </div>
       </div>
       
       <!-- stock brokers -->
-      <div v-if="allocationType === 'stock'" class="d-flex justify-content-center mt-3">
+      <div v-if="assetClass === 'stock'" class="d-flex justify-content-center mt-3">
         <!-- alpaca -->
         <div @click="broker = 'alpaca'" :class="{active: broker === 'alpaca'}" class="option-select card mr-3">
           <div class="card-body d-flex flex-column align-items-center justify-content-around bg-white">
@@ -69,7 +69,7 @@
         </div>
       </div>
       <div class="mt-2">
-        <validation-provider name="tradingType" :rules="`required|tradingTier:${$store.getters.accountTier},${allocationType}`" :immediate="true" v-slot="{ errors }">
+        <validation-provider name="tradingType" :rules="`required|tradingTier:${$store.getters.accountTier},${assetClass}`" :immediate="true" v-slot="{ errors }">
           <div class="btn-group btn-group-toggle w-50" data-toggle="buttons">
             <button type="button" @click="tradingType = 'paper'" :disabled="['tastytrade', 'binance'].includes(broker)" :class="toggleButtonClass('paper', tradingType, errors.length > 0)" class="btn">
               Paper
@@ -80,10 +80,10 @@
           </div>
           <input type="hidden" v-model="tradingType">
           <!-- Broker trading type -->
-          <small v-if="allocationType === 'stock' && errors.length > 0" class="text-danger">
+          <small v-if="assetClass === 'stock' && errors.length > 0" class="text-danger">
             <br>You must <a href="https://alphainsider.com/account-pricing">upgrade to premium</a> for live stock trading.
           </small>
-          <small v-else-if="allocationType === 'cryptocurrency' && errors.length > 0" class="text-danger">
+          <small v-else-if="assetClass === 'cryptocurrency' && errors.length > 0" class="text-danger">
             <br>You must <a href="https://alphainsider.com/account-pricing">upgrade to pro or premium</a> for live crypto trading.
           </small>
         </validation-provider>
@@ -291,7 +291,7 @@
 export default {
   data() {
     return {
-      allocationType: 'stock',
+      assetClass: 'stock',
       tradingType: 'paper',
       broker: 'alpaca',
       // alpaca
@@ -312,9 +312,9 @@ export default {
   computed: {
     disabledForm() {
       //stock brokers: premium tier for live trading
-      if(this.allocationType === 'stock' && this.$store.getters.accountTier !== 'premium' && this.tradingType === 'live') return true;
+      if(this.assetClass === 'stock' && this.$store.getters.accountTier !== 'premium' && this.tradingType === 'live') return true;
       //cyptocurrency brokers: pro/premium tier for live trading
-      else if(this.allocationType === 'cryptocurrency' && !['pro', 'premium'].includes(this.$store.getters.accountTier) && this.tradingType === 'live') return true;
+      else if(this.assetClass === 'cryptocurrency' && !['pro', 'premium'].includes(this.$store.getters.accountTier) && this.tradingType === 'live') return true;
     }
   },
   async mounted() {

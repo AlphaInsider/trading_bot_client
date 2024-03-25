@@ -145,8 +145,8 @@
       <div class="col-12 col-lg-5 mb-3">
         <div class="card">
           <div class="card-body">
-            <h5 class="m-0">Select a {{ $store.state.bot.broker.allocation_type }} strategy</h5>
-            <small class="text-muted">Select a {{ $store.state.bot.broker.allocation_type }} strategy for AlphaBot to follow.</small>
+            <h5 class="m-0">Select a {{ $store.state.bot.broker.asset_class }} strategy</h5>
+            <small class="text-muted">Select a {{ $store.state.bot.broker.asset_class }} strategy for AlphaBot to follow.</small>
             <v-setup-strategy @update="loadBot()"></v-setup-strategy>
           </div>
         </div>

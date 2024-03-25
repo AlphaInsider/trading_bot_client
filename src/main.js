@@ -55,11 +55,11 @@ extend('invalid', {
 extend('tradingTier', {
   validate: (value, args) => {
     const accountTier = args[0];
-    const allocationType = args[1];
+    const assetClass = args[1];
     //standard: unable to trade live
     if(accountTier === 'standard') return !(value === 'live');
     //pro: unable to trade stock live
-    if(accountTier === 'pro') return !(value === 'live' && allocationType === 'stock')
+    if(accountTier === 'pro') return !(value === 'live' && assetClass === 'stock')
     //premium: all true
     else return true;
   },

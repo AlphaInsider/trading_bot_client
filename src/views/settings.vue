@@ -27,6 +27,12 @@
           <li @click="$store.dispatch('logout')" class="list-group-item text-danger"><i class="far fa-sign-out fa-flip-horizontal"></i> Sign Out</li>
         </ul>
       </div>
+      
+      <div class="text-center mt-3">
+        <a :href="'https://github.com/AlphaInsider/trading_bot/releases/tag/v'+$config.version" target="_blank" class="text-muted">
+          <small><i class="fab fa-github"></i> Version {{ $config.version }}</small>
+        </a>
+      </div>
     </div>
     
     <!-- content -->

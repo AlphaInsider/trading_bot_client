@@ -67,7 +67,7 @@
       </div>
       <!-- body -->
       <div class="card-body p-3">
-        <v-strategy-select @update="$router.go()"></v-strategy-select>
+        <v-setup-strategy @update="$router.go()"></v-setup-strategy>
       </div>
     </div>
   </v-modal>
@@ -77,12 +77,11 @@
 
 <script>
 import vStrategy from '@/components/v-strategy.vue';
-import vAlphainsider from '@/components/v-alphainsider.vue';
-import vStrategySelect from '@/components/v-strategy-select.vue';
+import vSetupStrategy from '@/components/v-setup-strategy.vue';
 import vModal from '@/components/v-modal.vue';
 
 export default {
-  components: {vAlphainsider, vStrategy, vStrategySelect, vModal},
+  components: {vStrategy, vSetupStrategy, vModal},
   data() {
     return {
       // strategies

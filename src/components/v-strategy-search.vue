@@ -70,7 +70,7 @@ export default {
         loadingLabel: 'searchStrategies',
         query: {
           search: this.searchInput,
-          type: {includes: (this.$store.state.bot.broker ? [this.$store.state.bot.broker.allocation_type] : []), excludes: []},
+          type: {includes: (this.$store.state.bot.broker ? [this.$store.state.bot.broker.asset_class] : []), excludes: []},
           limit: 25
         }
       })

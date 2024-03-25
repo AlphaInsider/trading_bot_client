@@ -52,6 +52,19 @@ extend('invalid', {
   },
   message: 'The {_field_} field is not valid'
 });
+extend('tradingTier', {
+  validate: (value, args) => {
+    const accountTier = args[0];
+    const allocationType = args[1];
+    //standard: unable to trade live
+    if(accountTier === 'standard') return !(value === 'live');
+    //pro: unable to trade stock live
+    if(accountTier === 'pro') return !(value === 'live' && allocationType === 'stock')
+    //premium: all true
+    else return true;
+  },
+  message: 'You must increase your AlphaInsider account tier to access this.'
+})
 // toastr config
 window.toastr.options = {
   positionClass: 'toast-top-center',

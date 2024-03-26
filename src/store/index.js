@@ -266,13 +266,16 @@ export default new Vuex.Store({
           return (info ? {...strategy, allocation_id: info.allocation_id, bot_id: info.bot_id} : null);
         }).compact().value();
         
-        //save state
-        commit('saveState', {
-          allocation: computed
-        });
-        
         //return
         return computed;
+      })
+      
+      //save state
+      .then((allocation) => {
+        commit('saveState', {
+          allocation: allocation
+        });
+        return allocation;
       })
       
       //error

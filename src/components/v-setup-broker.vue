@@ -322,100 +322,62 @@ export default {
   },
   methods: {
     updateBroker() {
-      // update Alpaca
+      let keys = {};
+      
+      //alpaca
       if(this.broker === 'alpaca') {
-        //error if token is live account and user is not premium account
-        if(!_.startsWith(this.alpacaKey, 'P') && this.$store.getters.accountTier !== 'premium') {
-          toastr.error('You must have an AlphaInsider premium account to live trade on Alpaca.');
-          return;
-        }
-        return this.$store.dispatch('request', {
-          type: 'post',
-          auth: true,
-          url: 'updateBrokerAlpaca',
-          query: {
-            alpaca_key: this.alpacaKey,
-            alpaca_secret: this.alpacaSecret
-          }
-        })
-        //success, emit update
-        .then(() => {
-          this.$emit('update');
-        })
-        // error, toast error
-        .catch(() => {
-          toastr.error('Failed to set Alpaca API key.');
-        });
+        keys = {
+          alpaca_key: this.alpacaKey,
+          alpaca_secret: this.alpacaSecret
+        };
       }
-      
-      // update TastyTrade
+      //tastytrade
       else if(this.broker === 'tastytrade') {
-        return this.$store.dispatch('request', {
-          type: 'post',
-          auth: true,
-          url: 'updateBrokerTastytrade',
-          query: {
-            tastytrade_email: this.tastyTradeEmail,
-            tastytrade_password: this.tastyTradePassword,
-            account_id: this.tastyTradeAccountId
-          }
-        })
-        //success, emit update
-        .then(() => {
-          this.$emit('update');
-        })
-        // error, toast error
-        .catch(() => {
-          toastr.error('Failed to set TastyTrade API key. Invalid keys.');
-        });
+        keys = {
+          tastytrade_email: this.tastyTradeEmail,
+          tastytrade_password: this.tastyTradePassword,
+          account_id: this.tastyTradeAccountId
+        };
       }
-      
-      // update Bitfinex
+      //bitfinex
       else if(this.broker === 'bitfinex') {
-        return this.$store.dispatch('request', {
-          type: 'post',
-          auth: true,
-          url: 'updateBrokerBitfinex',
-          query: {
-            bitfinex_key: this.bitfinexKey,
-            bitfinex_secret: this.bitfinexSecret
-          }
-        })
-        //success, emit update
-        .then(() => {
-          this.$emit('update');
-        })
-        // error, toast error
-        .catch((error) => {
-          toastr.error('Failed to set Bitfinex API key. Invalid keys, AlphaInsider account tier, or IP location not permitted.');
-        });
+        keys = {
+          bitfinex_key: this.bitfinexKey,
+          bitfinex_secret: this.bitfinexSecret
+        };
       }
-      
-      // update Binance
+      //binance
       else if(this.broker === 'binance') {
-        return this.$store.dispatch('request', {
-          type: 'post',
-          auth: true,
-          url: 'updateBrokerBinance',
-          query: {
-            binance_key: this.binanceKey,
-            binance_secret: this.binanceSecret
-          }
-        })
-        //success, emit update
-        .then(() => {
-          this.$emit('update');
-        })
-        // error, toast error
-        .catch((error) => {
-          toastr.error('Failed to set Binance API key. Invalid keys or IP location not permitted.');
-        });
+        keys = {
+          binance_key: this.binanceKey,
+          binance_secret: this.binanceSecret
+        };
       }
-      
       // error
       else {
-        toastr.error('Failed to set key.');
+        toastr.error('Broker not permitted');
+        return;
       }
+      
+      return this.$store.dispatch('request', {
+        type: 'post',
+        auth: true,
+        url: 'updateBroker',
+        query: {
+          type: this.broker,
+          live: (this.tradingType === 'live'),
+          keys
+        }
+      })
+      //success, emit update
+      .then(() => {
+        this.$emit('update');
+      })
+      // error, toast error
+      .catch(() => {
+        if(['alpaca', 'tastytrade'].includes(this.broker)) toastr.error('Failed to set API keys. Invalid keys.');
+        else if(['binance', 'bitfinex'].includes(this.broker)) toastr.error('Failed to set API keys. Invalid keys or IP location not permitted.');
+      });
     }
   }
 }

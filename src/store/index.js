@@ -207,7 +207,7 @@ export default new Vuex.Store({
       return Promise.resolve()
       .then(async () => {
         //skip if not logged in
-        if(!getters.isLoggedIn) return;
+        if(!getters.isLoggedIn) return {};
         
         //request getBotInfo
         let bot = await dispatch('request', {
@@ -216,13 +216,16 @@ export default new Vuex.Store({
           url: 'getBotInfo'
         });
         
-        //save state
-        commit('saveState', {
-          bot
-        });
-        
         //return
         return bot;
+      })
+      
+      //save state
+      .then((data) => {
+        commit('saveState', {
+          bot: data
+        });
+        return data;
       })
       
       //error
@@ -271,11 +274,11 @@ export default new Vuex.Store({
       })
       
       //save state
-      .then((allocation) => {
+      .then((data) => {
         commit('saveState', {
-          allocation: allocation
+          allocation: data
         });
-        return allocation;
+        return data;
       })
       
       //error

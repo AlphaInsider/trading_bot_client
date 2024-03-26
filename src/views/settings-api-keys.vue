@@ -6,7 +6,7 @@
     <div class="card-header d-flex align-items-center bg-white">
       <h5 class="text-primary mb-0">AlphaInsider API</h5>
       <div class="d-flex ml-auto">
-        <button @click="showAlphaInsiderModal=true" type="button" class="btn btn-light btn-sm border ml-auto"><i class="fas fa-pencil-alt"></i> Edit</button>
+        <router-link :to="{name: 'setup', query: {step: '0'}}" class="btn btn-light btn-sm border ml-auto"><i class="fas fa-pencil-alt"></i> Edit</router-link>
       </div>
     </div>
     <!-- body -->
@@ -42,7 +42,7 @@
     <div class="card-header d-flex align-items-center bg-white">
       <h5 class="text-primary mb-0">Broker API</h5>
       <div class="d-flex ml-auto">
-        <button @click="showBrokerModal=true" type="button" class="btn btn-light btn-sm border ml-auto"><i class="fas fa-pencil-alt"></i> Edit</button>
+        <router-link :to="{name: 'setup', query: {step: '1'}}" class="btn btn-light btn-sm border ml-auto"><i class="fas fa-pencil-alt"></i> Edit</router-link>
       </div>
     </div>
     <!-- Body -->
@@ -75,34 +75,6 @@
       </div>
     </div>
   </div>
-  
-  <!-- modals -->
-  <v-modal v-if="showAlphaInsiderModal" @close="showAlphaInsiderModal = false">
-    <div class="card">
-      <!-- title -->
-      <div class="card-header bg-white d-flex align-items-center p-3">
-        <h5 class="text-primary mb-0">Connect AlphaInsider</h5>
-        <h5 @click="showAlphaInsiderModal = false" class="mb-0 ml-auto"><i class="far fa-times text-muted pointer"></i></h5>
-      </div>
-      <!-- body -->
-      <div class="card-body p-3">
-        <v-setup-alphainsider @update="$router.go()"></v-setup-alphainsider>
-      </div>
-    </div>
-  </v-modal>
-  <v-modal v-if="showBrokerModal" @close="showBrokerModal = false">
-    <div class="card">
-      <!-- title -->
-      <div class="card-header bg-white d-flex align-items-center p-3">
-        <h5 class="text-primary mb-0">Connect Brokerage</h5>
-        <h5 @click="showBrokerModal = false" class="mb-0 ml-auto"><i class="far fa-times text-muted pointer"></i></h5>
-      </div>
-      <!-- body -->
-      <div class="card-body p-3">
-        <v-setup-broker @update="$router.go()"></v-setup-broker>
-      </div>
-    </div>
-  </v-modal>
 </div>
 </template>
 
@@ -115,16 +87,8 @@ import vModal from '@/components/v-modal.vue';
 
 export default {
   components: {vSetupAlphainsider, vSetupBroker, vDate, vModal},
-  data() {
-    return {
-      // modals
-      showAlphaInsiderModal: false,
-      showBrokerModal: false
-    };
-  },
   mounted() {
     this.$store.dispatch('getBotInfo');
-  },
-  methods: {}
+  }
 }
 </script>

@@ -45,7 +45,7 @@
   </div>
   
   <!-- loading -->
-  <div v-if="$_.isEmpty($store.state.bot)" class="d-flex flex-column align-items-center">
+  <div v-if="currentStep < 0" class="d-flex flex-column align-items-center">
     <h2>Loading...</h2>
   </div>
   
@@ -221,7 +221,7 @@ export default {
   components: {vSetupAlphainsider, vSetupAlphainsiderGuide, vSetupBroker, vSetupBrokerGuide, vSetupStrategy, vSetupStrategyGuide},
   data() {
     return {
-      currentStep: 0
+      currentStep: -1
     }
   },
   computed: {

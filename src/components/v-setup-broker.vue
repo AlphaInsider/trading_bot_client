@@ -378,17 +378,6 @@ export default {
         if(['alpaca', 'tastytrade'].includes(this.broker)) toastr.error('Failed to set API keys. Invalid keys.');
         else if(['binance', 'bitfinex'].includes(this.broker)) toastr.error('Failed to set API keys. Invalid keys or IP location not permitted.');
       });
-    },
-    toggleButtonClass(type, curr, hasErrors) {
-      let isActive = (curr === type);
-      let classInfo = '';
-      // show danger buttons
-      if(hasErrors && isActive) classInfo += 'btn-danger';
-      else if(hasErrors && !isActive) classInfo += 'btn-outline-danger';
-      // show regular buttons
-      else if(isActive) classInfo += 'btn-primary';
-      else if(!isActive) classInfo += 'btn-outline-primary';
-      return classInfo;
     }
   }
 }

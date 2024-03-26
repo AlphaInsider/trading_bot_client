@@ -79,8 +79,10 @@
       <div class="col-12 col-lg-7 mb-3">
         <div class="card">
           <div class="card-body">
-            <h5 class="m-0">How To Guide</h5>
-            <small class="text-muted">This guide will show you how to get your AlphaInsider API key.</small>
+            <div class="mb-2">
+              <h5 class="m-0">How To Guide</h5>
+              <small class="text-muted">This guide will show you how to get your AlphaInsider API key.</small>
+            </div>
             <v-setup-alphainsider-guide></v-setup-alphainsider-guide>
           </div>
         </div>
@@ -120,8 +122,10 @@
       <div class="col-12 col-lg-7 mb-3">
         <div class="card">
           <div class="card-body">
-            <h5 class="m-0">How To Guide</h5>
-            <small class="text-muted">This guide will show you how to get your broker details.</small>
+            <div class="mb-2">
+              <h5 class="m-0">How To Guide</h5>
+              <small class="text-muted">This guide will show you how to get your broker details.</small>
+            </div>
             <v-setup-broker-guide></v-setup-broker-guide>
           </div>
         </div>
@@ -161,8 +165,10 @@
       <div class="col-12 col-lg-7 mb-3">
         <div class="card">
           <div class="card-body">
-            <h5 class="m-0">How To Guide</h5>
-            <small class="text-muted">This guide will show you how to select a strategy.</small>
+            <div class="mb-2">
+              <h5 class="m-0">How To Guide</h5>
+              <small class="text-muted">This guide will show you how to select a strategy.</small>
+            </div>
             <v-setup-strategy-guide></v-setup-strategy-guide>
           </div>
         </div>

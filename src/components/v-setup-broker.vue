@@ -69,12 +69,12 @@
         </div>
       </div>
       <div class="mt-2">
-        <validation-provider name="tradingType" :rules="`required|tradingTier:${$store.getters.accountTier},${assetClass}`" :immediate="true" v-slot="{ errors }">
+        <validation-provider name="tradingType" :rules="{required: true, oneOf: (($store.getters.accountTier === 'premium') ? ['paper', 'live'] : ($store.getters.accountTier === 'pro' && assetClass === 'crypto') ? ['paper', 'live'] : ['paper'])}" :immediate="true" v-slot="{ errors }">
           <div class="btn-group btn-group-toggle w-50" data-toggle="buttons">
-            <button type="button" @click="tradingType = 'paper'" :disabled="['tastytrade', 'binance'].includes(broker)" :class="toggleButtonClass('paper', tradingType, errors.length > 0)" class="btn">
+            <button type="button" @click="tradingType = 'paper'" :disabled="['tastytrade', 'binance'].includes(broker)" :class="((tradingType === 'paper') ? 'btn-' : 'btn-outline-')+((errors.length > 0) ? 'danger' : 'primary')" class="btn">
               Paper
             </button>
-            <button type="button" @click="tradingType = 'live'" :class="toggleButtonClass('live', tradingType, errors.length > 0)" class="btn">
+            <button type="button" @click="tradingType = 'live'" :class="((tradingType === 'live') ? 'btn-' : 'btn-outline-')+((errors.length > 0) ? 'danger' : 'primary')" class="btn">
               Live
             </button>
           </div>

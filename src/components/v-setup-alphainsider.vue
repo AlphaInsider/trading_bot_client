@@ -4,7 +4,7 @@
     <form @submit.prevent="event.handleSubmit(() => updateAlphaInsider(event))">
       <!-- new api key -->
       <div class="row">
-        <div class="col-12 pt-2">
+        <div class="col-12">
           <h6 class="m-0">AlphaInsider API Key</h6>
         </div>
         <div class="col-12">

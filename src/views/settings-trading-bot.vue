@@ -6,7 +6,7 @@
     <div class="card-header d-flex align-items-center bg-white">
       <h5 class="text-primary mb-0">Strategies</h5>
       <div class="d-flex ml-auto">
-        <button @click="showStrategySelectModal=true" :disabled="!$store.state.bot.alphainsider || !$store.state.bot.broker" type="button" class="btn btn-light btn-sm border ml-auto"><i class="fas fa-pencil-alt"></i> Edit</button>
+        <router-link :to="{name: 'setup', query: {step: '2'}}"  class="btn btn-light btn-sm border ml-auto"><i class="fas fa-pencil-alt"></i> Edit</router-link>
       </div>
     </div>
     <!-- body -->

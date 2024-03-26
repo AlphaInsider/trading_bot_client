@@ -32,14 +32,14 @@
       <p class="m-0">Select Strategy</p>
       <small class="text-muted">1 minute</small>
     </div>
-    <!-- complete -->
+    <!-- finished -->
     <div :class="((currentStep === 3) ? 'current' : completedSteps.includes(3) ? 'complete' : 'pending')" class="col text-center">
       <div class="row no-gutters mb-n3">
         <div :class="{'bg-success': completedSteps.includes(2)}" class="line col z-index-n1"></div>
         <div class="line col z-index-n1 bg-light"></div>
       </div>
       <h4 class="mb-1"><i :class="((currentStep === 3) ? 'far fa-dot-circle' : completedSteps.includes(3) ? 'fas fa-check-circle' : 'far fa-circle')" class="bg-light px-2"></i></h4>
-      <p class="m-0">Complete</p>
+      <p class="m-0">Finished</p>
       <small class="text-muted">1 minute</small>
     </div>
   </div>
@@ -67,9 +67,11 @@
       <div class="col-12 col-lg-5 mb-3">
         <div class="card">
           <div class="card-body">
-            <h5 class="m-0">Enter your AlphaInsider API key</h5>
-            <small class="text-muted">This will give AlphaBot access to AlphaInsider resources.</small>
-            <v-setup-alphainsider @update="loadBot()"></v-setup-alphainsider>
+            <div class="mb-2">
+              <h5 class="m-0">Enter your AlphaInsider API key</h5>
+              <small class="text-muted">This will give AlphaBot access to AlphaInsider resources.</small>
+            </div>
+            <v-setup-alphainsider @update="getCurrentStep()"></v-setup-alphainsider>
           </div>
         </div>
       </div>
@@ -106,9 +108,11 @@
       <div class="col-12 col-lg-5 mb-3">
         <div class="card">
           <div class="card-body">
-            <h5 class="m-0">Enter your broker details</h5>
-            <small class="text-muted">This will give AlphaBot access to your broker.</small>
-            <v-setup-broker @update="loadBot()"></v-setup-broker>
+            <div class="mb-2">
+              <h5 class="m-0">Enter your broker details</h5>
+              <small class="text-muted">This will give AlphaBot access to your broker.</small>
+            </div>
+            <v-setup-broker @update="getCurrentStep()"></v-setup-broker>
           </div>
         </div>
       </div>
@@ -145,9 +149,11 @@
       <div class="col-12 col-lg-5 mb-3">
         <div class="card">
           <div class="card-body">
-            <h5 class="m-0">Select a {{ $store.state.bot.broker.asset_class }} strategy</h5>
-            <small class="text-muted">Select a {{ $store.state.bot.broker.asset_class }} strategy for AlphaBot to follow.</small>
-            <v-setup-strategy @update="loadBot()"></v-setup-strategy>
+            <div class="mb-2">
+              <h5 class="m-0">Select a {{ $store.state.bot.broker.asset_class }} strategy</h5>
+              <small class="text-muted">Select a {{ $store.state.bot.broker.asset_class }} strategy for AlphaBot to follow.</small>
+            </div>
+            <v-setup-strategy @update="getCurrentStep()"></v-setup-strategy>
           </div>
         </div>
       </div>
@@ -164,7 +170,7 @@
     </div>
   </div>
   
-  <!-- complete -->
+  <!-- finished -->
   <div v-else>
     <!-- title -->
     <div class="row no-gutters my-4">
@@ -172,7 +178,7 @@
         <button v-if="completedSteps.includes(currentStep-1)" @click="currentStep--" type="button" class="btn btn-light border text-nowrap"><i class="fas fa-long-arrow-left"></i> Back</button>
       </div>
       <div class="col text-center">
-        <h2 class="m-0">Complete</h2>
+        <h2 class="m-0">Finished</h2>
       </div>
       <div class="col-3 col-sm-2 d-flex align-items-center justify-content-end"></div>
     </div>
@@ -184,10 +190,11 @@
           <div class="card-body text-center">
             <h3>You're all set!</h3>
             <small>
-              Click "Finish" to redirect to the dashboard. <br>
-              From there you'll be able to turn AlphaBot on.
+              Click "Dashboard" to redirect to the dashboard. <br>
+              From there you'll be able to start AlphaBot.
             </small>
-            <router-link to="/" class="btn btn-block btn-primary mt-3" replace>Finish</router-link>
+            <br>
+            <router-link to="/" class="btn btn-primary mt-3 px-5" replace>Dashboard <i class="fas fa-long-arrow-right"></i></router-link>
           </div>
         </div>
       </div>
@@ -221,24 +228,24 @@ export default {
     }
   },
   async mounted() {
-    //load bot info
-    await this.loadBot();
-    //go to most recent step
-    let stepRedirect = Math.min((_.last(this.completedSteps) ?? -1) + 1, 3);
-    //redirect to step if step query passed
-    if(this.$route.query.step !== undefined) {
-      if(['0', '1', '2', '3'].includes(this.$route.query.step+'')) {
-        stepRedirect = Math.min(Number(this.$route.query.step+''), stepRedirect);
-      }
-      this.$router.replace({query: {...this.$route.query, step: undefined}});
-    }
-    //redirect to step
-    this.currentStep = stepRedirect;
+    await this.getCurrentStep();
   },
   methods: {
-    async loadBot() {
+    async getCurrentStep() {
+      //get bot info
       await this.$store.dispatch('getBotInfo');
       await this.$store.dispatch('getAllocation');
+      //get latest step
+      let latestStep = Math.min((_.last(this.completedSteps) ?? -1) + 1, 3);
+      //if query passed, set latest step
+      if(this.$route.query.step !== undefined) {
+        if(['0', '1', '2', '3'].includes(this.$route.query.step+'')) {
+          latestStep = Math.min(Number(this.$route.query.step+''), latestStep);
+        }
+        this.$router.replace({query: {...this.$route.query, step: undefined}});
+      }
+      //set currentStep to latestStep
+      this.currentStep = latestStep;
     }
   }
 }

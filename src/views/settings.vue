@@ -31,7 +31,13 @@
       <div class="text-center mt-3">
         <a :href="'https://github.com/AlphaInsider/trading_bot/releases/tag/v'+$config.version" target="_blank" class="text-muted">
           <small><i class="fab fa-github"></i> Version {{ $config.version }}</small>
-        </a>
+        </a><br>
+        <router-link to="/risk-disclaimer" class="text-muted">
+          <small>Risk Disclaimer</small>
+        </router-link><br>
+        <router-link to="/privacy-policy" class="text-muted">
+          <small>Privacy Policy</small>
+        </router-link>
       </div>
     </div>
     

@@ -140,7 +140,7 @@
             <h6 class="m-0">Email</h6>
           </div>
           <div class="col-12">
-            <validation-provider key="tastytrade_email" name="email" rules="email|required" v-slot="{ errors }">
+            <validation-provider key="tastytrade_email" name="TastyTrade email" rules="email|required" v-slot="{ errors }">
               <input-mask
               v-model="tastyTradeEmail"
               :mask="/^\S+$/"
@@ -160,7 +160,7 @@
             <h6 class="m-0">Password</h6>
           </div>
           <div class="col-12">
-            <validation-provider key="tastytrade_password" name="TastyTrade Password" rules="required" v-slot="{ errors }">
+            <validation-provider key="tastytrade_password" name="TastyTrade password" rules="required" v-slot="{ errors }">
               <input
               v-model="tastyTradePassword"
               type="password"
@@ -176,7 +176,7 @@
         <!-- tastytrade account_id -->
         <label>Account ID</label>
         <div class="form-group mb-2">
-          <validation-provider key="tastytrade_accountid" name="account_id" rules="required" v-slot="{ errors }">
+          <validation-provider key="tastytrade_accountid" name="TastyTrade account ID" rules="required" v-slot="{ errors }">
             <input-mask
             v-model="tastyTradeAccountId"
             :mask="/^\S+$/"

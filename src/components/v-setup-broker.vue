@@ -69,7 +69,7 @@
         </div>
       </div>
       <div class="mt-2">
-        <validation-provider name="tradingType" :rules="{required: true, oneOf: (($store.getters.accountTier === 'premium') ? ['paper', 'live'] : ($store.getters.accountTier === 'pro' && assetClass === 'crypto') ? ['paper', 'live'] : ['paper'])}" :immediate="true" v-slot="{ errors }">
+        <validation-provider key="trading_type" :rules="{required: true, oneOf: (($store.getters.accountTier === 'premium') ? ['paper', 'live'] : ($store.getters.accountTier === 'pro' && assetClass === 'crypto') ? ['paper', 'live'] : ['paper'])}" :immediate="true" v-slot="{ errors }">
           <div class="btn-group btn-group-toggle w-50" data-toggle="buttons">
             <button type="button" @click="tradingType = 'paper'" :disabled="['tastytrade', 'binance'].includes(broker)" :class="((tradingType === 'paper') ? 'btn-' : 'btn-outline-')+((errors.length > 0) ? 'danger' : 'primary')" class="btn">
               Paper
@@ -97,7 +97,7 @@
             <h6 class="m-0">Public Key</h6>
           </div>
           <div class="col-12">
-            <validation-provider name="Alpaca public key" rules="required" v-slot="{ errors }">
+            <validation-provider key="alpaca_public" name="Alpaca public key" rules="required" v-slot="{ errors }">
               <input-mask
               v-model="alpacaKey"
               :mask="/^\S+$/"
@@ -117,7 +117,7 @@
             <h6 class="m-0">Private Key</h6>
           </div>
           <div class="col-12">
-            <validation-provider name="Alpaca private key" rules="required" v-slot="{ errors }">
+            <validation-provider key="alpaca_secret" name="Alpaca private key" rules="required" v-slot="{ errors }">
               <input-mask
               v-model="alpacaSecret"
               :mask="/^\S+$/"
@@ -140,7 +140,7 @@
             <h6 class="m-0">Email</h6>
           </div>
           <div class="col-12">
-            <validation-provider name="email" rules="email|required" v-slot="{ errors }">
+            <validation-provider key="tastytrade_email" name="email" rules="email|required" v-slot="{ errors }">
               <input-mask
               v-model="tastyTradeEmail"
               :mask="/^\S+$/"
@@ -160,7 +160,7 @@
             <h6 class="m-0">Password</h6>
           </div>
           <div class="col-12">
-            <validation-provider name="TastyTrade Password" rules="required" v-slot="{ errors }">
+            <validation-provider key="tastytrade_password" name="TastyTrade Password" rules="required" v-slot="{ errors }">
               <input
               v-model="tastyTradePassword"
               type="password"
@@ -176,7 +176,7 @@
         <!-- tastytrade account_id -->
         <label>Account ID</label>
         <div class="form-group mb-2">
-          <validation-provider name="account_id" rules="required" v-slot="{ errors }">
+          <validation-provider key="tastytrade_accountid" name="account_id" rules="required" v-slot="{ errors }">
             <input-mask
             v-model="tastyTradeAccountId"
             :mask="/^\S+$/"
@@ -198,7 +198,7 @@
             <h6 class="m-0">Public Key</h6>
           </div>
           <div class="col-12">
-            <validation-provider name="Bitfinex public key" rules="required" v-slot="{ errors }">
+            <validation-provider key="bitfinex_public" name="Bitfinex public key" rules="required" v-slot="{ errors }">
               <input-mask
               v-model="bitfinexKey"
               :mask="/^\S+$/"
@@ -218,7 +218,7 @@
             <h6 class="m-0">Secret Key</h6>
           </div>
           <div class="col-12">
-            <validation-provider name="Bitfinex secret key" rules="required" v-slot="{ errors }">
+            <validation-provider key="bitfinex_secret" name="Bitfinex secret key" rules="required" v-slot="{ errors }">
               <input-mask
               v-model="bitfinexSecret"
               :mask="/^\S+$/"
@@ -241,7 +241,7 @@
             <h6 class="m-0">Public Key</h6>
           </div>
           <div class="col-12">
-            <validation-provider name="Binance public key" rules="required" v-slot="{ errors }">
+            <validation-provider key="binance_public" name="Binance public key" rules="required" v-slot="{ errors }">
               <input-mask
               v-model="binanceKey"
               :mask="/^\S+$/"
@@ -261,7 +261,7 @@
             <h6 class="m-0">Secret Key</h6>
           </div>
           <div class="col-12">
-            <validation-provider name="Binance secret key" rules="required" v-slot="{ errors }">
+            <validation-provider key="binance_secret" name="Binance secret key" rules="required" v-slot="{ errors }">
               <input-mask
               v-model="binanceSecret"
               :mask="/^\S+$/"

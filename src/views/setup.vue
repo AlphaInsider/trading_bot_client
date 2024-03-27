@@ -80,7 +80,7 @@
         <div class="card">
           <div class="card-body">
             <div class="mb-2">
-              <h5 class="m-0">How To Guide</h5>
+              <h5 class="m-0">Step-by-Step Guide</h5>
               <small class="text-muted">This guide will show you how to get your AlphaInsider API key.</small>
             </div>
             <v-setup-alphainsider-guide></v-setup-alphainsider-guide>
@@ -114,7 +114,7 @@
               <h5 class="m-0">Enter your broker details</h5>
               <small class="text-muted">This will give AlphaBot access to your broker.</small>
             </div>
-            <v-setup-broker @update="getCurrentStep()"></v-setup-broker>
+            <v-setup-broker @broker="broker = $event" @update="getCurrentStep()"></v-setup-broker>
           </div>
         </div>
       </div>
@@ -123,10 +123,10 @@
         <div class="card">
           <div class="card-body">
             <div class="mb-2">
-              <h5 class="m-0">How To Guide</h5>
+              <h5 class="m-0">Step-by-Step Guide</h5>
               <small class="text-muted">This guide will show you how to get your broker details.</small>
             </div>
-            <v-setup-broker-guide></v-setup-broker-guide>
+            <v-setup-broker-guide :broker="broker"></v-setup-broker-guide>
           </div>
         </div>
       </div>
@@ -166,7 +166,7 @@
         <div class="card">
           <div class="card-body">
             <div class="mb-2">
-              <h5 class="m-0">How To Guide</h5>
+              <h5 class="m-0">Step-by-Step Guide</h5>
               <small class="text-muted">This guide will show you how to select a strategy.</small>
             </div>
             <v-setup-strategy-guide></v-setup-strategy-guide>
@@ -221,7 +221,8 @@ export default {
   components: {vSetupAlphainsider, vSetupAlphainsiderGuide, vSetupBroker, vSetupBrokerGuide, vSetupStrategy, vSetupStrategyGuide},
   data() {
     return {
-      currentStep: -1
+      currentStep: -1,
+      broker: 'alpaca'
     }
   },
   computed: {

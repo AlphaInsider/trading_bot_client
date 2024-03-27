@@ -10,15 +10,15 @@
       </div>
       <div class="mt-2">
         <div class="btn-group btn-group-toggle btn-block" data-toggle="buttons">
-          <button type="button" @click="assetClass = 'stock'; broker = 'alpaca'; tradingType = 'paper';" :class="(assetClass === 'stock' ? 'btn-primary' : 'btn-outline-primary')" class="btn w-50">Stock</button>
-          <button type="button" @click="assetClass = 'cryptocurrency'; broker = 'bitfinex'; tradingType = 'paper';" :class="(assetClass === 'cryptocurrency' ? 'btn-primary' : 'btn-outline-primary')" class="btn w-50">Cryptocurrency</button>
+          <button type="button" @click="assetClass = 'stock'; selectBroker('alpaca');" :class="(assetClass === 'stock' ? 'btn-primary' : 'btn-outline-primary')" class="btn w-50">Stock</button>
+          <button type="button" @click="assetClass = 'cryptocurrency'; selectBroker('bitfinex');" :class="(assetClass === 'cryptocurrency' ? 'btn-primary' : 'btn-outline-primary')" class="btn w-50">Cryptocurrency</button>
         </div>
       </div>
       
       <!-- stock brokers -->
       <div v-if="assetClass === 'stock'" class="d-flex justify-content-center mt-3">
         <!-- alpaca -->
-        <div @click="broker = 'alpaca'" :class="{active: broker === 'alpaca'}" class="option-select card mr-3">
+        <div @click="selectBroker('alpaca')" :class="{active: broker === 'alpaca'}" class="option-select card mr-3">
           <div class="card-body d-flex flex-column align-items-center justify-content-around bg-white">
             <img src="/img/brokers/alpaca-logo.png" alt="Alpaca" width="100" class="p-2">
           </div>
@@ -28,7 +28,7 @@
         </div>
         
         <!-- tastytrade -->
-        <div @click="broker = 'tastytrade'; tradingType = 'live';" :class="{active: broker === 'tastytrade'}" class="option-select card">
+        <div @click="selectBroker('tastytrade')" :class="{active: broker === 'tastytrade'}" class="option-select card">
           <div class="card-body d-flex flex-column align-items-center justify-content-around bg-white">
             <img src="/img/brokers/tastytrade-logo.svg" alt="TastyTrade" width="120" class="p-2">
           </div>
@@ -41,7 +41,7 @@
       <!-- cryptocurrency brokers -->
       <div v-else class="d-flex justify-content-center mt-3">
         <!-- bitfinex -->
-        <div @click="broker = 'bitfinex'" :class="{active: broker === 'bitfinex'}" class="option-select card mr-3">
+        <div @click="selectBroker('bitfinex')" :class="{active: broker === 'bitfinex'}" class="option-select card mr-3">
           <div class="card-body d-flex flex-column align-items-center justify-content-around bg-white">
             <img src="/img/brokers/bitfinex-logo.png" alt="Bitfinex" width="120" class="p-2">
           </div>
@@ -51,7 +51,7 @@
         </div>
         
         <!-- binance -->
-        <div @click="broker = 'binance'; tradingType = 'live'" :class="{active: broker === 'binance'}" class="option-select card">
+        <div @click="selectBroker('binance')" :class="{active: broker === 'binance'}" class="option-select card">
           <div class="card-body d-flex flex-column align-items-center justify-content-around bg-white">
             <img src="/img/brokers/binance-logo.png" alt="Binance" width="100" class="p-2">
           </div>
@@ -321,6 +321,11 @@ export default {
     await this.$store.dispatch('getBotInfo');
   },
   methods: {
+    selectBroker(broker) {
+      this.broker = broker;
+      this.tradingType = (['tastytrade', 'binance'].includes(broker) ? 'live' : 'paper');
+      this.$emit('broker', broker);
+    },
     updateBroker() {
       let keys = {};
       

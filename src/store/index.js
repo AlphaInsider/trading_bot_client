@@ -177,7 +177,7 @@ export default new Vuex.Store({
       });
     },
     
-    //CHECK: login --password--
+    //DONE: login --password--
     async login({state, commit, getters, dispatch}, params = {}) {
       //request login
       let {auth_token} = await dispatch('request', {
@@ -202,7 +202,7 @@ export default new Vuex.Store({
       return ((params.redirectLogin && router.app._route.path !== '/login') ? router.replace('/login') : router.go())
     },
     
-    //CHECK: getBotInfo
+    //DONE: getBotInfo
     async getBotInfo({state, commit, getters, dispatch}, params = {}) {
       return Promise.resolve()
       .then(async () => {
@@ -235,7 +235,7 @@ export default new Vuex.Store({
       });
     },
     
-    //CHECK: getAllocation
+    //DONE: getAllocation
     async getAllocation({state, commit, getters, dispatch}, params = {}) {
       return Promise.resolve()
       .then(async () => {
@@ -288,7 +288,7 @@ export default new Vuex.Store({
       });
     },
     
-    //CHECK: startBot
+    //DONE: startBot
     async startBot({state, commit, getters, dispatch}, params = {}) {
       return Promise.resolve()
       .then(async () => {
@@ -313,7 +313,7 @@ export default new Vuex.Store({
       });
     },
     
-    //CHECK: stopBot
+    //DONE: stopBot
     async stopBot({state, commit, getters, dispatch}, params = {}) {
       return Promise.resolve()
       .then(async () => {

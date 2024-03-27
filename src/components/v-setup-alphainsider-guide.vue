@@ -1,7 +1,7 @@
 <template>
 <div>
   <div class="embed-responsive embed-responsive-16by9 rounded-lg">
-    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/YwGa18Za9Cg?si=2isJE6vs5MZsTY1v" allowfullscreen></iframe>
+    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/YwGa18Za9Cg?si=2isJE6vs5MZsTY1v&rel=0&modestbranding=1" allowfullscreen></iframe>
   </div>
   <h5 class="mt-3">How to get your AlphaInsider API key</h5>
   <ol>

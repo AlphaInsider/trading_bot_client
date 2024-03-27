@@ -3,7 +3,7 @@
   <!-- Alpaca -->
   <div v-if="broker === 'alpaca'">
     <div class="embed-responsive embed-responsive-16by9 rounded-lg">
-      <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/bcXoLpWJE7A?si=yUD7d7BU8XcezhMD" allowfullscreen></iframe>
+      <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/bcXoLpWJE7A?si=yUD7d7BU8XcezhMD&rel=0&modestbranding=1" allowfullscreen></iframe>
     </div>
     <h5 class="mt-3">How to connect Alpaca to AlphaBot</h5>
     <ol>
@@ -12,7 +12,7 @@
       <li class="mt-2">To connect a paper trading account which uses simulated funds, use the dropdown to select <span class="font-weight-bolder font-italic">"paper"</span> before generating your API keys.</li>
       <li class="mt-2">In the box labeled <span class="font-weight-bolder font-italic">"API keys"</span>, click the button that says regenerate.</li>
       <li class="mt-2">Then, click <span class="font-weight-bolder font-italic">"generate new keys"</span>.</li>
-      <li class="mt-2">Copy your keys from Alpaca and paste them into the corresponding fields on AlphaBot.</li>
+      <li class="mt-2">To complete the process, copy and paste your API public key and private key into the corresponding fields on AlphaBot.</li>
       <li class="mt-2">Click <span class="font-weight-bolder font-italic">"Save"</span> to move onto the next step.</li>
     </ol>
   </div>
@@ -20,7 +20,7 @@
   <!-- TastyTrade -->
   <div v-else-if="broker === 'tastytrade'">
     <div class="embed-responsive embed-responsive-16by9 rounded-lg">
-      <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/VT1cH81GW8g?si=4V396GZKxjQGMsbx" allowfullscreen></iframe>
+      <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/VT1cH81GW8g?si=4V396GZKxjQGMsbx&rel=0&modestbranding=1" allowfullscreen></iframe>
     </div>
     <h5 class="mt-3">How to connect TastyTrade to AlphaBot</h5>
     <ol>
@@ -38,7 +38,7 @@
   <!-- Bitfinex-->
   <div v-else-if="broker === 'bitfinex'">
     <div class="embed-responsive embed-responsive-16by9 rounded-lg">
-      <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/y0xbKjJr-eg?si=VVUCAeH0eaIjfVxa" allowfullscreen></iframe>
+      <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/y0xbKjJr-eg?si=VVUCAeH0eaIjfVxa&rel=0&modestbranding=1" allowfullscreen></iframe>
     </div>
     <h5 class="mt-3">How to connect Bitfinex to AlphaBot</h5>
     <ol>
@@ -51,7 +51,7 @@
       <li class="mt-2">Name your key and click <span class="font-weight-bolder font-italic">"Generate API Key"</span>.</li>
       <li class="mt-2">Complete the two factor authentication.</li>
       <li class="mt-2">Check your email for a link to your new set of API keys.</li>
-      <li class="mt-2">To complete the process, copy and paste your API key and secret key into the corresponding fields on AlphaBot.</li>
+      <li class="mt-2">To complete the process, copy and paste your API public key and secret key into the corresponding fields on AlphaBot.</li>
       <li class="mt-2">Click <span class="font-weight-bolder font-italic">"Save"</span> to move onto the next step.</li>
     </ol>
   </div>
@@ -59,7 +59,7 @@
   <!-- Binance-->
   <div v-else-if="broker === 'binance'">
     <div class="embed-responsive embed-responsive-16by9 rounded-lg">
-      <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/EGs9BjnehaE?si=fvv_EqUpXhRlrzwS" allowfullscreen></iframe>
+      <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/EGs9BjnehaE?si=fvv_EqUpXhRlrzwS&rel=0&modestbranding=1" allowfullscreen></iframe>
     </div>
     <h5 class="mt-3">How to connect Binance to AlphaBot</h5>
     <ol>
@@ -72,7 +72,7 @@
       <li class="mt-2">Leave <span class="font-weight-bolder font-italic">"system generated"</span> enabled and click next.</li>
       <li class="mt-2">Name your API Key.</li>
       <li class="mt-2"><span class="font-weight-bolder font-italic"><span class="text-danger">IMPORTANT</span> Check the box under API Restrictions to enable spot and margin trading. Click save.</span></li>
-      <li class="mt-2">Copy and paste your API Key and Secret Key and paste them into the corresponding fields on AlphaBot.</li>
+      <li class="mt-2">To complete the process, copy and paste your API public key and secret key into the corresponding fields on AlphaBot.</li>
       <li class="mt-2">Click <span class="font-weight-bolder font-italic">"Save"</span> to move onto the next step.</li>
     </ol>
   </div>

@@ -42,7 +42,12 @@
     </div>
     <h5 class="mt-3">How to connect Bitfinex to AlphaBot</h5>
     <ol>
-      <li class="mt-2">To connect Bitfinex to AlphaBot, navigate to the dropdown in the upper right hand corner of your Bitfinex account.</li>
+      <li class="mt-2">
+        <span class="font-weight-bolder font-italic"><span class="text-danger">IMPORTANT</span> If you would like to use paper trading with Bitfinex, please follow <a href="https://support.bitfinex.com/hc/en-us/articles/900001525006-Paper-Trading-at-Bitfinex-test-learn-and-simulate-trading-strategies" target="_blank">these steps</a> to setup a paper trading sub-account.</span>
+      </li>
+      <li class="mt-2">
+        To connect Bitfinex to AlphaBot, navigate to the dropdown in the upper right hand corner of your Bitfinex account.
+      </li>
       <li class="mt-2">Click on API Keys.</li>
       <li class="mt-2">Select the tab that says create new key.</li>
       <li class="mt-2">Turn on <span class="font-weight-bolder font-italic">"Create and cancel orders"</span>.</li>

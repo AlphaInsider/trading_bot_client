@@ -86,13 +86,6 @@
       </div>
     </div>
     
-    <!-- RegT alert-->
-    <div class="d-flex justify-content-center">
-      <div v-if="$store.state.bot.broker && $store.state.bot.broker.margin_type === 'reg_t'" class="alert alert-info my-2" role="alert">
-        <i class="fas fa-info-circle"></i> Expect 40% of strategy's performance due to your account using Reg T margin while AlphaInsider uses Portfolio margin.
-      </div>
-    </div>
-    
     <!-- activity list -->
     <div class="d-flex align-items-baseline">
       <h3 class="text-primary mt-3 mb-0">Recent Activity</h3>

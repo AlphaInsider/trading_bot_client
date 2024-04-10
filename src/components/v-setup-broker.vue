@@ -69,7 +69,7 @@
         </div>
       </div>
       <div class="mt-2">
-        <validation-provider key="trading_type" :rules="{required: true, oneOf: (($store.getters.accountTier === 'premium') ? ['paper', 'live'] : ($store.getters.accountTier === 'pro' && assetClass === 'crypto') ? ['paper', 'live'] : ['paper'])}" :immediate="true" v-slot="{ errors }">
+        <validation-provider key="trading_type" :rules="{required: true, oneOf: (($store.getters.accountTier === 'premium') ? ['paper', 'live'] : ($store.getters.accountTier === 'pro' && assetClass === 'cryptocurrency') ? ['paper', 'live'] : ['paper'])}" :immediate="true" v-slot="{ errors }">
           <div class="btn-group btn-group-toggle w-50" data-toggle="buttons">
             <button type="button" @click="tradingType = 'paper'" :disabled="['tastytrade', 'binance'].includes(broker)" :class="((tradingType === 'paper') ? 'btn-' : 'btn-outline-')+((errors.length > 0) ? 'danger' : 'primary')" class="btn">
               Paper
@@ -203,7 +203,7 @@
               v-model="bitfinexKey"
               :mask="/^\S+$/"
               type="text"
-              :disabled="!['pro', 'premium'].includes($store.getters.accountTier) && tradingType === 'live'"
+              :disabled="disabledForm"
               :class="{'is-invalid': errors.length}"
               class="form-control"
               />

@@ -38,13 +38,23 @@
   <!-- Bitfinex-->
   <div v-else-if="broker === 'bitfinex'">
     <div class="embed-responsive embed-responsive-16by9 rounded-lg">
-      <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/y0xbKjJr-eg?si=VVUCAeH0eaIjfVxa&rel=0&modestbranding=1" allowfullscreen></iframe>
+      <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/9AvsQ_0RYEY?si=VTYCLOlw_gqVfkvC&rel=0&modestbranding=1" allowfullscreen></iframe>
     </div>
-    <h5 class="mt-3">How to connect Bitfinex to AlphaBot</h5>
+    <!-- Setup paper trading -->
+    <h5 class="mt-3">How to setup paper trading <span class="font-weight-bolder font-italic text-danger">(optional)</span></h5>
     <ol>
       <li class="mt-2">
-        <span class="font-weight-bolder font-italic"><span class="text-danger">IMPORTANT</span> If you would like to use paper trading with Bitfinex, please follow <a href="https://support.bitfinex.com/hc/en-us/articles/900001525006-Paper-Trading-at-Bitfinex-test-learn-and-simulate-trading-strategies" target="_blank">these steps</a> to setup a paper trading sub-account.</span>
+        To create a sub-account for paper trading, navigate to the drop down in the upper right hand corner and click on <span class="font-weight-bolder font-italic">"Sub-Accounts"</span>.
       </li>
+      <li class="mt-2">Click <span class="font-weight-bolder font-italic">"Create new sub-account"</span>.</li>
+      <li class="mt-2">Fill in the fields with a unique username and email. You can simply append the same email address you use for Bitfinex by adding a +1 before the @ symbol (Ex: your_email+1@gmail.com).</li>
+      <li class="mt-2">When you’ve filled in the fields click <span class="font-weight-bolder font-italic">"Next"</span>.</li>
+      <li class="mt-2">You will need to check your email and click the link from Bitfinex to verify your new paper trading sub-account.</li>
+      <li class="mt-2">Now click into your sub account. You will need to agree to the terms and setup a new two factor authentication specific to this paper trading account.</li>
+    </ol>
+    <!-- Setup API key-->
+    <h5 class="mt-3">How to connect Bitfinex to AlphaBot</h5>
+    <ol>
       <li class="mt-2">
         To connect Bitfinex to AlphaBot, navigate to the dropdown in the upper right hand corner of your Bitfinex account.
       </li>

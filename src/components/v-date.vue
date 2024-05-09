@@ -5,7 +5,6 @@
 
 <script>
 export default {
-  components: {},
   props: {
     date: {type: String, default: () => moment().toISOString()},
     fullDate: {type: Boolean, default: false}

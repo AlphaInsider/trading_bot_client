@@ -301,12 +301,12 @@ export default {
       tastyTradeEmail: undefined,
       tastyTradePassword: undefined,
       tastyTradeAccountId: undefined,
-      // binance
-      binanceKey: undefined,
-      binanceSecret: undefined,
       // bitfinex
       bitfinexKey: undefined,
-      bitfinexSecret: undefined
+      bitfinexSecret: undefined,
+      // binance
+      binanceKey: undefined,
+      binanceSecret: undefined
     };
   },
   computed: {
@@ -330,8 +330,8 @@ export default {
       //skip if no bot_id
       if(!this.$store.state.bot.bot_id) return Promise.resolve();
       
+      //get broker keys
       let keys = {};
-      
       //alpaca
       if(this.broker === 'alpaca') {
         keys = {
@@ -361,12 +361,13 @@ export default {
           binance_secret: this.binanceSecret
         };
       }
-      // error
+      //error
       else {
         toastr.error('Broker not permitted');
         return;
       }
       
+      //request updateBroker
       return this.$store.dispatch('request', {
         type: 'post',
         auth: true,

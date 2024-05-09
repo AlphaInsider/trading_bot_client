@@ -196,10 +196,8 @@ export default new Vuex.Store({
       });
       //set tokens
       await dispatch('setTokens', {authToken: auth_token});
-      
       //get bot
       await dispatch('getBotInfo');
-      
       //get allocations
       await dispatch('getAllocations');
     },
@@ -313,14 +311,14 @@ export default new Vuex.Store({
       });
     },
     
-    //CHECK: stopBot <bot_id>
+    //CHECK: stopBot
     async stopBot({state, commit, getters, dispatch}, params = {}) {
       return Promise.resolve()
       .then(async () => {
         //skip if not logged in || no bot
         if(!getters.isLoggedIn || !state.bot.bot_id) return;
         
-        //request startBot
+        //request stopBot
         await dispatch('request', {
           type: 'post',
           auth: true,

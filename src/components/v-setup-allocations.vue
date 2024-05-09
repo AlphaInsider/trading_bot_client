@@ -3,7 +3,7 @@
   <!-- search subscriptions -->
   <v-subscription-search :excludes="$_.map(allocations, 'strategy_id')" @input="allocations = $_.concat({strategy_id: $event.strategy_id, percent: '0', strategy: $event}, allocations)"></v-subscription-search>
   
-  <!-- allocations list -->
+  <!-- allocations -->
   <div v-if="allocations.length > 0" class="mt-3">
     <!-- percent invalid -->
     <p v-if="!validPercent" class="d-flex text-center text-danger mb-0">Total percent must be below 100.</p>

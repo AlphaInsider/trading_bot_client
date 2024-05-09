@@ -41,6 +41,7 @@
 <script>
 import vDropdownMenu from '@/components/v-dropdown-menu.vue';
 import vStrategy from '@/components/v-strategy.vue';
+
 export default {
   components: {vDropdownMenu, vStrategy},
   props: {
@@ -68,7 +69,7 @@ export default {
   },
   methods: {
     async getStrategySubscriptions() {
-      //request updateAllocation
+      //request getStrategySubscriptions
       this.subscriptions = await this.$store.dispatch('request', {
         type: 'post',
         auth: true,
@@ -80,7 +81,7 @@ export default {
       });
     },
     selectSubscription(subscription) {
-      //emit subscription to parent
+      //emit subscription strategy to parent
       this.$emit('input', subscription.strategy);
       //close search
       this.closeSearch();

@@ -157,7 +157,7 @@
               <h5 class="m-0">Select a {{ $store.state.bot.broker.asset_class }} strategy</h5>
               <small class="text-muted">Select a {{ $store.state.bot.broker.asset_class }} strategy for AlphaBot to follow.</small>
             </div>
-            <v-setup-strategy @update="getCurrentStep()"></v-setup-strategy>
+            <v-setup-allocations @update="getCurrentStep()"></v-setup-allocations>
           </div>
         </div>
       </div>
@@ -169,7 +169,7 @@
               <h5 class="m-0">Step-by-Step Guide</h5>
               <small class="text-muted">This guide will show you how to select a strategy.</small>
             </div>
-            <v-setup-strategy-guide></v-setup-strategy-guide>
+            <v-setup-allocations-guide></v-setup-allocations-guide>
           </div>
         </div>
       </div>
@@ -214,11 +214,11 @@ import vSetupAlphainsider from '@/components/v-setup-alphainsider.vue';
 import vSetupAlphainsiderGuide from '@/components/v-setup-alphainsider-guide.vue';
 import vSetupBroker from '@/components/v-setup-broker.vue';
 import vSetupBrokerGuide from '@/components/v-setup-broker-guide.vue';
-import vSetupStrategy from '@/components/v-setup-allocations.vue';
-import vSetupStrategyGuide from '@/components/v-setup-strategy-guide.vue';
+import vSetupAllocations from '@/components/v-setup-allocations.vue';
+import vSetupAllocationsGuide from '@/components/v-setup-allocations-guide.vue';
 
 export default {
-  components: {vSetupAlphainsider, vSetupAlphainsiderGuide, vSetupBroker, vSetupBrokerGuide, vSetupStrategy, vSetupStrategyGuide},
+  components: {vSetupAlphainsider, vSetupAlphainsiderGuide, vSetupBroker, vSetupBrokerGuide, vSetupAllocations, vSetupAllocationsGuide},
   data() {
     return {
       currentStep: -1,

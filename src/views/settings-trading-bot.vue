@@ -64,40 +64,21 @@
       </div>
     </div>
   </div>
-  
-  <!-- modals -->
-  <v-modal v-if="showStrategySelectModal" @close="showStrategySelectModal=false">
-    <div class="card">
-      <!-- title -->
-      <div class="card-header bg-white d-flex p-3">
-        <h5 class="text-primary mb-0">Strategy Select</h5>
-        <h5 @click="showStrategySelectModal = false" class="mb-0 ml-auto"><i class="far fa-times text-muted pointer"></i></h5>
-      </div>
-      <!-- body -->
-      <div class="card-body p-3">
-        <v-setup-strategy @update="$router.go()"></v-setup-strategy>
-      </div>
-    </div>
-  </v-modal>
 </div>
 </template>
 
 
 <script>
 import vStrategy from '@/components/v-strategy.vue';
-import vSetupStrategy from '@/components/v-setup-allocations.vue';
-import vModal from '@/components/v-modal.vue';
 import vWebsocket from "@/components/v-websocket.vue";
 
 export default {
-  components: {vWebsocket, vStrategy, vSetupStrategy, vModal},
+  components: {vWebsocket, vStrategy},
   data() {
     return {
       // strategies
       allocation: [],
-      strategies: [],
-      // modal
-      showStrategySelectModal: false
+      strategies: []
     };
   },
   async mounted() {

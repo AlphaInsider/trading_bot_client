@@ -83,7 +83,7 @@ export default {
               return {
                 strategy_id: allocation.strategy_id,
                 percent: math.evaluate('bignumber(a) / 100', {a: allocation.percent}).toString()
-              }
+              };
             })
           }
         });

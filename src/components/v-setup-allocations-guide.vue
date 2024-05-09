@@ -15,5 +15,3 @@
   <p>Need help? <a href="https://alphainsider.freshdesk.com/support/tickets/new" target="_blank">Contact Us</a></p>
 </div>
 </template>
-<script setup lang="ts">
-</script>

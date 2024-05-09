@@ -70,27 +70,20 @@
 
 <script>
 import vStrategy from '@/components/v-strategy.vue';
-import vWebsocket from "@/components/v-websocket.vue";
+import vWebsocket from '@/components/v-websocket.vue';
 
 export default {
-  components: {vWebsocket, vStrategy},
-  data() {
-    return {
-      // strategies
-      allocation: [],
-      strategies: []
-    };
-  },
+  components: {vStrategy, vWebsocket},
   async mounted() {
     await this.$store.dispatch('getBotInfo');
     await this.$store.dispatch('getAllocations');
   },
   methods: {
     async updateSettings(setting) {
-      // update bot settings
+      //update bot settings
       return Promise.resolve()
       .then(async () => {
-        // request updaateSettings
+        //request updaateSettings
         await this.$store.dispatch('request', {
           type: 'post',
           auth: true,
@@ -101,12 +94,12 @@ export default {
           }
         });
         
-        // get bot info
+        //get bot info
         await this.$store.dispatch('getBotInfo');
       })
-      // error
+      //error
       .catch((error) => {
-        toastr.error('Failed to update bot trading settings.');
+        toastr.error('Failed to update bot settings.');
       });
     }
   }

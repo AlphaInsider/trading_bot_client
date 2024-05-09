@@ -41,8 +41,9 @@ export default {
   },
   methods: {
     updateAlphaInsider() {
+      //skip if no bot_id or alphaInsiderKey
       if(!this.$store.state.bot.bot_id || !this.alphainsiderKey) return Promise.resolve();
-      // request updateAlphaInsider
+      //request updateAlphaInsider
       return this.$store.dispatch('request', {
         type: 'post',
         auth: true,

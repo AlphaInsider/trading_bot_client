@@ -17,25 +17,28 @@ export default new Vuex.Store({
     wsMessage: {},
     authToken: '',
     bot: {},
-    allocation: [],
+    allocations: [],
     ...JSON.parse(sessionStorage.getItem('store'))
   },
   
   //==== MUTATIONS ====
   mutations: {
     saveState(state, data) {
+      //save state
       Object.assign(state, _.cloneDeep({
         ...data
       }));
-      // Save session storage
-      if(Object.keys(data).some((item) => ['authToken'].includes(item))) {
+      //save session storage
+      if(Object.keys(data).some((item) => ['authToken', 'bot', 'allocations'].includes(item))) {
         sessionStorage.setItem('store', JSON.stringify({
-          authToken: state.authToken
+          authToken: state.authToken,
+          bot: state.bot,
+          allocations: state.allocations
         }));
       }
     },
     resetState(state, data) {
-      // reset state
+      //reset state
       Object.assign(state, _.cloneDeep({
         windowSize: state.windowSize,
         loading: [],
@@ -44,10 +47,13 @@ export default new Vuex.Store({
         wsMessage: {},
         authToken: '',
         bot: {},
-        allocation: []
+        allocations: []
       }));
+      //reset session storage
       sessionStorage.setItem('store', JSON.stringify({
-        authToken: state.authToken
+        authToken: state.authToken,
+        bot: state.bot,
+        allocations: state.allocations
       }));
     }
   },
@@ -177,7 +183,7 @@ export default new Vuex.Store({
       });
     },
     
-    //DONE: login --password--
+    //CHECK: login --password--
     async login({state, commit, getters, dispatch}, params = {}) {
       //request login
       let {auth_token} = await dispatch('request', {
@@ -190,10 +196,12 @@ export default new Vuex.Store({
       });
       //set tokens
       await dispatch('setTokens', {authToken: auth_token});
-      //get bot information
+      
+      //get bot
       await dispatch('getBotInfo');
-      //get allocation
-      await dispatch('getAllocation');
+      
+      //get allocations
+      await dispatch('getAllocations');
     },
     
     //DONE: logout <redirectLogin>
@@ -202,30 +210,31 @@ export default new Vuex.Store({
       return ((params.redirectLogin && router.app._route.path !== '/login') ? router.replace('/login') : router.go())
     },
     
-    //DONE: getBotInfo
+    //CHECK: getBotInfo
     async getBotInfo({state, commit, getters, dispatch}, params = {}) {
       return Promise.resolve()
       .then(async () => {
         //skip if not logged in
         if(!getters.isLoggedIn) return {};
         
-        //request getBotInfo
+        //request getBots
         let bot = await dispatch('request', {
           type: 'get',
           auth: true,
-          url: 'getBotInfo'
+          url: 'getBots',
+          query: {
+            bot_id: (state.bot.bot_id ? [state.bot.bot_id] : undefined)
+          }
+        })
+        .then(data => data[0]);
+        
+        //save bot
+        commit('saveState', {
+          bot: bot
         });
         
         //return
         return bot;
-      })
-      
-      //save state
-      .then((data) => {
-        commit('saveState', {
-          bot: data
-        });
-        return data;
       })
       
       //error
@@ -235,71 +244,62 @@ export default new Vuex.Store({
       });
     },
     
-    //DONE: getAllocation
-    async getAllocation({state, commit, getters, dispatch}, params = {}) {
+    //CHECK: getAllocations
+    async getAllocations({state, commit, getters, dispatch}, params = {}) {
       return Promise.resolve()
       .then(async () => {
-        //skip if not logged in or alphainsider not set, return
-        if(!getters.isLoggedIn || !state.bot.alphainsider) return [];
+        //skip if not logged in || no bot
+        if(!getters.isLoggedIn || !state.bot.bot_id) return [];
         
-        //request getAllocation
-        let allocation = await dispatch('request', {
+        //request getAllocations
+        let allocations = await dispatch('request', {
           type: 'get',
           auth: true,
-          url: 'getAllocation',
-          query: {}
-        });
-        
-        //skip if no strategy allocation
-        if(allocation.length <= 0) return [];
-        
-        //request getStrategies
-        let strategies = await dispatch('request', {
-          type: 'get',
-          auth: true,
-          url: 'getStrategies',
+          url: 'getAllocations',
           query: {
-            strategy_id: _.map(allocation, 'strategy_id')
+            bot_id: state.bot.bot_id
           }
         });
         
-        //calculate
-        let computed = _.chain(strategies).map((strategy) => {
-          let info = _.find(allocation, {strategy_id: strategy.strategy_id});
-          return (info ? {...strategy, allocation_id: info.allocation_id, bot_id: info.bot_id} : null);
-        }).compact().value();
+        //save state
+        commit('saveState', {
+          allocations: allocations
+        });
         
         //return
-        return computed;
-      })
-      
-      //save state
-      .then((data) => {
-        commit('saveState', {
-          allocation: data
-        });
-        return data;
+        return allocations;
       })
       
       //error
       .catch((error) => {
-        toastr.error('Failed to get allocation.');
+        toastr.error('Failed to get allocations.');
         throw error;
       });
     },
     
-    //DONE: startBot
+    //CHECK: setAllocations <[{allocations}]>
+    async setAllocations({state, commit, getters, dispatch}, params = {}) {
+      //save state
+      commit('saveState', {
+        allocations: params.allocations
+      });
+    },
+    
+    //CHECK: startBot
     async startBot({state, commit, getters, dispatch}, params = {}) {
       return Promise.resolve()
       .then(async () => {
-        //skip if not logged in
-        if(!getters.isLoggedIn) return;
+        //skip if not logged in || no bot
+        if(!getters.isLoggedIn || !state.bot.bot_id) return;
         
         //request startBot
         await dispatch('request', {
           type: 'post',
           auth: true,
-          url: 'startBot'
+          url: 'startBot',
+          query: {
+            bot_id: state.bot.bot_id
+          }
         });
         
         //getBotInfo
@@ -313,18 +313,21 @@ export default new Vuex.Store({
       });
     },
     
-    //DONE: stopBot
+    //CHECK: stopBot <bot_id>
     async stopBot({state, commit, getters, dispatch}, params = {}) {
       return Promise.resolve()
       .then(async () => {
-        //skip if not logged in
-        if(!getters.isLoggedIn) return;
+        //skip if not logged in || no bot
+        if(!getters.isLoggedIn || !state.bot.bot_id) return;
         
         //request startBot
         await dispatch('request', {
           type: 'post',
           auth: true,
-          url: 'stopBot'
+          url: 'stopBot',
+          query: {
+            bot_id: state.bot.bot_id
+          }
         });
         
         //getBotInfo
@@ -338,9 +341,9 @@ export default new Vuex.Store({
       });
     },
     
-    //DONE: setBotStatus <status>
+    //CHECK: setBotStatus <status>
     async setBotStatus({state, commit, getters, dispatch}, params = {}) {
-      //set bot status
+      //save state
       commit('saveState', {
         bot: {
           ...state.bot,
@@ -454,7 +457,7 @@ export default new Vuex.Store({
     },
     
     //DONE: wsHandleMessage <message>
-    wsHandleMessage({state, commit, getters, dispatch}, params = {}) {
+    async wsHandleMessage({state, commit, getters, dispatch}, params = {}) {
       //parse message
       let message = JSON.parse(params.message);
       //if invalid channel, unsubscribe

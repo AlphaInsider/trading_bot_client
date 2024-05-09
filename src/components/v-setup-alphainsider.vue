@@ -41,13 +41,14 @@ export default {
   },
   methods: {
     updateAlphaInsider() {
-      if(!this.alphainsiderKey) return Promise.resolve();
+      if(!this.$store.state.bot.bot_id || !this.alphainsiderKey) return Promise.resolve();
       // request updateAlphaInsider
       return this.$store.dispatch('request', {
         type: 'post',
         auth: true,
         url: 'updateAlphaInsider',
         query: {
+          bot_id: this.$store.state.bot.bot_id,
           alphainsider_key: this.alphainsiderKey
         }
       })

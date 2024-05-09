@@ -169,7 +169,7 @@
               <h5 class="m-0">Step-by-Step Guide</h5>
               <small class="text-muted">This guide will show you how to select a strategy.</small>
             </div>
-            <v-setup-strategy-guide></v-setup-strategy-guide>
+            <v-setup-allocations-guide></v-setup-allocations-guide>
           </div>
         </div>
       </div>
@@ -215,10 +215,10 @@ import vSetupAlphainsiderGuide from '@/components/v-setup-alphainsider-guide.vue
 import vSetupBroker from '@/components/v-setup-broker.vue';
 import vSetupBrokerGuide from '@/components/v-setup-broker-guide.vue';
 import vSetupAllocations from '@/components/v-setup-allocations.vue';
-import vSetupStrategyGuide from '@/components/v-setup-strategy-guide.vue';
+import vSetupAllocationsGuide from '@/components/v-setup-allocations-guide.vue';
 
 export default {
-  components: {vSetupAlphainsider, vSetupAlphainsiderGuide, vSetupBroker, vSetupBrokerGuide, vSetupAllocations, vSetupStrategyGuide},
+  components: {vSetupAlphainsider, vSetupAlphainsiderGuide, vSetupBroker, vSetupBrokerGuide, vSetupAllocations, vSetupAllocationsGuide},
   data() {
     return {
       currentStep: -1,

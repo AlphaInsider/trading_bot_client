@@ -13,7 +13,7 @@
         <!-- title -->
         <h6 class="mb-0">Allocation Percent:</h6>
         <!-- set allocation percent -->
-        <div class="ml-auto" style="width: 85px">
+        <div class="input-percent ml-auto">
           <validation-provider name="Allocation" rules="min_value:0|max_value:100|required" v-slot="{ errors }">
             <input-mask
             v-model="allocation.percent"
@@ -102,3 +102,15 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.input-percent {
+  width: 70px;
+}
+input {
+  &.is-invalid {
+    padding-right: 0.75rem !important;
+    background-image: none !important;
+  }
+}
+</style>

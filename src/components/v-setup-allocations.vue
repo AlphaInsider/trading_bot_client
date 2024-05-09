@@ -65,9 +65,18 @@ export default {
     }
   },
   async mounted() {
-    this.allocations = await this.$store.dispatch('getAllocations');
+    await this.getAllocations();
   },
   methods: {
+    async getAllocations() {
+      let allocations = await this.$store.dispatch('getAllocations');
+      this.allocations = allocations.map((allocation) => {
+        return {
+          ...allocation,
+          percent: math.evaluate('floor(bignumber(a) * 100)', {a: allocation.percent}).toString()
+        }
+      });
+    },
     async updateAllocations() {
       //update allocations
       return Promise.resolve()
@@ -89,7 +98,7 @@ export default {
         });
         
         //get allocations
-        this.allocations = await this.$store.dispatch('getAllocations');
+        await this.getAllocations();
         
         //success, emit update
         this.$emit('update');

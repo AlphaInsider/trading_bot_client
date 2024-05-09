@@ -327,6 +327,9 @@ export default {
       this.$emit('broker', broker);
     },
     updateBroker() {
+      //skip if no bot_id
+      if(!this.$store.state.bot.bot_id) return Promise.resolve();
+      
       let keys = {};
       
       //alpaca
@@ -369,9 +372,12 @@ export default {
         auth: true,
         url: 'updateBroker',
         query: {
-          type: this.broker,
-          live: (this.tradingType === 'live'),
-          keys
+          bot_id: this.$store.state.bot.bot_id,
+          broker: {
+            type: this.broker,
+            live: (this.tradingType === 'live'),
+            ...keys
+          }
         }
       })
       //success, emit update

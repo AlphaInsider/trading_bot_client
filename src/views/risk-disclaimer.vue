@@ -58,7 +58,7 @@
           
           <h3>Data Privacy</h3>
           <ol>
-            <li>You agree to the collection and use of your data in accordance with The Bot's <router-link to="/privacy-policy">Privacy Policy</router-link>, which includes storing data related to your portfolio and trading activity.</li>
+            <li>You agree to the collection and use of your data in accordance with The Bot's <router-link to="/privacy-policy">Privacy Policy</router-link>, which includes storing data related to your portfolio and trading activities.</li>
           </ol>
           
           <p><strong>By activating AlphaBot, you acknowledge that you have read, understood, and agree to the Risk Disclaimer outlined in this document.</strong></p>

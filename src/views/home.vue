@@ -4,8 +4,9 @@
   <v-query-params v-model="query"></v-query-params>
   
   <!-- watch websockets -->
-  <v-websocket :channels="['wsActivity']" @message="[$event.type, ''].includes(query.a_filter.value) && (activity=[$event].concat(activity))"></v-websocket>
-  <v-websocket :channels="['wsStatus']" @message="$store.dispatch('setBotStatus', {status: $event})"></v-websocket>
+  <v-websocket :channels="['wsStatus:'+$store.state.bot.bot_id]" @message="$store.dispatch('setBotStatus', {status: $event})"></v-websocket>
+  <v-websocket :channels="['wsActivity:'+$store.state.bot.bot_id]" @message="[$event.type, ''].includes(query.a_filter.value) && (activities=$_.concat($event, activities))"></v-websocket>
+  <v-websocket :channels="['wsAllocations:'+$store.state.bot.bot_id]" @message="$store.dispatch('setAllocations', {allocations: $event})"></v-websocket>
   
   <!-- page -->
   <div class="container my-3 my-lg-4">
@@ -52,7 +53,7 @@
         <p class="mb-0">Closing positions at the next viable time.</p>
       </div>
       <!-- setup -->
-      <div v-else-if="!$store.state.bot.alphainsider || !$store.state.bot.broker || $store.state.allocation.length <= 0" class="d-flex flex-column align-items-center">
+      <div v-else-if="!$store.state.bot.alphainsider || !$store.state.bot.broker || $store.state.allocations.length <= 0" class="d-flex flex-column align-items-center">
         <button :disabled="true" type="button" class="btn power-btn btn-outline-secondary"><i class="fas fa-power-off"></i></button>
         <h3 class="mt-2 mb-0">
           <span class="text-uppercase text-secondary">Setup Required</span>
@@ -82,11 +83,11 @@
         <h3 class="mt-2 mb-0">
           <span class="text-uppercase text-danger">Off</span>
         </h3>
-        <p class="mb-0">Not activity trading or monitoring.</p>
+        <p class="mb-0">Not actively trading or monitoring.</p>
       </div>
     </div>
     
-    <!-- activity list -->
+    <!-- activities list -->
     <div class="d-flex align-items-baseline">
       <h3 class="text-primary mt-3 mb-0">Recent Activity</h3>
       <!-- filter -->
@@ -118,13 +119,13 @@
     </div>
     <div class="d-flex flex-column">
       <!-- Timelines -->
-      <transition-group v-if="activity.length > 0" enter-active-class="animate__animated animate__fadeIn animate__faster" mode="out-in">
-        <div v-for="(event, index) in activity" :key="event.activity_id">
+      <transition-group v-if="activities.length > 0" enter-active-class="animate__animated animate__fadeIn animate__faster" mode="out-in">
+        <div v-for="(event, index) in activities" :key="event.activity_id">
           <v-activity :activity="event" class="mt-2"></v-activity>
         </div>
       </transition-group>
       <!-- infinite loading -->
-      <infinite-loading :identifier="$route.fullPath" spinner="waveDots" @infinite="getActivity($event)" @$InfiniteLoading:reset="activity = []">
+      <infinite-loading :identifier="$route.fullPath" spinner="waveDots" @infinite="getActivities($event)" @$InfiniteLoading:reset="activities = []">
         <!-- no results -->
         <div slot="no-results">
           <div class="d-flex-column text-center my-5">
@@ -165,9 +166,9 @@ export default {
       query: {
         a_filter: {value: '', default: '', valid: ['', 'info', 'warning', 'error']}
       },
-      // activity
-      activity: [],
-      activityLimit: 10,
+      // activities
+      activities: [],
+      activitiesLimit: 10,
       // show
       showActivityFilterDropdown: false,
       showRiskModal: false
@@ -175,32 +176,33 @@ export default {
   },
   async mounted() {
     await this.$store.dispatch('getBotInfo');
-    await this.$store.dispatch('getAllocation');
+    await this.$store.dispatch('getAllocations');
   },
   methods: {
-    getActivity($state) {
-      //get activity type filter
-      let type = [];
+    async getActivities($state) {
+      //get activities type filter
+      let type;
       if(['info', 'warning', 'error'].includes(this.query.a_filter.value)) type = [this.query.a_filter.value];
-      //request getActivity
+      //request getActivities
       return this.$store.dispatch('request', {
         type: 'get',
         auth: true,
-        url: 'getActivity',
+        url: 'getActivities',
         query: {
+          bot_id: this.$store.state.bot.bot_id,
           type: type,
-          limit: this.activityLimit,
-          offset_id: (this.activity.length > 0 ? _.last(this.activity).activity_id : undefined)
+          limit: this.activitiesLimit,
+          offset_id: (this.activities.length > 0 ? _.last(this.activities).activity_id : undefined)
         }
       })
       //success, set timelines
       .then((data) => {
-        this.activity = _.unionBy(this.activity, data, 'activity_id');
+        this.activities = _.unionBy(this.activities, data, 'activity_id');
         ((data.length > 0) ? $state.loaded() : $state.complete())
       })
       //error
       .catch((error) => {
-        toastr.error('Failed to get activity.');
+        toastr.error('Failed to get activities.');
         $state.complete();
       });
     },

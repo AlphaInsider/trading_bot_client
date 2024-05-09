@@ -214,7 +214,7 @@ import vSetupAlphainsider from '@/components/v-setup-alphainsider.vue';
 import vSetupAlphainsiderGuide from '@/components/v-setup-alphainsider-guide.vue';
 import vSetupBroker from '@/components/v-setup-broker.vue';
 import vSetupBrokerGuide from '@/components/v-setup-broker-guide.vue';
-import vSetupStrategy from '@/components/v-setup-strategy.vue';
+import vSetupStrategy from '@/components/v-setup-allocations.vue';
 import vSetupStrategyGuide from '@/components/v-setup-strategy-guide.vue';
 
 export default {
@@ -230,7 +230,7 @@ export default {
       return [
         ...((this.$store.state.bot?.alphainsider) ? [0] : []),
         ...((this.$store.state.bot?.broker) ? [1] : []),
-        ...((this.$store.state.allocation.length > 0) ? [2, 3] : [])
+        ...((this.$store.state.allocations.length > 0) ? [2, 3] : [])
       ];
     }
   },
@@ -241,7 +241,7 @@ export default {
     async getCurrentStep() {
       //get bot info
       await this.$store.dispatch('getBotInfo');
-      await this.$store.dispatch('getAllocation');
+      await this.$store.dispatch('getAllocations');
       //get latest step
       let latestStep = Math.min((_.last(this.completedSteps) ?? -1) + 1, 3);
       //if query passed, set latest step

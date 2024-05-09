@@ -1,5 +1,8 @@
 <template>
 <div>
+  <!-- watch websockets -->
+  <v-websocket :channels="['wsAllocations:'+$store.state.bot.bot_id]" @message="$store.dispatch('setAllocations', {allocations: $event})"></v-websocket>
+  
   <!-- bot allocation -->
   <div class="card">
     <!-- title -->
@@ -10,11 +13,16 @@
       </div>
     </div>
     <!-- body -->
-    <div class="card-body">
-      <div v-if="$store.state.allocation.length > 0">
-        <div v-for="(strategy, index) in $store.state.allocation" :key="strategy.strategy_id">
-          <v-strategy :strategy="strategy"></v-strategy>
-          <hr v-if="index !== $store.state.allocation.length-1">
+    <div class="card-body p-3">
+      <div v-if="$store.state.allocations.length > 0">
+        <div class="card" :class="{'mt-2': index > 0}" v-for="(allocation, index) in $store.state.allocations" :key="allocation.allocation_id">
+          <div class="card-header d-flex">
+            <h6 class="align-self-center mb-0">Allocation Percent:</h6>
+            <p class="ml-auto mb-0">% {{ $math.evaluate('floor(bignumber(a) * 100)', {a: allocation.percent}).toString() }}</p>
+          </div>
+          <div class="card-body">
+            <v-strategy :strategy="allocation.strategy"></v-strategy>
+          </div>
         </div>
       </div>
       <div v-else class="d-flex-column bg-light rounded text-center py-4 mt-1">
@@ -77,11 +85,12 @@
 
 <script>
 import vStrategy from '@/components/v-strategy.vue';
-import vSetupStrategy from '@/components/v-setup-strategy.vue';
+import vSetupStrategy from '@/components/v-setup-allocations.vue';
 import vModal from '@/components/v-modal.vue';
+import vWebsocket from "@/components/v-websocket.vue";
 
 export default {
-  components: {vStrategy, vSetupStrategy, vModal},
+  components: {vWebsocket, vStrategy, vSetupStrategy, vModal},
   data() {
     return {
       // strategies
@@ -93,7 +102,7 @@ export default {
   },
   async mounted() {
     await this.$store.dispatch('getBotInfo');
-    await this.$store.dispatch('getAllocation');
+    await this.$store.dispatch('getAllocations');
   },
   methods: {
     async updateSettings(setting) {
@@ -105,7 +114,10 @@ export default {
           type: 'post',
           auth: true,
           url: 'updateSettings',
-          query: setting
+          query: {
+            ...setting,
+            bot_id: this.$store.state.bot.bot_id
+          }
         });
         
         // get bot info

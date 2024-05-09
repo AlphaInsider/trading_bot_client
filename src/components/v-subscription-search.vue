@@ -3,11 +3,10 @@
   <!-- search input -->
   <input
   v-model="searchInput"
-  @input="searchStrategies()"
   @focus="searchInFocus=true"
-  @keyup.enter="searchResults.length >= 1 && selectStrategy(searchResults[0])"
+  @keyup.enter="searchResults.length >= 1 && selectSubscription(searchResults[0])"
   type="text"
-  placeholder="Search Strategy..."
+  placeholder="Search Subscriptions..."
   class="form-control shadow-none border-right-0"
   >
   
@@ -21,8 +20,8 @@
   >
     <!-- search results -->
     <div class="search-list">
-      <div v-for="strategy in searchResults" :key="strategy.strategy_id" class="dropdown-item" @click="selectStrategy(strategy)">
-        <v-strategy :strategy="strategy" compact></v-strategy>
+      <div v-for="subscription in searchResults" :key="subscription.strategy_id" class="dropdown-item" @click="selectSubscription(subscription)">
+        <v-strategy :strategy="subscription.strategy" compact></v-strategy>
       </div>
     </div>
     <!-- no search results -->
@@ -32,8 +31,8 @@
   <!-- search icon -->
   <div @click="searchInFocus=true" class="input-group-append">
     <div class="search-button input-group-text bg-white">
-      <i v-if="!$store.state.loading.includes('searchStrategies')" :class="{'active': searchInFocus}" class="far fa-search"></i>
-      <i v-if="$store.state.loading.includes('searchStrategies')" class="fas fa-spinner fa-pulse text-primary"></i>
+      <i v-if="!$store.state.loading.includes('getStrategySubscriptions')" :class="{'active': searchInFocus}" class="far fa-search"></i>
+      <i v-if="$store.state.loading.includes('getStrategySubscriptions')" class="fas fa-spinner fa-pulse text-primary"></i>
     </div>
   </div>
 </div>
@@ -44,49 +43,50 @@ import vDropdownMenu from '@/components/v-dropdown-menu.vue';
 import vStrategy from '@/components/v-strategy.vue';
 export default {
   components: {vDropdownMenu, vStrategy},
+  props: {
+    excludes: {type: Array, default: []}
+  },
   data() {
     return {
+      subscriptions: [],
       // search
       searchInput: '',
-      searchInFocus: false,
-      searchResults: [],
-      selectedStrategy: undefined,
+      searchInFocus: false
+    }
+  },
+  computed: {
+    searchResults() {
+      return _.filter(this.subscriptions, (subscription) => {
+        if(this.excludes.includes(subscription.strategy_id) || subscription.strategy.type !== this.$store.state.bot.broker?.asset_class) return false;
+        return (subscription.strategy_id+':'+subscription.strategy.user_id+':'+subscription.strategy.name+':'+subscription.strategy.description).toLowerCase().includes(this.searchInput.toLowerCase());
+      });
     }
   },
   async mounted() {
     await this.$store.dispatch('getBotInfo');
+    await this.getStrategySubscriptions();
   },
   methods: {
-    searchStrategies: _.debounce(async function() {
-      //skip if searchInput is empty
-      if(!this.searchInput) return;
-      //start loading
-      await this.$store.dispatch('startLoading', {label: ['stockSearch']});
-      //request searchStocks
-      this.searchResults = await this.$store.dispatch('request', {
+    async getStrategySubscriptions() {
+      //request updateAllocation
+      this.subscriptions = await this.$store.dispatch('request', {
         type: 'post',
-        auth: !!this.$store.state.bot.alphainsider,
-        url: 'searchStrategies',
-        loadingLabel: 'searchStrategies',
+        auth: true,
+        url: 'getStrategySubscriptions',
+        loadingLabel: 'getStrategySubscriptions',
         query: {
-          search: this.searchInput,
-          type: {includes: (this.$store.state.bot.broker ? [this.$store.state.bot.broker.asset_class] : []), excludes: []},
-          limit: 25
+          bot_id: this.$store.state.bot.bot_id
         }
-      })
-      .catch((error) => {});
-      //finish loading
-      await this.$store.dispatch('finishLoading', {label: ['stockSearch']});
-    }, 500),
-    selectStrategy(strategy) {
-      //emit strategy to parent
-      this.$emit('input', strategy);
+      });
+    },
+    selectSubscription(subscription) {
+      //emit subscription to parent
+      this.$emit('input', subscription.strategy);
       //close search
       this.closeSearch();
     },
     closeSearch() {
       this.searchInput = '';
-      this.searchResults = [];
       this.searchInFocus = false;
       this.$refs.search.firstChild.blur();
     }

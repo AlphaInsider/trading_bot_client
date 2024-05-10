@@ -367,11 +367,11 @@ export default {
         return;
       }
       
-      //request updateBroker
+      //request updateBot
       return this.$store.dispatch('request', {
         type: 'post',
         auth: true,
-        url: 'updateBroker',
+        url: 'updateBot',
         query: {
           bot_id: this.$store.state.bot.bot_id,
           broker: {

@@ -83,11 +83,11 @@ export default {
       //update bot settings
       return Promise.resolve()
       .then(async () => {
-        //request updaateSettings
+        //request updateBot
         await this.$store.dispatch('request', {
           type: 'post',
           auth: true,
-          url: 'updateSettings',
+          url: 'updateBot',
           query: {
             ...setting,
             bot_id: this.$store.state.bot.bot_id

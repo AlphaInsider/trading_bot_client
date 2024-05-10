@@ -35,7 +35,7 @@ export default {
       .then((data) => {
         this.showUpdateBanner = data.upgradable;
       })
-      // error, toast error
+      //error, toast error
       .catch(() => {
         toastr.error('Failed to get app version.');
       });

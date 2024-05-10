@@ -304,7 +304,7 @@ export default new Vuex.Store({
         await dispatch('getBotInfo');
       })
       
-      // error
+      //error
       .catch((error) => {
         toastr.error('Failed to start trading bot.');
         throw error;
@@ -332,7 +332,7 @@ export default new Vuex.Store({
         await dispatch('getBotInfo');
       })
       
-      // error
+      //error
       .catch((error) => {
         toastr.error('Failed to stop trading bot.');
         throw error;

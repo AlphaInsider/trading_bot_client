@@ -43,11 +43,12 @@ export default {
     updateAlphaInsider() {
       //skip if no bot_id or alphaInsiderKey
       if(!this.$store.state.bot.bot_id || !this.alphainsiderKey) return Promise.resolve();
-      //request updateAlphaInsider
+      
+      //request updateBot
       return this.$store.dispatch('request', {
         type: 'post',
         auth: true,
-        url: 'updateAlphaInsider',
+        url: 'updateBot',
         query: {
           bot_id: this.$store.state.bot.bot_id,
           alphainsider_key: this.alphainsiderKey
@@ -57,7 +58,7 @@ export default {
       .then(() => {
         this.$emit('update');
       })
-      // error, toast error
+      //error, toast error
       .catch(() => {
         toastr.error('Failed to update AlphaInsider API key.');
       });

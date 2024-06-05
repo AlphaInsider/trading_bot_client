@@ -3,7 +3,7 @@
   <!-- search input -->
   <input
   v-model="searchInput"
-  @focus="searchInFocus=true"
+  @focus="openSearch()"
   @keyup.enter="searchResults.length >= 1 && selectSubscription(searchResults[0])"
   type="text"
   placeholder="Search Subscriptions..."
@@ -65,7 +65,6 @@ export default {
   },
   async mounted() {
     await this.$store.dispatch('getBotInfo');
-    await this.getStrategySubscriptions();
   },
   methods: {
     async getStrategySubscriptions() {
@@ -85,6 +84,10 @@ export default {
       this.$emit('input', subscription.strategy);
       //close search
       this.closeSearch();
+    },
+    async openSearch() {
+      this.searchInFocus = true;
+      await this.getStrategySubscriptions();
     },
     closeSearch() {
       this.searchInput = '';

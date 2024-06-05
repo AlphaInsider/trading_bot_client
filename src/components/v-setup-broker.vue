@@ -385,7 +385,7 @@ export default {
       .then(() => {
         this.$emit('update');
       })
-      // error, toast error
+      //error, toast error
       .catch(() => {
         if(['alpaca', 'tastytrade'].includes(this.broker)) toastr.error('Failed to set API keys. Invalid keys.');
         else if(['binance', 'bitfinex'].includes(this.broker)) toastr.error('Failed to set API keys. Invalid keys or IP location not permitted.');
